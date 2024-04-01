@@ -1,15 +1,12 @@
-/* eslint-disable react/jsx-no-useless-fragment */
 import { node } from 'prop-types';
 
-// import ReduxProvider from '../redux/store/Provider';
+import ReduxProvider from '../redux/store/Provider';
 
 export default function RootLayout({ children }) {
   return (
-  // <ReduxProvider>
-    <>
+    <ReduxProvider>
       { children }
-    </>
-  // </ReduxProvider>
+    </ReduxProvider>
   );
 }
 

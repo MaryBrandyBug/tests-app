@@ -3,9 +3,11 @@
 import { Provider } from 'react-redux';
 import { node } from 'prop-types';
 
+import store from './store';
+
 export default function ReduxProvider({ children }) {
   return (
-    <Provider>
+    <Provider store={store}>
       {children}
     </Provider>
   );

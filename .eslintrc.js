@@ -23,9 +23,12 @@ module.exports = {
     'react/require-default-props': 'off',
     'import/no-unresolved': 'off',
     'no-restricted-exports': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/forbid-prop-types': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
-    resolver: {
+    'import/resolver': {
       alias: {
         map: [
           ['@', './src'],

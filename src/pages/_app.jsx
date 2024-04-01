@@ -3,6 +3,9 @@ import { func } from 'prop-types';
 
 import RootLayout from './layout';
 
+import '../styles/reset.scss';
+import '../styles/globals.scss';
+
 export default function MyApp({ Component }) {
   return (
     <RootLayout>

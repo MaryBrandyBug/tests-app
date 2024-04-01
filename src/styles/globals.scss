@@ -1,0 +1,6 @@
+@import './colors.scss';
+
+html,
+body {
+  background: -webkit-linear-gradient(360deg, $warmPink, $steelBlue);
+}
