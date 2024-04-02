@@ -1,0 +1,32 @@
+@import '@/styles/mixins.scss';
+
+.root {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 900px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 50px;
+}
+
+.imgContainer {
+  border-radius: 50px 50px 0px 0px;
+  border-bottom: 1px solid black;
+  overflow: hidden;
+}
+
+@include _1024 {
+  .root {
+    width: 500px;
+    height: 700px;
+  }
+}
+
+@include _1024 {
+  .root {
+    width: 400px;
+    height: 600px;
+  }
+}
