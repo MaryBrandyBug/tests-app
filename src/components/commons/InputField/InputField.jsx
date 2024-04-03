@@ -1,18 +1,15 @@
 import { func, string } from 'prop-types';
-import classNames from 'classnames/bind';
 
 import s from './InputField.module.scss';
 
 export default function InputField({
-  type, name, onChange, placeholder, inputFieldName, maxLength, value,
+  type, name, onChange, placeholder, inputFieldName, maxLength, value, additionalClass,
 }) {
-  const cx = classNames.bind(s);
-
   return (
     <div className={s.root}>
       <div className={s.content}>
-        <p className={cx('input-name')}>{inputFieldName}</p>
-        <input type={type} name={name} value={value} className={cx('input-field')} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />
+        <p className={s.inputName}>{inputFieldName}</p>
+        <input type={type} name={name} value={value} className={`${s.inputField}, ${additionalClass}`} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />
       </div>
     </div>
   );
@@ -26,4 +23,5 @@ InputField.propTypes = {
   inputFieldName: string,
   maxLength: string,
   value: string,
+  additionalClass: string,
 };

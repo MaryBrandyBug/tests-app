@@ -9,3 +9,21 @@
     @content;
   }
 }
+
+@mixin _500 {
+  @media (max-width: 500px) {
+    @content
+  }
+}
+
+@mixin _360 {
+  @media (max-width: 360px) {
+    @content
+  }
+}
+
+@mixin minWidth361 {
+  @media (min-width: 361px) {
+    @content
+  }
+}

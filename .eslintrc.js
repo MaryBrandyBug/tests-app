@@ -26,6 +26,9 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/forbid-prop-types': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'max-len': 'off',
+    'import/order': 'off',
+    camelcase: 'off',
   },
   settings: {
     'import/resolver': {
