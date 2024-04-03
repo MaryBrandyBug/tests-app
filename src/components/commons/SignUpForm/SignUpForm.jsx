@@ -9,7 +9,7 @@ import validationSchema from '@/utils/validation';
 import Button from '../Button';
 import InputField from '../InputField';
 
-import s from './SignInForm.module.scss';
+import s from './SignUpForm.module.scss';
 import { manjari } from '@/styles/fonts';
 
 export default function SignInForm() {
@@ -32,24 +32,31 @@ export default function SignInForm() {
     actions.setSubmitting(false);
   };
 
-  const formik = useFormik({ initialValues: { username: '', password: '' }, onSubmit, validationSchema });
+  const formik = useFormik({
+    initialValues: {
+      username: '', password: '', password_confirmation: '', is_admin: false,
+    },
+    onSubmit,
+    validationSchema,
+  });
 
   return (
     <div className={`${s.root} ${manjari.className}`}>
       <div className={s.imgContainer}>
-        <Image src="/signInFormPic.jpg" alt="" width={600} height={300} />
+        <Image src="/signUpFormPic.jpg" alt="" width={600} height={300} />
       </div>
       <form className={s.form} onSubmit={formik.handleSubmit}>
-        <InputField type="text" name="username" value={formik.values.username} onChange={formik.handleChange} placeholder="Enter your username" maxLength="15" additionalClass={s.formInput} />
-        <InputField type="text" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Enter your password" maxLength="15" additionalClass={s.formInput} />
+        <InputField type="text" name="username" value={formik.values.username} onChange={formik.handleChange} placeholder="Create your username" maxLength="15" additionalClass={s.formInput} />
+        <InputField type="text" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Create your password" maxLength="15" additionalClass={s.formInput} />
+        <InputField type="text" name="password_confirmation" value={formik.values.password_confirmation} onChange={formik.handleChange} placeholder="Confirm your password" maxLength="15" additionalClass={s.formInput} />
         <div className={s.btnContainer}>
-          <Button type="submit" className={s.enterBtn}>Enter</Button>
+          <Button type="submit" className={s.createBtn}>Create</Button>
         </div>
         <div className={s.signUpLinkContainer}>
           <p>
-            New to My tests?
+            Already have an account?
             {' '}
-            <Button href="/signup" className={s.signUpLink}>Sign Up</Button>
+            <Button href="/" className={s.signUpLink}>Sign In</Button>
           </p>
         </div>
       </form>
