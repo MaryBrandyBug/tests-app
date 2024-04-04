@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
 import validationSchema from '@/utils/validation';
+import data from './data';
 
 import Button from '../Button';
 import InputField from '../InputField';
@@ -40,24 +41,22 @@ export default function SignInForm() {
     validationSchema,
   });
 
+  const inputFields = data.map((item) => (
+    <>
+      <InputField type={item.type} name={item.name} value={formik.values[item.name]} onChange={formik.handleChange} placeholder={item.placeholder} maxLength={item.maxLength} additionalClass={s.formInput} />
+      {formik.touched[item.name] && formik.errors[item.name] && (
+      <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors[item.name]}</p></div>
+      )}
+    </>
+  ));
+
   return (
     <div className={`${s.root} ${manjari.className}`}>
       <div className={s.imgContainer}>
         <Image src="/signUpFormPic.jpg" alt="" width={600} height={300} />
       </div>
       <form className={s.form} onSubmit={formik.handleSubmit}>
-        <InputField type="text" name="username" value={formik.values.username} onChange={formik.handleChange} placeholder="Create your username" maxLength="15" additionalClass={s.formInput} />
-        {formik.touched.username && formik.errors.username && (
-          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.username}</p></div>
-        )}
-        <InputField type="text" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Create your password" maxLength="15" additionalClass={s.formInput} />
-        {formik.touched.password && formik.errors.password && (
-          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.password}</p></div>
-        )}
-        <InputField type="text" name="password_confirmation" value={formik.values.password_confirmation} onChange={formik.handleChange} placeholder="Confirm your password" maxLength="15" additionalClass={s.formInput} />
-        {formik.touched.password_confirmation && formik.errors.password_confirmation && (
-          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.password_confirmation}</p></div>
-        )}
+        {inputFields}
         <div className={s.btnContainer}>
           <Button type="submit" className={s.createBtn}>Create</Button>
         </div>
@@ -65,7 +64,7 @@ export default function SignInForm() {
           <p>
             Already have an account?
             {' '}
-            <Button href="/" className={s.signUpLink}>Sign In</Button>
+            <Button href="/signin" className={s.signUpLink}>Sign In</Button>
           </p>
         </div>
       </form>

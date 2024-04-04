@@ -1,6 +1,6 @@
 import { func } from 'prop-types';
 
-import s from './HomePage.module.scss';
+import s from './AuthPage.module.scss';
 import { yeseva } from '@/styles/fonts';
 
 export default function HomePage({ Form }) {
