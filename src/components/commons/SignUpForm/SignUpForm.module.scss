@@ -6,7 +6,7 @@
   top: 50%;
   transform: translateY(-50%);
   width: 600px;
-  height: 900px;
+  height: 920px;
   background-color: $standartWhite;
   border: 2px solid $standartBlack;
   border-radius: 50px;
@@ -22,13 +22,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  padding-top: 50px;
 }
 
 //  BUTTON
 
 .btnContainer {
-  padding-top: 50px;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,10 +56,20 @@
   border-radius: 10px;
 }
 
+.errorMessageContainer {
+  padding-top: 5px;
+  width: 500px;
+}
+
+.errorMessage {
+  color: $warmPink;
+  font-size: 18px;
+}
+
 // SIGN UP LINK
 
 .signUpLinkContainer {
-  margin-top: 30px;
+  padding-top: 30px;
 
   p {
     font-size: 20px;
@@ -78,11 +88,11 @@
 @include _1024 {
   .root {
     width: 500px;
-    height: 750px;
+    height: 830px;
   }
 
   .form {
-    margin-top: 20px;
+    padding-top: 20px;
   }
 
 // BUTTON
@@ -95,15 +105,17 @@
   .formInput {
     width: 350px;
   }
+
+  .errorMessageContainer {
+    width: 350px;
+  }
 }
 
 @include _780 {
   .root {
     width: 400px;
-    height: 680px;
+    height: 740px;
   }
-
-
 
   // INPUT
 
@@ -111,9 +123,13 @@
     width: 300px;
   }
 
-  // BUTTON 
+  .errorMessageContainer {
+    width: 300px;
+  }
 
-  .btnContainer {
+  // SIGN UP LINK
+
+  .signUpLinkContainer {
     padding-top: 30px;
   }
 }
@@ -121,11 +137,11 @@
 @include _500 {
   .root {
     width: 340px;
-    height: 580px;
+    height: 640px;
   }
 
   .form {
-    margin-top: 20px;
+    padding-top: 20px;
   }
 
   // INPUT
@@ -135,10 +151,20 @@
     height: 50px;
   }
 
+  .errorMessageContainer {
+    width: 250px;
+  }
+
   // BUTTON 
 
   .createBtn {
     width: 120px;
+  }
+
+ // SIGN UP LINK
+
+  .signUpLinkContainer {
+    padding-top: 20px;
   }
 }
 
@@ -147,7 +173,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 350px;
+    width: 320px;
+    height: 400px;
   }
 
   .imgContainer {
@@ -155,12 +182,16 @@
   }
 
   .form {
-    margin-top: 0px;
+    padding-top: 0px;
   }
 
   // INPUT
 
   .formInput {
+    font-size: 15px;
+  }
+
+  .errorMessage {
     font-size: 15px;
   }
 

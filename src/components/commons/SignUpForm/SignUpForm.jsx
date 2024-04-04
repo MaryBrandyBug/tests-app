@@ -47,8 +47,17 @@ export default function SignInForm() {
       </div>
       <form className={s.form} onSubmit={formik.handleSubmit}>
         <InputField type="text" name="username" value={formik.values.username} onChange={formik.handleChange} placeholder="Create your username" maxLength="15" additionalClass={s.formInput} />
+        {formik.touched.username && formik.errors.username && (
+          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.username}</p></div>
+        )}
         <InputField type="text" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Create your password" maxLength="15" additionalClass={s.formInput} />
+        {formik.touched.password && formik.errors.password && (
+          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.password}</p></div>
+        )}
         <InputField type="text" name="password_confirmation" value={formik.values.password_confirmation} onChange={formik.handleChange} placeholder="Confirm your password" maxLength="15" additionalClass={s.formInput} />
+        {formik.touched.password_confirmation && formik.errors.password_confirmation && (
+          <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors.password_confirmation}</p></div>
+        )}
         <div className={s.btnContainer}>
           <Button type="submit" className={s.createBtn}>Create</Button>
         </div>
