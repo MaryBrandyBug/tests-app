@@ -1,14 +1,13 @@
 import { func } from 'prop-types';
 
+import Logo from '@/components/commons/Logo';
+
 import s from './AuthPage.module.scss';
-import { yeseva } from '@/styles/fonts';
 
 export default function HomePage({ Form }) {
   return (
     <main className={s.root}>
-      <div className={s.header}>
-        <p className={`${s.logo} ${yeseva.className}`}>My tests</p>
-      </div>
+      <Logo additionalClass={s.logo} />
       <div className={s.container}>
         <Form />
       </div>

@@ -8,23 +8,31 @@
   width: 100%;
 }
 
-.container {
+.header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 90%;
+  height: 70px;
 }
 
 .logo {
-  display: flex;
-  flex-direction: row;
+  left: 40px;
   font-size: 60px;
   color: $standartBlack;
-  width: 90%;
 }
 
-@include _500 {
-  .logo {
-    font-size: 50px;
+.signInLink {
+  font-size: 40px;
+}
+
+@include _780 {
+  .header {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .signInLink {
+    font-size: 30px;
   }
 }

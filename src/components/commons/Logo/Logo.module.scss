@@ -1,0 +1,19 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.logo {
+  position: fixed;
+  top: 0px;
+  font-size: 60px;
+  color: $standartBlack;
+}

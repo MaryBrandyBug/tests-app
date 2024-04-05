@@ -1,4 +1,5 @@
 import { func, string } from 'prop-types';
+import cx from 'classnames';
 
 import s from './InputField.module.scss';
 
@@ -9,7 +10,7 @@ export default function InputField({
     <div className={s.root}>
       <div className={s.content}>
         <p className={s.inputName}>{inputFieldName}</p>
-        <input type={type} name={name} value={value} className={`${s.inputField}, ${additionalClass}`} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />
+        <input type={type} name={name} value={value} className={cx(additionalClass, [s.inputField])} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />
       </div>
     </div>
   );

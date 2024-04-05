@@ -1,5 +1,7 @@
+import MainPage from '../components/pages/MainPage';
+
 export default function Home() {
   return (
-    <div>hello</div>
+    <MainPage />
   );
 }
