@@ -36,3 +36,12 @@
     font-size: 30px;
   }
 }
+
+@include _360 {
+  .header {
+    p {
+    font-size: 40px;
+    }
+  }
+}
+

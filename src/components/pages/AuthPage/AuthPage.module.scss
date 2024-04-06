@@ -25,6 +25,14 @@
 
 @include _500 {
   .logo {
-    font-size: 50px;
+    flex-direction: column;
+  }
+}
+
+@include _360 {
+  .logo {
+    p {
+      font-size: 40px;
+    }
   }
 }
