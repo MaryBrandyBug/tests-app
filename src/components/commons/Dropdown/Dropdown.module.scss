@@ -1,0 +1,37 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  display: none;
+  min-width: 100%;
+  background-color: $darkTransparent;
+  box-shadow: 0px 8px 16px 0px $lightShadow;
+}
+
+.content:nth-child(3) {
+  border-radius: 0 0 20px 20px;
+}
+
+.listItem {
+  padding: 12px 16px;
+  width: 100%;
+}
+
+.listItem:hover {
+  background-color: $warmGray;
+}
+
+.root:hover {
+  .content {
+    display: block;
+  }
+}

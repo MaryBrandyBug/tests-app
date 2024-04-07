@@ -1,0 +1,70 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.testTitleInput {
+  padding: 20px;
+  width: 500px;
+  height: 68px;
+  font-size: 20px;
+  background-color: $warmWhite;
+  border: 3px solid $pastelLavender;
+  border-radius: 10px;
+}
+
+// DROPDOWN
+
+.dropdownContainer {
+  width: 200px;
+  text-align: center;
+  background-color: $warmPink;
+  border-radius: 20px;
+}
+
+.dropdownContainer:hover {
+  border-radius: 20px 20px 0 0;
+}
+
+.dropdownContent {
+  border: 2px solid $warmPink;
+  border-radius: 0 0 20px 20px;
+
+  p {
+    color: $standartWhite;
+  }
+
+  p:hover {
+    color: $standartBlack;
+    background-color: $warmGray;
+  }
+
+  p:nth-child(3) {
+    border-radius: 0 0 20px 20px;
+  }
+}
+
+.dropdownText {
+  padding: 20px;
+  font-size: 20px;
+}
+
+@include minWidth361 {
+  .testTitleInput:focus {
+    border: 3px solid $warmPink;
+    background-color: $warmGray;
+  }
+
+  .testTitleInput:hover {
+    background-color: $warmGray;
+  }
+}
