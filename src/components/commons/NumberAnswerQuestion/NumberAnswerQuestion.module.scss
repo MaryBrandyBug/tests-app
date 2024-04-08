@@ -2,10 +2,6 @@
 @import '@/styles/colors.scss';
 
 .root {
-
-}
-
-.form {
   padding: 60px 50px;
   display: flex;
   flex-direction: column;
@@ -16,11 +12,21 @@
   border-radius: 10px;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 50px;
+  width: 500px;
+  background-color: $standartWhite;
+  border-radius: 10px;
+}
+
 // INPUT
 
 .formInput {
   padding: 20px;
-  width: 300px;
+  width: 500px;
   height: 68px;
   font-size: 23px;
   background-color: $warmWhite;
