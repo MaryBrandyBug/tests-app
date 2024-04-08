@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
-import validationSchema from '@/utils/validation';
+import validationSchema from '@/utils/validation/signUpValidation';
 
 import Button from '../Button';
 import InputField from '../InputField';

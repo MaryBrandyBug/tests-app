@@ -2,13 +2,15 @@
 
 import { array, string } from 'prop-types';
 
+import Button from '../Button';
+
 import s from './Dropdown.module.scss';
 
 export default function Dropdown({
   text, contentList, additionalClassText, additionalClassContent, additionalClassRoot,
 }) {
   const content = contentList.map((item) => (
-    <p key={`${item.key}`} className={s.listItem}>{item.questionType}</p>
+    <Button key={`${item.key}`} className={s.listItem} onClick={item.onClick}>{item.questionType}</Button>
   ));
 
   return (

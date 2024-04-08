@@ -39,16 +39,16 @@
   border: 2px solid $warmPink;
   border-radius: 0 0 20px 20px;
 
-  p {
+  button {
     color: $standartWhite;
   }
 
-  p:hover {
+  button:hover {
     color: $standartBlack;
     background-color: $warmGray;
   }
 
-  p:nth-child(3) {
+  button:nth-child(3) {
     border-radius: 0 0 20px 20px;
   }
 }
@@ -56,6 +56,13 @@
 .dropdownText {
   padding: 20px;
   font-size: 20px;
+}
+
+// QUESTION MENU
+
+.questionsCreationArea {
+  padding-top: 200px;
+  display: flex;
 }
 
 @include minWidth361 {

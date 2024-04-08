@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
-import validationSchema from '@/utils/validation';
+import validationSchema from '@/utils/validation/signUpValidation';
 import data from './data';
 
 import Button from '../Button';
@@ -17,7 +17,7 @@ export default function SignInForm() {
   const dispatch = useDispatch();
 
   const onSubmit = async (values, actions) => {
-    const isValid = 'valid';
+    const isValid = validationSchema.isValid(values);
     if (isValid) {
       fetch('', {
         method: 'POST',
@@ -42,12 +42,19 @@ export default function SignInForm() {
   });
 
   const inputFields = data.map((item) => (
-    <>
-      <InputField type={item.type} name={item.name} value={formik.values[item.name]} onChange={formik.handleChange} placeholder={item.placeholder} maxLength={item.maxLength} additionalClass={s.formInput} />
-      {formik.touched[item.name] && formik.errors[item.name] && (
-      <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors[item.name]}</p></div>
+    <InputField
+      key={item.id}
+      type={item.type}
+      name={item.name}
+      value={formik.values[item.name]}
+      onChange={formik.handleChange}
+      placeholder={item.placeholder}
+      maxLength={item.maxLength}
+      additionalClass={s.formInput}
+      errorMessage={formik.touched[item.name] && formik.errors[item.name] && (
+      <p className={s.errorMessage}>{formik.errors[item.name]}</p>
       )}
-    </>
+    />
   ));
 
   return (
