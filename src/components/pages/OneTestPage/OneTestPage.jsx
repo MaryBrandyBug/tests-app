@@ -6,15 +6,23 @@ import { useState } from 'react';
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
 import NumberAnswerQuestion from '@/components/commons/NumberAnswerQuestion';
+import OneAnswerQuestion from '@/components/commons/OneAnswerQuestion';
 
 import s from './OnePageTest.module.scss';
 import { manjari } from '@/styles/fonts';
 
 export default function OneTestPage() {
   const [openNumberAnswerForm, setOpenNumberAnswerForm] = useState(false);
+  const [openOneAnswerForm, setOpenOneAnswerForm] = useState(false);
 
   const showNumberAnswerForm = () => {
     setOpenNumberAnswerForm(true);
+    setOpenOneAnswerForm(false);
+  };
+
+  const showOneAnswerForm = () => {
+    setOpenOneAnswerForm(true);
+    setOpenNumberAnswerForm(false);
   };
 
   const formik = useFormik({ initialValues: { title: '' } });
@@ -28,10 +36,11 @@ export default function OneTestPage() {
           </form>
         </div>
         <div className={s.dropdownMenu}>
-          <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1' }, { questionType: 'Multiple Answer', key: '2' }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
+          <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2' }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
         <div className={s.questionsCreationArea}>
           {openNumberAnswerForm && (<NumberAnswerQuestion />)}
+          {openOneAnswerForm && (<OneAnswerQuestion />)}
         </div>
       </div>
     </div>

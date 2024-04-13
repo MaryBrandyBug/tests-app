@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
+    "autosize": "^6.0.1",
     "classnames": "^2.5.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "formik": "^2.4.5",

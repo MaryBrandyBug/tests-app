@@ -19,10 +19,16 @@
   padding: 30px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 20px;
+  min-height: 300px;
   border-radius: 20px;
   background-color: $standartWhite;
+}
+
+.contentContainer {
+  width: 100%;
 }
 
 // HEADER

@@ -1,18 +1,27 @@
+'use client';
+
 import {
+  bool,
   func, node, number, oneOfType, string,
 } from 'prop-types';
+import { useEffect } from 'react';
 import cx from 'classnames';
+import autosize from 'autosize';
 
 import s from './InputField.module.scss';
 
 export default function InputField({
-  type, name, onChange, placeholder, inputFieldName, maxLength, value, additionalClass, errorMessage,
+  type, name, onChange, placeholder, inputFieldName, maxLength, value, additionalClass, errorMessage, textarea = false,
 }) {
+  useEffect(() => {
+    autosize(document.querySelectorAll('textarea'));
+  }, []);
+
   return (
     <div className={s.root}>
       <div className={s.content}>
         <p className={s.inputName}>{inputFieldName}</p>
-        <input type={type} name={name} value={value} className={cx(additionalClass, [s.inputField])} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />
+        { textarea ? <textarea type={type} name={name} value={value} className={cx(additionalClass, [s.textareaField])} maxLength={maxLength} onChange={onChange} /> : <input type={type} name={name} value={value} className={cx(additionalClass, [s.inputField])} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />}
         {errorMessage}
       </div>
     </div>
@@ -29,4 +38,5 @@ InputField.propTypes = {
   value: oneOfType([string, number]),
   additionalClass: string,
   errorMessage: node,
+  textarea: bool,
 };

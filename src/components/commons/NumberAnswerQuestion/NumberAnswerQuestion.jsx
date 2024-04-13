@@ -20,16 +20,13 @@ export default function NumberAnswerQuestion() {
     setOpenDeleteConfirmation(true);
   };
 
-  const saveConfirmation = () => {
-    setOpenSaveConfirmation(true);
-  };
-
   const closeModal = () => {
     if (openSaveConfirmation) setOpenSaveConfirmation(false);
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
   const onSubmit = async (values, actions) => {
+    setOpenSaveConfirmation(true);
     const isValid = validationSchema.isValid(values);
     if (isValid) {
       fetch('', {
@@ -44,31 +41,24 @@ export default function NumberAnswerQuestion() {
     actions.setSubmitting(false);
   };
 
-  const onClick = async (values) => {
-    console.log(values);
-    const isValid = validationSchema.isValid(values);
-    if (isValid) {
-      setOpenSaveConfirmation(true);
-    }
-  };
-
   const formik = useFormik({ initialValues: { title: '', answer: '', question_type: 'number' }, onSubmit, validationSchema });
 
   const inputFields = data.map((item) => (
-    <InputField
-      key={item.id}
-      type={item.type}
-      name={item.name}
-      value={formik.values[item.name]}
-      inputFieldName={item.text}
-      onChange={formik.handleChange}
-      placeholder={item.placeholder}
-      maxLength={item.maxLength}
-      additionalClass={s.formInput}
-      errorMessage={formik.touched[item.name] && formik.errors[item.name] ? (
-        <div className={s.errorMessageContainer}><p className={s.errorMessage}>{formik.errors[item.name]}</p></div>
-      ) : null}
-    />
+    <div key={item.id}>
+      <InputField
+        type={item.type}
+        name={item.name}
+        value={formik.values[item.name]}
+        inputFieldName={item.text}
+        onChange={formik.handleChange}
+        placeholder={item.placeholder}
+        maxLength={item.maxLength}
+        additionalClass={s.formInput}
+      />
+      {formik.touched[item.name] && formik.errors[item.name] && (
+      <div className={s.errorMessage}>{formik.errors[item.name]}</div>
+      )}
+    </div>
   ));
 
   return (
@@ -76,18 +66,18 @@ export default function NumberAnswerQuestion() {
       <form className={s.form} onSubmit={formik.handleSubmit}>
         { openSaveConfirmation && (
         <Modal header="Do you want to save your question?">
-          <div>
-            <Button type="submit">Yes</Button>
-            <Button onClick={closeModal}>No</Button>
+          <div className={s.confirmBtnContainer}>
+            <Button type="submit" className={s.confirmBtn}>Yes</Button>
+            <Button onClick={closeModal} className={s.notConfirmBtn}>No</Button>
           </div>
         </Modal>
         )}
         {inputFields}
+        <div className={s.btnContainer}>
+          <Button className={s.saveBtn} type="submit">Save</Button>
+          <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
+        </div>
       </form>
-      <div className={s.btnContainer}>
-        <Button className={s.saveBtn} onClick={onClick}>Save</Button>
-        <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
-      </div>
     </div>
   );
 }
