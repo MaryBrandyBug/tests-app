@@ -20,6 +20,12 @@
   gap: 50px;
 }
 
+.answersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
 // TEXTAREA FIELD
 
 .questionInput {
@@ -34,13 +40,35 @@
 
 // INPUT
 
+.answerBlock {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .answerInput {
   padding: 12px 20px;
-  width: 500px;
+  width: 400px;
   min-height: 23px;
   font-size: 23px;
   border-radius: 10px;
   border: 2px solid $standartBlack;
   word-wrap: break-word;
 }
+
+.checkboxStyles {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  
+  label:before {
+    border-color: $ashLavender;
+    box-shadow: 0 1px 2px $semiTransparentBlack, inset 0px -15px 10px -12px $semiTransparentBlack;
+  }
+
+  label:after {
+    border-color: $ashLavender;
+  }
+}
+
 

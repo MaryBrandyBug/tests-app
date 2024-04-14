@@ -1,0 +1,42 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.button {
+  display: none;
+  height: initial;
+  width: initial;
+  padding: 0;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.label {
+  position: relative;
+  cursor: pointer;
+}
+
+.label:before {
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  margin-right: 5px;
+  vertical-align: middle;
+  background-color: transparent;
+  border: 2px solid $standartBlack;
+  -webkit-appearance: none;
+  content:'';
+  cursor: pointer;
+}
+
+.button:checked + label:after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 1px;
+  display: block;
+  width: 6px;
+  height: 14px;
+  border: solid;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
