@@ -8,7 +8,7 @@ import data from './data';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
-import Button from '../Button';
+import ActionButtons from '../ActionButtons';
 
 import s from './NumberAnswerQuestion.module.scss';
 
@@ -68,10 +68,7 @@ export default function NumberAnswerQuestion() {
         <Confirmation header="Do you want to save your question?" onClick={closeModal} />
         )}
         {inputFields}
-        <div className={s.btnContainer}>
-          <Button className={s.saveBtn} type="submit">Save</Button>
-          <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
-        </div>
+        <ActionButtons deleteConfirmation={deleteConfirmation} />
       </form>
     </div>
   );

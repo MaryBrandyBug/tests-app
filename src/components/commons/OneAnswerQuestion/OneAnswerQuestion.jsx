@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react';
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 
 import InputField from '../InputField';
-import Button from '../Button';
 import CheckboxInput from '../CheckboxInput';
-import Confirmation from '../Confirmation';
+import TextAnswerCreationForm from '../TextAnswerCreationForm';
 
 import s from './OneAnswerQuestion.module.scss';
 
@@ -88,30 +87,18 @@ export default function OneAnswerQuestion() {
 
   return (
     <div className={s.root}>
-      <form className={s.form} onSubmit={formik.handleSubmit}>
-        { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onClick={closeModal} />
-        )}
-        <InputField
-          name="question.title"
-          value={formik.values.question.title}
-          onChange={formik.handleChange}
-          inputFieldName="Enter your question"
-          maxLength="100"
-          additionalClass={s.questionInput}
-          textarea
-        />
-        <div className={s.answersContainer}>
-          {inputs}
-        </div>
-        <div className={s.addFieldBtnContainer}>
-          <Button type="button" className={s.addFieldBtn} onClick={addField}>Add answer</Button>
-        </div>
-        <div className={s.btnContainer}>
-          <Button className={s.saveBtn} type="submit">Save</Button>
-          <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
-        </div>
-      </form>
+      <TextAnswerCreationForm
+        openSaveConfirmation={openSaveConfirmation}
+        closeModal={closeModal}
+        addField={addField}
+        deleteConfirmation={deleteConfirmation}
+        name="question.title"
+        value={formik.values.question.title}
+        onChange={formik.handleChange}
+        onSubmit={formik.handleSubmit}
+      >
+        {inputs}
+      </TextAnswerCreationForm>
     </div>
   );
 }
