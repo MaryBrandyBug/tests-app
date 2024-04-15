@@ -28,6 +28,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'max-len': 'off',
     'import/order': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
     camelcase: 'off',
   },
   settings: {

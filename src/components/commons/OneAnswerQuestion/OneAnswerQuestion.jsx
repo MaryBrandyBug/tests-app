@@ -1,118 +1,105 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 
 import InputField from '../InputField';
 import Button from '../Button';
 import CheckboxInput from '../CheckboxInput';
+import Modal from '../Modal';
 
 import s from './OneAnswerQuestion.module.scss';
 
 export default function OneAnswerQuestion() {
-  const [fields, setFields] = useState([
-    { answer: '', checked: false },
-    { answer: '', checked: false },
+  const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [answers, setAnswers] = useState([
+    { text: '', is_right: false },
+    { text: '', is_right: false },
   ]);
 
+  const deleteConfirmation = () => {
+    setOpenDeleteConfirmation(true);
+  };
+
+  const closeModal = () => {
+    if (openSaveConfirmation) setOpenSaveConfirmation(false);
+    if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
+  };
+
   const addField = () => {
-    setFields(fields.push({ answer: '', checked: false }));
-  };
-
-  const handleInputChange = (index, event) => {
-    const { name, value } = event.target;
-    const newFields = [...fields];
-    newFields[index][name] = value;
-    setFields(newFields);
-  };
-
-  const handleCheckboxChange = (index) => {
-    const newFields = [...fields];
-    newFields[index].checked = !newFields[index].checked;
-    setFields(newFields);
+    setAnswers((prevAnswers) => [...prevAnswers, { text: '', is_right: false }]);
   };
 
   const onSubmit = async (values, actions) => {
-    const isValid = validationSchema.isValid(values);
-    if (isValid) {
-      fetch('', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-    }
-
+    setOpenSaveConfirmation(true);
+    // const isValid = validationSchema.isValid(values);
+    // if (isValid) {
+    fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    });
+    // }
+    closeModal();
     actions.setSubmitting(false);
   };
 
-  // const formik = useFormik({ initialValues: { title: '', answers: [{ text: '', checkbox: false }, { text: '', checkbox: false }], question_type: 'number' }, onSubmit, validationSchema });
   const formik = useFormik({
     initialValues: {
-      title: '', answers: ['', ''], checkboxes: [false, false], question_type: 'number',
+      question:
+      { title: '', question_type: 'single' },
+      answers,
     },
     onSubmit,
-    validationSchema,
+    /* validationSchema, */
   });
 
-  console.log(formik.values);
+  useEffect(() => {
+    formik.setValues({
+      ...formik.values,
+      answers,
+    });
+  }, [answers]);
 
-  // const inputFields = Array.from({ length: numberOfInputs }, (_, index) => (
-  //   <div key={index}>
-  //     <CheckboxInput name={`checkboxes[${index}]`} checked={field.checked} onChange={() => handleCheckboxChange(index)} />
-  //     <InputField
-  //       key={index}
-  //       type="text"
-  //       name={`answers[${index}]`}
-  //       additionalClass={s.answerInput}
-  //       value={formik.values.answers[index] || ''}
-  //       onChange={formik.handleChange}
-  //       textarea
-  //     />
-  //   </div>
-  // ));
-
-  const inputs = fields.map((item, i) => (
-    <div key={i}>
-      <CheckboxInput name={`checkboxes[${i}]`} value={formik.values.answers[i].checkbox} checked={item.checked} onChange={formik.handleChange} />
-      <InputField
-        // key={i}
-        type="text"
-        name={`answers[${i}]`}
-        additionalClass={s.answerInput}
-        value={formik.values.answers[i].text || ''}
-        onChange={formik.handleChange}
-        textarea
-      />
-    </div>
-  ));
-
-  const a = formik.values.answers.map((field, index) => (
-    <div key={index}>
+  const inputs = formik.values.answers.map((item, i) => (
+    <div className={s.answerBlock} key={i}>
       <CheckboxInput
-        name={`checkbox[${index}]`}
-        value={field.checkbox}
+        name={`answers[${i}].is_right`}
+        id={`answers[${i}]`}
         onChange={formik.handleChange}
+        checked={formik.values.answers[i].is_right}
+        additionalClass={s.checkboxStyles}
       />
       <InputField
         type="text"
-        name={`answers[${index}].text`}
-        checked={field.checked}
+        name={`answers[${i}].text`}
+        value={formik.values.answers[i].text}
         onChange={formik.handleChange}
+        additionalClass={s.answerInput}
+        textarea
       />
     </div>
   ));
 
   return (
     <div className={s.root}>
-      <form className={s.form}>
+      <form className={s.form} onSubmit={formik.handleSubmit}>
+        { openSaveConfirmation && (
+        <Modal header="Do you want to save your question?">
+          <div className={s.confirmBtnContainer}>
+            <Button type="submit" className={s.confirmBtn}>Yes</Button>
+            <Button onClick={closeModal} className={s.notConfirmBtn}>No</Button>
+          </div>
+        </Modal>
+        )}
         <InputField
-          type="text"
-          name="title"
-          value={formik.values.title}
+          name="question.title"
+          value={formik.values.question.title}
           onChange={formik.handleChange}
           inputFieldName="Enter your question"
           maxLength="100"
@@ -120,44 +107,14 @@ export default function OneAnswerQuestion() {
           textarea
         />
         <div className={s.answersContainer}>
-          {/* {a} */}
-          <div className={s.answerBlock}>
-            <CheckboxInput
-              name={`checkboxes[${0}]`}
-              id={`checkboxes[${0}]`}
-              onChange={formik.handleChange}
-              checked={formik.values.checkboxes[0]}
-              additionalClass={s.checkboxStyles}
-            />
-            <InputField
-              type="text"
-              name={`answers[${0}]`}
-              value={formik.values.answers[0]}
-              onChange={formik.handleChange}
-              additionalClass={s.answerInput}
-              textarea
-            />
-          </div>
-          <div className={s.answerBlock}>
-            <CheckboxInput
-              name={`checkboxes[${1}]`}
-              id={`checkboxes[${1}]`}
-              onChange={formik.handleChange}
-              checked={formik.values.checkboxes[1]}
-              additionalClass={s.checkboxStyles}
-            />
-            <InputField
-              type="text"
-              name={`answers[${1}].text`}
-              value={formik.values.answers[1].text}
-              onChange={formik.handleChange}
-              additionalClass={s.answerInput}
-              textarea
-            />
-          </div>
+          {inputs}
         </div>
-        <div>
-          <Button type="button" onClick={addField}>Add answer</Button>
+        <div className={s.addFieldBtnContainer}>
+          <Button type="button" className={s.addFieldBtn} onClick={addField}>Add answer</Button>
+        </div>
+        <div className={s.btnContainer}>
+          <Button className={s.saveBtn} type="submit">Save</Button>
+          <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
         </div>
       </form>
     </div>
