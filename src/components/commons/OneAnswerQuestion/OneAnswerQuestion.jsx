@@ -8,7 +8,7 @@ import validationSchema from '@/utils/validation/OneAnswerValidation';
 import InputField from '../InputField';
 import Button from '../Button';
 import CheckboxInput from '../CheckboxInput';
-import Modal from '../Modal';
+import Confirmation from '../Confirmation';
 
 import s from './OneAnswerQuestion.module.scss';
 
@@ -90,12 +90,7 @@ export default function OneAnswerQuestion() {
     <div className={s.root}>
       <form className={s.form} onSubmit={formik.handleSubmit}>
         { openSaveConfirmation && (
-        <Modal header="Do you want to save your question?">
-          <div className={s.confirmBtnContainer}>
-            <Button type="submit" className={s.confirmBtn}>Yes</Button>
-            <Button onClick={closeModal} className={s.notConfirmBtn}>No</Button>
-          </div>
-        </Modal>
+        <Confirmation header="Do you want to save your question?" onClick={closeModal} />
         )}
         <InputField
           name="question.title"

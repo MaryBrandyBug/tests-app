@@ -79,17 +79,3 @@
   background: $warmPink;
   box-shadow: 0px 8px 16px 0px $lightShadow;
 }
-
-.confirmBtnContainer {
-  display: flex;
-  justify-content: space-around;
-  font-size: 25px;
-}
-
-@include minWidth361 {
-  .confirmBtn:hover:hover, .notConfirmBtn:hover {
-    text-decoration-line: underline;
-    text-underline-offset: 7px;
-    text-decoration-thickness: 2px;
-  }
-}
