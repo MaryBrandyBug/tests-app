@@ -32,7 +32,7 @@ export default function OneTestPage() {
   const showMultiAnswerForm = () => {
     setOpenMultiAnswerForm(true);
     setOpenNumberAnswerForm(false);
-    setOpenNumberAnswerForm(false);
+    setOpenOneAnswerForm(false);
   };
 
   const formik = useFormik({ initialValues: { title: '' } });

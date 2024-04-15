@@ -1,16 +1,22 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import InputField from '../InputField';
 import Confirmation from '../Confirmation';
+import Button from '../Button';
+import CheckboxInput from '../CheckboxInput';
 
 import s from './MultiAnswerQuestion.module.scss';
 
 export default function MultiAnswerQuestion() {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [answers, setAnswers] = useState([
+    { text: '', is_right: false },
+    { text: '', is_right: false },
+  ]);
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -19,6 +25,10 @@ export default function MultiAnswerQuestion() {
   const closeModal = () => {
     if (openSaveConfirmation) setOpenSaveConfirmation(false);
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
+  };
+
+  const addField = () => {
+    setAnswers((prevAnswers) => [...prevAnswers, { text: '', is_right: false }]);
   };
 
   const onSubmit = async (values, actions) => {
@@ -39,15 +49,42 @@ export default function MultiAnswerQuestion() {
     initialValues: {
       question:
       { title: '', question_type: 'multiple' },
-      // answers,
+      answers,
     },
     onSubmit,
     /* validationSchema, */
   });
 
+  useEffect(() => {
+    formik.setValues({
+      ...formik.values,
+      answers,
+    });
+  }, [answers]);
+
+  const inputs = formik.values.answers.map((item, i) => (
+    <div className={s.answerBlock} key={i}>
+      <CheckboxInput
+        name={`answers[${i}].is_right`}
+        id={`answers[${i}]`}
+        onChange={formik.handleChange}
+        checked={formik.values.answers[i].is_right}
+        additionalClass={s.checkboxStyles}
+      />
+      <InputField
+        type="text"
+        name={`answers[${i}].text`}
+        value={formik.values.answers[i].text}
+        onChange={formik.handleChange}
+        additionalClass={s.answerInput}
+        textarea
+      />
+    </div>
+  ));
+
   return (
     <div className={s.root}>
-      <form className={s.form} onSubmit={onSubmit}>
+      <form className={s.form} onSubmit={formik.handleSubmit}>
         { openSaveConfirmation && (
         <Confirmation header="Do you want to save your question?" onClick={closeModal} />
         )}
@@ -60,6 +97,16 @@ export default function MultiAnswerQuestion() {
           additionalClass={s.questionInput}
           textarea
         />
+        <div className={s.answersContainer}>
+          {inputs}
+        </div>
+        <div className={s.addFieldBtnContainer}>
+          <Button type="button" className={s.addFieldBtn} onClick={addField}>Add answer</Button>
+        </div>
+        <div className={s.btnContainer}>
+          <Button className={s.saveBtn} type="submit">Save</Button>
+          <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
+        </div>
       </form>
     </div>
   );

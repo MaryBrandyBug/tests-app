@@ -19,3 +19,91 @@
   flex-direction: column;
   gap: 50px;
 }
+
+.answersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+// TEXTAREA FIELD
+
+.questionInput {
+  padding: 12px 20px;
+  width: 500px;
+  min-height: 23px;
+  font-size: 23px;
+  border-radius: 10px;
+  border: 2px solid $standartBlack;
+  word-wrap: break-word;
+}
+
+// INPUT
+
+.answerBlock {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.answerInput {
+  padding: 12px 20px;
+  width: 400px;
+  min-height: 23px;
+  font-size: 23px;
+  border-radius: 10px;
+  border: 2px solid $standartBlack;
+  word-wrap: break-word;
+}
+
+.checkboxStyles {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  
+  label:before {
+    border-color: $ashLavender;
+    box-shadow: 0 1px 2px $semiTransparentBlack, inset 0px -15px 10px -12px $semiTransparentBlack;
+  }
+
+  label:after {
+    border-color: $ashLavender;
+  }
+}
+
+// BUTTONS 
+
+.addFieldBtn {
+  font-size: 20px;
+}
+
+.addFieldBtn:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 7px;
+  text-decoration-thickness: 1px;
+}
+
+.btnContainer {
+  padding-top: 40px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+  button {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 20px;
+    border: 2px solid $standartBlack;
+  }
+}
+
+.saveBtn {
+  background: $pastelLavender;
+  box-shadow: 0px 8px 16px 0px $lightShadow;
+}
+
+.deleteBtn {
+  background: $warmPink;
+  box-shadow: 0px 8px 16px 0px $lightShadow;
+}
