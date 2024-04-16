@@ -1,18 +1,19 @@
 'use client';
 
 import {
-  any, bool, func, string,
+  any, bool, func, object, string,
 } from 'prop-types';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
 import Button from '../Button';
 import ActionButtons from '../ActionButtons';
+import ErrorMessage from '../ErrorMessage';
 
 import s from './TextAnswerCreationForm.module.scss';
 
 export default function TextAnswerCreationForm({
-  openSaveConfirmation, closeModal, addField, deleteConfirmation, children, name, value, onChange, onSubmit,
+  openSaveConfirmation, closeModal, addField, deleteConfirmation, children, name, value, onChange, onSubmit, formik,
 }) {
   return (
     <form className={s.root} onSubmit={onSubmit}>
@@ -27,7 +28,9 @@ export default function TextAnswerCreationForm({
         maxLength="100"
         additionalClass={s.questionInput}
         textarea
-      />
+      >
+        <ErrorMessage name={name} formik={formik} />
+      </InputField>
       <div className={s.answersContainer}>
         {children}
       </div>
@@ -49,4 +52,5 @@ TextAnswerCreationForm.propTypes = {
   value: string,
   onChange: func,
   onSubmit: func,
+  formik: object,
 };

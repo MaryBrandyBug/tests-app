@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 
@@ -28,42 +28,37 @@ export default function OneAnswerQuestion() {
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
-  const addField = () => {
-    setAnswers((prevAnswers) => [...prevAnswers, { text: '', is_right: false }]);
-  };
-
   const onSubmit = async (values, actions) => {
     setOpenSaveConfirmation(true);
-    // const isValid = validationSchema.isValid(values);
-    // if (isValid) {
-    fetch('', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
-    // }
+    const isValid = validationSchema.isValid(values);
+    if (isValid) {
+      fetch('', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+    }
     closeModal();
     actions.setSubmitting(false);
   };
 
   const formik = useFormik({
     initialValues: {
-      question:
-      { title: '', question_type: 'single' },
+      title: '',
+      question_type: 'single',
       answers,
     },
     onSubmit,
-    /* validationSchema, */
+    validationSchema,
   });
 
-  useEffect(() => {
-    formik.setValues({
-      ...formik.values,
-      answers,
-    });
-  }, [answers]);
+  const addField = () => {
+    const newAnswers = [...answers, { text: '', is_right: false }];
+    setAnswers(newAnswers);
+    formik.setFieldValue('answers', newAnswers);
+  };
 
   const inputs = formik.values.answers.map((item, i) => (
     <div className={s.answerBlock} key={i}>
@@ -92,10 +87,11 @@ export default function OneAnswerQuestion() {
         closeModal={closeModal}
         addField={addField}
         deleteConfirmation={deleteConfirmation}
-        name="question.title"
-        value={formik.values.question.title}
+        name="title"
+        value={formik.values.title}
         onChange={formik.handleChange}
         onSubmit={formik.handleSubmit}
+        formik={formik}
       >
         {inputs}
       </TextAnswerCreationForm>

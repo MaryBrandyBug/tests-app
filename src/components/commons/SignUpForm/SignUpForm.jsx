@@ -9,6 +9,7 @@ import data from './data';
 
 import Button from '../Button';
 import InputField from '../InputField';
+import ErrorMessage from '../ErrorMessage';
 
 import s from './SignUpForm.module.scss';
 import { manjari } from '@/styles/fonts';
@@ -51,10 +52,9 @@ export default function SignInForm() {
       placeholder={item.placeholder}
       maxLength={item.maxLength}
       additionalClass={s.formInput}
-      errorMessage={formik.touched[item.name] && formik.errors[item.name] && (
-      <p className={s.errorMessage}>{formik.errors[item.name]}</p>
-      )}
-    />
+    >
+      <ErrorMessage name={item.name} formik={formik} />
+    </InputField>
   ));
 
   return (

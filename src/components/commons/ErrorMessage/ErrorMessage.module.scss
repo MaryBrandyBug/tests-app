@@ -1,0 +1,8 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  padding-top: 10px;
+  color: $warmPink;
+  font-size: 18px;
+}

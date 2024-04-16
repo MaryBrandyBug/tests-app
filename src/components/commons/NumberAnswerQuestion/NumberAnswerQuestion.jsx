@@ -9,6 +9,7 @@ import data from './data';
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
 import ActionButtons from '../ActionButtons';
+import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
@@ -54,10 +55,9 @@ export default function NumberAnswerQuestion() {
         placeholder={item.placeholder}
         maxLength={item.maxLength}
         additionalClass={s.formInput}
-      />
-      {formik.touched[item.name] && formik.errors[item.name] && (
-      <div className={s.errorMessage}>{formik.errors[item.name]}</div>
-      )}
+      >
+        <ErrorMessage name={item.name} formik={formik} />
+      </InputField>
     </div>
   ));
 

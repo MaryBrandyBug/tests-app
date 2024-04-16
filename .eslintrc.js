@@ -29,6 +29,7 @@ module.exports = {
     'max-len': 'off',
     'import/order': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'react/prop-types': 'off',
     camelcase: 'off',
   },
   settings: {

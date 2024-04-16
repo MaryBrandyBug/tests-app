@@ -26,10 +26,6 @@ export default function MultiAnswerQuestion() {
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
-  const addField = () => {
-    setAnswers((prevAnswers) => [...prevAnswers, { text: '', is_right: false }]);
-  };
-
   const onSubmit = async (values, actions) => {
     setOpenSaveConfirmation(true);
     fetch('', {
@@ -46,20 +42,19 @@ export default function MultiAnswerQuestion() {
 
   const formik = useFormik({
     initialValues: {
-      question:
-      { title: '', question_type: 'multiple' },
+      title: '',
+      question_type: 'multiple',
       answers,
     },
     onSubmit,
     /* validationSchema, */
   });
 
-  useEffect(() => {
-    formik.setValues({
-      ...formik.values,
-      answers,
-    });
-  }, [answers]);
+  const addField = () => {
+    const newAnswers = [...answers, { text: '', is_right: false }];
+    setAnswers(newAnswers);
+    formik.setFieldValue('answers', newAnswers);
+  };
 
   const inputs = formik.values.answers.map((item, i) => (
     <div className={s.answerBlock} key={i}>
@@ -88,8 +83,8 @@ export default function MultiAnswerQuestion() {
         closeModal={closeModal}
         addField={addField}
         deleteConfirmation={deleteConfirmation}
-        name="question.title"
-        value={formik.values.question.title}
+        name="title"
+        value={formik.values.title}
         onChange={formik.handleChange}
         onSubmit={formik.handleSubmit}
       >
