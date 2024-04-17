@@ -56,7 +56,7 @@ export default function NumberAnswerQuestion() {
         maxLength={item.maxLength}
         additionalClass={s.formInput}
       >
-        <ErrorMessage name={item.name} formik={formik} />
+        {formik.errors[item.name] && <ErrorMessage valueKey={item.name} formik={formik} />}
       </InputField>
     </div>
   ));
