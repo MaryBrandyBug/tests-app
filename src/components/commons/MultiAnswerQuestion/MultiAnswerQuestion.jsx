@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -12,10 +12,6 @@ import s from './MultiAnswerQuestion.module.scss';
 export default function MultiAnswerQuestion() {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-  const [answers, setAnswers] = useState([
-    { text: '', is_right: false },
-    { text: '', is_right: false },
-  ]);
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -44,16 +40,18 @@ export default function MultiAnswerQuestion() {
     initialValues: {
       title: '',
       question_type: 'multiple',
-      answers,
+      answers: [
+        { text: '', is_right: false },
+        { text: '', is_right: false },
+      ],
     },
     onSubmit,
     /* validationSchema, */
   });
 
   const addField = () => {
-    const newAnswers = [...answers, { text: '', is_right: false }];
-    setAnswers(newAnswers);
-    formik.setFieldValue('answers', newAnswers);
+    const { answers } = formik.values;
+    formik.setFieldValue('answers', [...answers, { text: '', is_right: false }]);
   };
 
   const inputs = formik.values.answers.map((item, i) => (

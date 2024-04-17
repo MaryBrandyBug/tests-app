@@ -8,16 +8,13 @@ import validationSchema from '@/utils/validation/OneAnswerValidation';
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
 import TextAnswerCreationForm from '../TextAnswerCreationForm';
+import ErrorMessage from '../ErrorMessage';
 
 import s from './OneAnswerQuestion.module.scss';
 
 export default function OneAnswerQuestion() {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-  const [answers, setAnswers] = useState([
-    { text: '', is_right: false },
-    { text: '', is_right: false },
-  ]);
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -48,16 +45,18 @@ export default function OneAnswerQuestion() {
     initialValues: {
       title: '',
       question_type: 'single',
-      answers,
+      answers: [
+        { text: '', is_right: false },
+        { text: '', is_right: false },
+      ],
     },
     onSubmit,
     validationSchema,
   });
 
   const addField = () => {
-    const newAnswers = [...answers, { text: '', is_right: false }];
-    setAnswers(newAnswers);
-    formik.setFieldValue('answers', newAnswers);
+    const { answers } = formik.values;
+    formik.setFieldValue('answers', [...answers, { text: '', is_right: false }]);
   };
 
   const inputs = formik.values.answers.map((item, i) => (
@@ -76,7 +75,10 @@ export default function OneAnswerQuestion() {
         onChange={formik.handleChange}
         additionalClass={s.answerInput}
         textarea
-      />
+      >
+        {formik.errors.answers && formik.errors.answers[i]
+        && <ErrorMessage name="text" valueKey="answers" index={i} formik={formik} />}
+      </InputField>
     </div>
   ));
 

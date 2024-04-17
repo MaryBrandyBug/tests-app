@@ -29,7 +29,7 @@ export default function TextAnswerCreationForm({
         additionalClass={s.questionInput}
         textarea
       >
-        <ErrorMessage name={name} formik={formik} />
+        {formik.errors[name] && <ErrorMessage valueKey={name} formik={formik} />}
       </InputField>
       <div className={s.answersContainer}>
         {children}
