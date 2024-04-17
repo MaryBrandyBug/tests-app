@@ -56,15 +56,6 @@
   border-radius: 10px;
 }
 
-.errorMessageContainer {
-  width: 500px;
-}
-
-.errorMessage {
-  color: $warmPink;
-  font-size: 18px;
-}
-
 // SIGN UP LINK
 
 .signUpLinkContainer {
@@ -150,10 +141,6 @@
     height: 50px;
   }
 
-  .errorMessageContainer {
-    width: 250px;
-  }
-
   // BUTTON 
 
   .createBtn {
@@ -187,10 +174,6 @@
   // INPUT
 
   .formInput {
-    font-size: 15px;
-  }
-
-  .errorMessage {
     font-size: 15px;
   }
 
