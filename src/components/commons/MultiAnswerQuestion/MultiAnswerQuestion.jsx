@@ -3,9 +3,12 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
+import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
+
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
 import TextAnswerCreationForm from '../TextAnswerCreationForm';
+import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
 
@@ -46,7 +49,7 @@ export default function MultiAnswerQuestion() {
       ],
     },
     onSubmit,
-    /* validationSchema, */
+    validationSchema,
   });
 
   const addField = () => {
@@ -70,7 +73,10 @@ export default function MultiAnswerQuestion() {
         onChange={formik.handleChange}
         additionalClass={s.answerInput}
         textarea
-      />
+      >
+        {formik.errors.answers && formik.errors.answers[i]
+        && <ErrorMessage name="text" valueKey="answers" index={i} formik={formik} />}
+      </InputField>
     </div>
   ));
 
@@ -85,8 +91,10 @@ export default function MultiAnswerQuestion() {
         value={formik.values.title}
         onChange={formik.handleChange}
         onSubmit={formik.handleSubmit}
+        formik={formik}
       >
         {inputs}
+        {typeof formik.errors.answers === 'string' && <ErrorMessage valueKey="answers" formik={formik} />}
       </TextAnswerCreationForm>
     </div>
   );

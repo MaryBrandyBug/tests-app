@@ -6,9 +6,9 @@ export default yup.object().shape({
     .matches(/\S/, "The string can't contain only whitespaces")
     .required('Required to be filled'),
   answers: yup.array()
-    .test('only-one-correct-answer', 'Only one answer can be correct!', (answers) => {
+    .test('at-least-two-correct-answers', 'At least two answers must be correct!', (answers) => {
       const correctAnswers = answers.filter((answer) => answer.is_right);
-      return correctAnswers.length <= 1;
+      return correctAnswers.length >= 2;
     })
     .of(
       yup.object().shape({
@@ -17,9 +17,5 @@ export default yup.object().shape({
           .required('Answer text is required'),
         is_right: yup.bool(),
       }),
-    )
-    .test('one-correct-answer', 'Please, mark correct answer!', (answers) => {
-      const correctAnswers = answers.filter((answer) => answer.is_right || !answer.text);
-      return correctAnswers.length > 0;
-    }),
+    ),
 });
