@@ -96,6 +96,7 @@ export default function OneAnswerQuestion() {
         formik={formik}
       >
         {inputs}
+        {typeof formik.errors.answers === 'string' && <ErrorMessage valueKey="answers" formik={formik} />}
       </TextAnswerCreationForm>
     </div>
   );
