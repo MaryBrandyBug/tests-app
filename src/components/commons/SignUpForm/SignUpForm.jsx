@@ -20,15 +20,16 @@ export default function SignInForm() {
   const onSubmit = async (values, actions) => {
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch('', {
+      fetch('https://interns-test-fe.snp.agency/api/v1/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
         },
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((res) => dispatch(res));
+        .then((res) => console.log(res));
     }
 
     actions.setSubmitting(false);

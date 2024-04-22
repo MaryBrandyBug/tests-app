@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import Image from 'next/image';
 
-import validationSchema from '@/utils/validation/signUpValidation';
+// import validationSchema from '@/utils/validation/signUpValidation';
 
 import Button from '../Button';
 import InputField from '../InputField';
@@ -18,21 +18,23 @@ export default function SignInForm() {
   const onSubmit = async (values, actions) => {
     const isValid = 'valid';
     if (isValid) {
-      fetch('', {
+      fetch('https://interns-test-fe.snp.agency/api/v1/signin', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
         },
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((res) => dispatch(res));
+        .then((res) => console.log(res, 0));
     }
 
     actions.setSubmitting(false);
   };
 
-  const formik = useFormik({ initialValues: { username: '', password: '' }, onSubmit, validationSchema });
+  const formik = useFormik({ initialValues: { username: '', password: '' }, onSubmit/* , validationSchema */ });
 
   return (
     <div className={`${s.root} ${manjari.className}`}>
