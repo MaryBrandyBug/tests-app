@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compiler: {
-    // Enables the styled-components SWC transform
     styledComponents: true,
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://interns-test-fe.snp.agency/api/v1/:path*',
+      },
+    ];
   },
 };
 

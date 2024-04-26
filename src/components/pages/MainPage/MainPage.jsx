@@ -1,6 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getUser, deleteUser } from '@/redux/store/slicer/userSlicer';
 
 import Button from '@/components/commons/Button';
 import Logo from '@/components/commons/Logo';
@@ -9,7 +12,8 @@ import s from './MainPage.module.scss';
 import { yeseva } from '@/styles/fonts';
 
 export default function MainPage() {
-  const [user, setUser] = useState();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     fetch('https://interns-test-fe.snp.agency/api/v1/users/current', {
@@ -21,7 +25,7 @@ export default function MainPage() {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res, 0));
+      .then((data) => data.id && dispatch(getUser(data)));
   }, []);
 
   const handleLogout = async () => {
@@ -34,19 +38,23 @@ export default function MainPage() {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res, 0));
+      .then(() => dispatch(deleteUser()));
   };
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <Logo />
-        <div className={s.logoutLinkContainer}>
-          <Button onClick={handleLogout} className={`${s.signInLink} ${yeseva.className}`}>Log out</Button>
-        </div>
-        <div className={s.authLinkContainer}>
-          <Button href="/signin" className={`${s.signInLink} ${yeseva.className}`}>Sign In</Button>
-        </div>
+        { user.id ? (
+          <div className={s.logoutLinkContainer}>
+            <Button onClick={handleLogout} className={`${s.signInLink} ${yeseva.className}`}>Log out</Button>
+          </div>
+        )
+          : (
+            <div className={s.authLinkContainer}>
+              <Button href="/signin" className={`${s.signInLink} ${yeseva.className}`}>Sign In</Button>
+            </div>
+          )}
       </div>
     </div>
   );

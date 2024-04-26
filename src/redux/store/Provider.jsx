@@ -14,5 +14,5 @@ export default function ReduxProvider({ children }) {
 }
 
 ReduxProvider.propTypes = {
-  children: node.isRequired,
+  children: node,
 };

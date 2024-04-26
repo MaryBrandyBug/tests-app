@@ -1,11 +1,15 @@
 import { node } from 'prop-types';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import ReduxProvider from '../redux/store/Provider';
+import { persistor } from '../redux/store/store';
 
 export default function RootLayout({ children }) {
   return (
     <ReduxProvider>
-      { children }
+      <PersistGate loading={null} persistor={persistor}>
+        { children }
+      </PersistGate>
     </ReduxProvider>
   );
 }

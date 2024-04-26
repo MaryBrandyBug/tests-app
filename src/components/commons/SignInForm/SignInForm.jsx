@@ -1,10 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import validationSchema from '@/utils/validation/signUpValidation';
+import { getUser } from '@/redux/store/slicer/userSlicer';
 
 import Button from '../Button';
 import InputField from '../InputField';
@@ -13,6 +16,7 @@ import s from './SignInForm.module.scss';
 import { manjari } from '@/styles/fonts';
 
 export default function SignInForm() {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const onSubmit = async (values, actions) => {
@@ -28,7 +32,8 @@ export default function SignInForm() {
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res, 0));
+        .then((res) => dispatch(getUser(res)))
+        .then(() => router.push('/'));
     }
 
     actions.setSubmitting(false);
