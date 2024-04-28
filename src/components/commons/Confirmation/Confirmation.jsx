@@ -7,11 +7,11 @@ import Modal from '../Modal';
 
 import s from './Confirmation.module.scss';
 
-export default function Confirmation({ header, onClick }) {
+export default function Confirmation({ header, onClick, onSubmit }) {
   return (
     <Modal header={header}>
       <div className={s.confirmBtnContainer}>
-        <Button type="submit" className={s.confirmBtn}>Yes</Button>
+        <Button type="button" onClick={onSubmit} className={s.confirmBtn}>Yes</Button>
         <Button onClick={onClick} className={s.notConfirmBtn}>No</Button>
       </div>
     </Modal>
@@ -21,4 +21,5 @@ export default function Confirmation({ header, onClick }) {
 Confirmation.propTypes = {
   header: string,
   onClick: func,
+  onSubmit: func,
 };

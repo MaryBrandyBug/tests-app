@@ -1,19 +1,31 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getUser, deleteUser } from '@/redux/store/slicer/userSlicer';
 
 import Button from '@/components/commons/Button';
 import Logo from '@/components/commons/Logo';
+import Modal from '@/components/commons/Modal';
+import AddTestForm from '@/components/commons/AddTestForm';
 
 import s from './MainPage.module.scss';
 import { yeseva } from '@/styles/fonts';
 
 export default function MainPage() {
+  const [openTestAdding, setTestAdding] = useState(false);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+
+  const testAdding = () => {
+    setTestAdding(true);
+  };
+
+  const closeModal = () => {
+    if (openTestAdding) setTestAdding(false);
+  };
 
   useEffect(() => {
     fetch('https://interns-test-fe.snp.agency/api/v1/users/current', {
@@ -56,6 +68,16 @@ export default function MainPage() {
             </div>
           )}
       </div>
+      {openTestAdding && (
+        <Modal header="New test" cancelation onClick={closeModal}>
+          <AddTestForm />
+        </Modal>
+      )}
+      {user.is_admin && (
+        <div className={s.addTestLinkContainer}>
+          <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
+        </div>
+      )}
     </div>
   );
 }

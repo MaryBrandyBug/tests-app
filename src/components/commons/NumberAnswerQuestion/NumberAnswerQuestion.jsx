@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import data from './data';
@@ -14,6 +15,10 @@ import ErrorMessage from '../ErrorMessage';
 import s from './NumberAnswerQuestion.module.scss';
 
 export default function NumberAnswerQuestion() {
+  const router = useRouter();
+
+  const { id } = router.query;
+
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
@@ -27,22 +32,32 @@ export default function NumberAnswerQuestion() {
   };
 
   const onSubmit = async (values, actions) => {
-    setOpenSaveConfirmation(true);
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch('', {
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${id}/questions`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
         },
         body: JSON.stringify(values),
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => console.log(res));
     }
     closeModal();
     actions.setSubmitting(false);
   };
 
   const formik = useFormik({ initialValues: { title: '', answer: '', question_type: 'number' }, onSubmit, validationSchema });
+
+  const saveConfirmation = async () => {
+    const isValid = await validationSchema.isValid(formik.values);
+    if (isValid) {
+      setOpenSaveConfirmation(true);
+    }
+  };
 
   const inputFields = data.map((item) => (
     <div key={item.id}>
@@ -63,12 +78,12 @@ export default function NumberAnswerQuestion() {
 
   return (
     <div className={s.root}>
-      <form className={s.form} onSubmit={formik.handleSubmit}>
+      <form className={s.form}>
         { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onClick={closeModal} />
+        <Confirmation header="Do you want to save your question?" onSubmit={formik.handleSubmit} onClick={closeModal} />
         )}
         {inputFields}
-        <ActionButtons deleteConfirmation={deleteConfirmation} />
+        <ActionButtons deleteConfirmation={deleteConfirmation} saveConfirmation={saveConfirmation} typeSave="button" />
       </form>
     </div>
   );
