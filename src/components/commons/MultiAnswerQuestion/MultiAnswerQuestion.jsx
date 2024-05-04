@@ -2,6 +2,7 @@
 
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { func, string } from 'prop-types';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
 
@@ -12,7 +13,7 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
 
-export default function MultiAnswerQuestion() {
+export default function MultiAnswerQuestion({ id, closeForm }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
@@ -36,6 +37,7 @@ export default function MultiAnswerQuestion() {
     });
 
     closeModal();
+    closeForm();
     actions.setSubmitting(false);
   };
 
@@ -99,3 +101,8 @@ export default function MultiAnswerQuestion() {
     </div>
   );
 }
+
+MultiAnswerQuestion.propTypes = {
+  id: string,
+  closeForm: func,
+};

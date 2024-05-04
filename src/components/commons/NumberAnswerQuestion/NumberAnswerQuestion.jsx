@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { func, string } from 'prop-types';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import data from './data';
+import { addQuestion } from '@/redux/store/slicer/testSlicer';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
@@ -14,10 +16,8 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
-export default function NumberAnswerQuestion() {
-  const router = useRouter();
-
-  const { id } = router.query;
+export default function NumberAnswerQuestion({ id, closeForm }) {
+  const dispatch = useDispatch();
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
@@ -34,7 +34,7 @@ export default function NumberAnswerQuestion() {
   const onSubmit = async (values, actions) => {
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${id}/questions`, {
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -44,9 +44,11 @@ export default function NumberAnswerQuestion() {
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res));
+        .then((res) => dispatch(addQuestion(res)));
     }
+
     closeModal();
+    closeForm();
     actions.setSubmitting(false);
   };
 
@@ -88,3 +90,8 @@ export default function NumberAnswerQuestion() {
     </div>
   );
 }
+
+NumberAnswerQuestion.propTypes = {
+  id: string,
+  closeForm: func,
+};

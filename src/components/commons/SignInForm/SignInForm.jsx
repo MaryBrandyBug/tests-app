@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';

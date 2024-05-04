@@ -2,6 +2,7 @@
 
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { func, string } from 'prop-types';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 
@@ -12,7 +13,7 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './OneAnswerQuestion.module.scss';
 
-export default function OneAnswerQuestion() {
+export default function OneAnswerQuestion({ id, closeForm }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
@@ -37,7 +38,9 @@ export default function OneAnswerQuestion() {
         body: JSON.stringify(values),
       });
     }
+
     closeModal();
+    closeForm();
     actions.setSubmitting(false);
   };
 
@@ -101,3 +104,8 @@ export default function OneAnswerQuestion() {
     </div>
   );
 }
+
+OneAnswerQuestion.propTypes = {
+  id: string,
+  closeForm: func,
+};
