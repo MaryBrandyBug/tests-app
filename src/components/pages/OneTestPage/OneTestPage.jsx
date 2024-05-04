@@ -1,8 +1,8 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { deleteQuestion } from '@/redux/store/slicer/testSlicer';
@@ -26,9 +26,9 @@ export default function OneTestPage() {
   const [itemToDeleteId, setItemToDeleteId] = useState(null);
 
   const dispatch = useDispatch();
+  const testTitle = useSelector((store) => store.test.title);
 
   const router = useRouter();
-
   const { id } = router.query;
 
   const openConfirmation = (itemId) => {
@@ -66,6 +66,12 @@ export default function OneTestPage() {
 
   const formik = useFormik({ initialValues: { title: '' } });
 
+  useEffect(() => {
+    if (testTitle) {
+      formik.setFieldValue('title', testTitle);
+    }
+  }, [testTitle]);
+
   const removeQuestion = async () => {
     fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${itemToDeleteId}`, {
       method: 'DELETE',
@@ -87,7 +93,7 @@ export default function OneTestPage() {
       <div className={`${s.content} ${manjari.className}`}>
         <SideMenu id={id || null} openConfirmation={openConfirmation} />
         <div className={s.titleFormContainer}>
-          <form className={s.titleForm}>
+          <form className={s.titleForm} onSubmit={formik.handleSubmit}>
             <InputField type="text" name="title" value={formik.values.title} onChange={formik.handleChange} placeholder="Name your test" maxLength="50" additionalClass={s.testTitleInput} />
           </form>
         </div>
