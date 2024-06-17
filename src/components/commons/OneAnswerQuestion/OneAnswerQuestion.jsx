@@ -3,8 +3,10 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { func, string } from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
+import { addQuestion } from '@/redux/store/slicer/testSlicer';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -16,6 +18,8 @@ import s from './OneAnswerQuestion.module.scss';
 export default function OneAnswerQuestion({ id, closeForm }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+
+  const dispatch = useDispatch();
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -30,13 +34,17 @@ export default function OneAnswerQuestion({ id, closeForm }) {
     setOpenSaveConfirmation(true);
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch('', {
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
         },
         body: JSON.stringify(values),
-      });
+      })
+        .then((res) => res.json())
+        .then((res) => dispatch(addQuestion(res)));
     }
 
     closeModal();
