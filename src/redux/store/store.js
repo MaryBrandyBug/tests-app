@@ -12,6 +12,7 @@ import storage from 'redux-persist/lib/storage';
 
 import userReducer from './slicer/userSlicer';
 import testSlicer from './slicer/testSlicer';
+import librarySlicer from './slicer/librarySlicer';
 
 const persistConfig = {
   key: 'root',
@@ -19,7 +20,7 @@ const persistConfig = {
   whitelist: ['user'],
 };
 
-const rootReducer = combineReducers({ user: userReducer, test: testSlicer });
+const rootReducer = combineReducers({ user: userReducer, test: testSlicer, library: librarySlicer });
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getUser, deleteUser } from '@/redux/store/slicer/userSlicer';
-import { getTest } from '@/redux/store/slicer/testSlicer';
+import { getAllTests } from '@/redux/store/slicer/librarySlicer';
 
 import Button from '@/components/commons/Button';
 import Logo from '@/components/commons/Logo';
@@ -20,7 +20,7 @@ export default function MainPage() {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const tests = useSelector((state) => state.test);
+  const tests = useSelector((state) => state.library);
 
   const testAdding = () => {
     setTestAdding(true);
@@ -51,7 +51,7 @@ export default function MainPage() {
       },
     })
       .then((res) => res.json())
-      .then((data) => dispatch(getTest(data.tests)));
+      .then((data) => dispatch(getAllTests(data.tests)));
   }, []);
 
   const handleLogout = async () => {
@@ -92,7 +92,7 @@ export default function MainPage() {
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      <TestLibrary tests={tests} is_admin={user.is_admin} />
+      {tests.length > 0 && <TestLibrary tests={tests} is_admin={user.is_admin} />}
     </div>
   );
 }
