@@ -1,0 +1,14 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  width: 90vw;
+  min-height: 700px;
+  border-radius: 20px;
+  background-color: lightTransparent(0.15);
+}
+
+.content {
+  padding: 100px;
+}
+

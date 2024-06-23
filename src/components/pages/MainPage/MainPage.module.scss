@@ -27,17 +27,6 @@
   font-size: 40px;
 }
 
-.content {
-  width: 90vw;
-  min-height: 700px;
-  border-radius: 20px;
-  background-color: lightTransparent(0.15);
-}
-
-.container {
-  padding: 100px;
-}
-
 @include _780 {
   .header {
     flex-direction: column;

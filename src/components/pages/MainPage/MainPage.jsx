@@ -10,7 +10,7 @@ import Button from '@/components/commons/Button';
 import Logo from '@/components/commons/Logo';
 import Modal from '@/components/commons/Modal';
 import AddTestForm from '@/components/commons/AddTestForm';
-import TestCard from '@/components/commons/TestCard';
+import TestLibrary from '@/components/commons/TestLibrary';
 
 import s from './MainPage.module.scss';
 import { yeseva } from '@/styles/fonts';
@@ -67,8 +67,6 @@ export default function MainPage() {
       .then(() => dispatch(deleteUser()));
   };
 
-  const testLibrary = tests.length && tests.map((test, i) => <TestCard key={i} title={test.title} is_admin={user.is_admin} questionNumber={test.questions.length} id={test.id} />);
-
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -94,11 +92,7 @@ export default function MainPage() {
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      <div className={s.content}>
-        <div className={s.container}>
-          {testLibrary}
-        </div>
-      </div>
+      <TestLibrary tests={tests} is_admin={user.is_admin} />
     </div>
   );
 }
