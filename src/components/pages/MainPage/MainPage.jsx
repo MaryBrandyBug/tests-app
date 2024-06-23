@@ -67,7 +67,7 @@ export default function MainPage() {
       .then(() => dispatch(deleteUser()));
   };
 
-  const testLibrary = tests.map((test, i) => <TestCard key={i} title={test.title} is_admin={user.is_admin} questionNumber={test.questions.length} id={test.id} />);
+  const testLibrary = tests.length && tests.map((test, i) => <TestCard key={i} title={test.title} is_admin={user.is_admin} questionNumber={test.questions.length} id={test.id} />);
 
   return (
     <div className={s.root}>

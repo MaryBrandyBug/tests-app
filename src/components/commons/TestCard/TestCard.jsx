@@ -1,7 +1,6 @@
 'use client';
 
 import { bool, number, string } from 'prop-types';
-import Image from 'next/image';
 
 import Button from '../Button';
 
@@ -11,17 +10,25 @@ export default function TestCard({
   title, questionNumber, is_admin, id,
 }) {
   return (
-    <div className={s.root}>
-      <div className={s.title}>
-        <p>{title}</p>
+    <div className={`${s.root}`}>
+      <div className={s.content}>
+        <div className={s.title}>
+          <p>{title}</p>
+        </div>
+        <div className={s.questionNumber}>
+          <p>
+            Question number:
+            {questionNumber}
+          </p>
+        </div>
       </div>
-      <div className={s.questionNumber}>
-        <p>
-          Question number:
-          {questionNumber}
-        </p>
+      <div className={s.btnContainer}>
+        <Button href="/" className={s.startBtn}>Start</Button>
+        {is_admin
+        && (
+          <Button href={`/test/${id}`} className={s.editBtn}>Edit</Button>
+        )}
       </div>
-      {is_admin && <Button href={`/test/${id}`}><Image src="/pencil.svg" alt="edit test link" width={50} height={50} /></Button>}
     </div>
   );
 }

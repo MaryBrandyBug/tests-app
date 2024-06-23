@@ -1,2 +1,56 @@
 @import '@/styles/mixins.scss';
 @import '@/styles/colors.scss';
+
+.root {
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  border-bottom: 2px solid $lightShadow;
+  font-size: 23px;
+  background-color: lightTransparent(0.5);
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  p {
+    font-weight: bold;
+    font-size: 25px;
+  }
+}
+
+// BUTTONS
+
+.btnContainer {
+  display: flex;
+  gap: 20px;
+}
+
+a.editBtn, a.startBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  letter-spacing: 2px;
+  font-size: 20px;
+  color: $warmWhite;
+  border-radius: 20px;
+}
+
+a.editBtn {
+  background-color: $yogurtPink;
+}
+
+a.startBtn {
+  background-color: $oliveGreen;
+}
+

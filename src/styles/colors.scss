@@ -11,3 +11,7 @@ $darkTransparent: rgba(0, 0, 0, 0.5);
 $lightShadow: rgba(0,0,0,0.2);
 $ashLavender: rgb(149,125,173);
 $semiTransparentBlack: rgba(0, 0, 0, 0.05);
+
+@function lightTransparent($alpha) {
+  @return rgba(255, 255, 255, $alpha);
+}
