@@ -2,7 +2,10 @@
 @import '@/styles/colors.scss';
 
 .root {
+  display: flex;
+  flex-direction: column;
   width: 90vw;
+  max-width: 1300px;
   min-height: 700px;
   border-radius: 20px;
   background-color: lightTransparent(0.15);

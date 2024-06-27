@@ -1,0 +1,22 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  background-color: $yogurtPink;
+  border-radius: 10px;
+}
+
+.paginationBtn {
+  width: 100%;
+}

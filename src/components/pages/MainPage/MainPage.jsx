@@ -51,7 +51,7 @@ export default function MainPage() {
       },
     })
       .then((res) => res.json())
-      .then((data) => dispatch(getAllTests(data.tests)));
+      .then((data) => dispatch(getAllTests(data)));
   }, []);
 
   const handleLogout = async () => {
@@ -92,7 +92,7 @@ export default function MainPage() {
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      {tests.length > 0 && <TestLibrary tests={tests} is_admin={user.is_admin} />}
+      <TestLibrary tests={tests} is_admin={user.is_admin} />
     </div>
   );
 }
