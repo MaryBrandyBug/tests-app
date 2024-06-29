@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { bool } from 'prop-types';
+import { useRouter } from 'next/router';
 
 import TestCard from '../TestCard';
 import Pagination from '../Pagination';
@@ -12,6 +13,8 @@ export default function TestLibrary({ is_admin }) {
   const [tests, setTests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const router = useRouter();
+  const { query } = router;
 
   const fetchTests = async (page) => {
     try {
@@ -33,13 +36,31 @@ export default function TestLibrary({ is_admin }) {
     }
   };
 
-  const handleFlipPage = (newPage) => {
-    setCurrentPage(newPage);
+  const updateQueryParams = (page) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...query, page },
+    }, undefined, { shallow: true });
   };
 
+  const handleFlipPage = (newPage) => {
+    setCurrentPage(newPage);
+    updateQueryParams(newPage);
+  };
+
+
   useEffect(() => {
-    fetchTests(currentPage);
-  }, [currentPage]);
+    if (router.isReady) {
+      const initialPage = parseInt(query?.page)/*  || 1 */;
+      setCurrentPage(initialPage);
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      fetchTests(currentPage);
+    }
+  }, [currentPage, router.isReady, totalPages]);
 
   const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} />);
 
