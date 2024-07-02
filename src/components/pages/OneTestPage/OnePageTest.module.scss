@@ -23,6 +23,23 @@
   border-radius: 10px;
 }
 
+.titleFormContainer {
+  position: relative;
+}
+
+.deleteTestBtn {
+  position: absolute;
+  right: -200px;
+  top: 30px;
+  font-size: 25px;
+}
+
+.deleteTestBtn:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 7px;
+  text-decoration-thickness: 2px;
+}
+
 // DROPDOWN
 
 .dropdownContainer {

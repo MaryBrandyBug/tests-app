@@ -27,8 +27,7 @@ export default function AddTestForm() {
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((res) => console.log(res))
-        .then(() => router.push('/'));
+        .then((res) => router.push(`/test/${res.id}`));
     }
 
     actions.setSubmitting(false);
