@@ -26,6 +26,7 @@ export default function OneTestPage() {
   const [openMultiAnswerForm, setOpenMultiAnswerForm] = useState(false);
   const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false);
   const [itemToDeleteId, setItemToDeleteId] = useState(null);
+  const [currentQuestionCreation, setCurrentQuestionCreation] = useState('');
 
   const dispatch = useDispatch();
   const testTitle = useSelector((store) => store.test.title);
@@ -68,18 +69,30 @@ export default function OneTestPage() {
     setOpenNumberAnswerForm(true);
     setOpenOneAnswerForm(false);
     setOpenMultiAnswerForm(false);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, type: 'number' },
+    }, undefined, { shallow: true });
   };
 
   const showOneAnswerForm = () => {
     setOpenOneAnswerForm(true);
     setOpenNumberAnswerForm(false);
     setOpenMultiAnswerForm(false);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, type: 'single' },
+    }, undefined, { shallow: true });
   };
 
   const showMultiAnswerForm = () => {
     setOpenMultiAnswerForm(true);
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, type: 'multiple' },
+    }, undefined, { shallow: true });
   };
 
   const closeQuestionForm = () => {
@@ -87,6 +100,26 @@ export default function OneTestPage() {
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
   };
+
+  useEffect(() => {
+    if (router.isReady && router.query.type !== '') {
+      setCurrentQuestionCreation(router.query?.type);
+
+      switch (router.query.type) {
+        case 'number':
+          setOpenNumberAnswerForm(true);
+          break;
+        case 'single':
+          setOpenOneAnswerForm(true);
+          break;
+        case 'multiple':
+          setOpenMultiAnswerForm(true);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [router.query]);
 
   const formik = useFormik({ initialValues: { title: '' } });
 
@@ -129,9 +162,9 @@ export default function OneTestPage() {
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
         <div className={s.questionsCreationArea}>
-          {openNumberAnswerForm && (<NumberAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
-          {openOneAnswerForm && (<OneAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
-          {openMultiAnswerForm && (<MultiAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
+          {currentQuestionCreation === 'number' && openNumberAnswerForm && (<NumberAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
+          {currentQuestionCreation === 'single' && openOneAnswerForm && (<OneAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
+          {currentQuestionCreation === 'multiple' && openMultiAnswerForm && (<MultiAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
         </div>
       </div>
     </div>

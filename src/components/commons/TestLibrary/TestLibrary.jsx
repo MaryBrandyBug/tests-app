@@ -48,7 +48,6 @@ export default function TestLibrary({ is_admin }) {
     updateQueryParams(newPage);
   };
 
-
   useEffect(() => {
     if (router.isReady) {
       const initialPage = parseInt(query?.page)/*  || 1 */;
