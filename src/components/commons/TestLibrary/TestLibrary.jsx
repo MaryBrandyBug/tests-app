@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import { bool } from 'prop-types';
 import { useRouter } from 'next/router';
+import cx from 'classnames';
 
 import TestCard from '../TestCard';
 import Pagination from '../Pagination';
+import Button from '../Button';
 
 import s from './TestLibrary.module.scss';
 
@@ -13,6 +15,7 @@ export default function TestLibrary({ is_admin }) {
   const [tests, setTests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [sortTumblerSwitched, setSortTumblerSwitched] = useState(false);
   const router = useRouter();
   const { query } = router;
 
@@ -50,7 +53,7 @@ export default function TestLibrary({ is_admin }) {
 
   useEffect(() => {
     if (router.isReady) {
-      const initialPage = parseInt(query?.page)/*  || 1 */;
+      const initialPage = parseInt(query?.page) || 1;
       setCurrentPage(initialPage);
     }
   }, [router.isReady]);
@@ -63,8 +66,17 @@ export default function TestLibrary({ is_admin }) {
 
   const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} />);
 
+  const onSwitch = () => { setSortTumblerSwitched(!sortTumblerSwitched); };
+
   return (
     <div className={s.root}>
+      <div className={s.dateSortContainer}>
+        <p>OLDEST</p>
+        <Button className={cx(s.tumblerContainer, { [s.tumblerRightPosition]: sortTumblerSwitched })} onClick={onSwitch}>
+          <div className={s.tumbler} />
+        </Button>
+        <p>NEWEST</p>
+      </div>
       <div className={s.content}>
         {testLibrary}
       </div>

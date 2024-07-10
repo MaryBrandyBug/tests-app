@@ -2,6 +2,7 @@
 @import '@/styles/colors.scss';
 
 .root {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 90vw;
@@ -14,4 +15,44 @@
 .content {
   padding: 100px;
 }
+
+.dateSortContainer {
+  position: absolute;
+  top: 30px;
+  right: 100px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  p {
+    color: $standartWhite;
+    letter-spacing: 2px;
+  }
+}
+
+.tumblerContainer {
+  display: flex;
+  width: 60px;
+  height: 30px;
+  background-color: $khaki;
+  border:solid 1px lightTransparent(0.6);
+  border-radius: 50px;
+	cursor:pointer;
+}
+
+.tumbler {
+  width: 30px;
+  height: inherit;
+  background-color: lightTransparent(0.8);
+  border-radius: 50px;
+  border-color: lightTransparent(0.2);
+  transition: transform 0.3s ease;
+}
+
+.tumblerRightPosition {
+  .tumbler {
+    transform: translateX(30px);
+  }
+}
+
 
