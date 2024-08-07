@@ -7,7 +7,8 @@ import { func, string } from 'prop-types';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import data from './data';
-import { addQuestion } from '@/redux/store/slicer/testSlicer';
+// import { addQuestion } from '@/redux/store/slicer/testSlicer';
+import { addQuestion } from '@/redux/store/slicer/questionsCreationSlicer';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
@@ -34,17 +35,18 @@ export default function NumberAnswerQuestion({ id, closeForm }) {
   const onSubmit = async (values, actions) => {
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-        },
-        body: JSON.stringify(values),
-      })
-        .then((res) => res.json())
-        .then((res) => dispatch(addQuestion(res)));
+      dispatch(addQuestion(values));
+      // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
+      //   method: 'POST',
+      //   credentials: 'include',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+      //   },
+      //   body: JSON.stringify(values),
+      // })
+      //   .then((res) => res.json())
+      //   .then((res) => dispatch(addQuestion(res)));
     }
 
     closeModal();

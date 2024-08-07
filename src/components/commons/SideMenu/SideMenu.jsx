@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { func, string } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
+import cx from 'classnames';
 
 import stringLengthCheck from '@/utils/stringLengthCheck';
 import { getTest } from '@/redux/store/slicer/testSlicer';
@@ -16,6 +17,7 @@ export default function SideMenu({ id, openConfirmation }) {
   const dispatch = useDispatch();
 
   const test = useSelector((store) => store.test);
+  const newQuestions = useSelector((store) => store.newQuestions);
 
   const { questions } = test;
 
@@ -34,30 +36,69 @@ export default function SideMenu({ id, openConfirmation }) {
     }
   }, [id]);
 
-  const questionList = questions?.map((item, i) => {
+  const questionList = (arr) => arr?.map((item, i) => {
     const handleDelete = () => {
       openConfirmation(item.id);
     };
 
+    if (item.id) {
+      return (
+        <div key={item.id} className={s.questionContainer}>
+          <div className={s.counterContainer}>
+            <p>{i + 1}</p>
+          </div>
+          <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
+          <div className={s.editButtonsContainer}>
+            <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
+            <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div key={item.id} className={s.questionContainer}>
-        <div className={s.counterContainer}>
-          <p>{i + 1}</p>
-        </div>
+      <div key={i} className={s.questionContainer}>
         <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
-        <div className={s.buttonsContainer}>
-          <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
-          <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
-        </div>
       </div>
     );
   });
 
+  // const questionList = questions?.map((item, i) => {
+  //   const handleDelete = () => {
+  //     openConfirmation(item.id);
+  //   };
+
+  //   return (
+  //     <div key={item.id} className={s.questionContainer}>
+  //       <div className={s.counterContainer}>
+  //         <p>{i + 1}</p>
+  //       </div>
+  //       <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
+  //       <div className={s.buttonsContainer}>
+  //         <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
+  //         <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
+  //       </div>
+  //     </div>
+  //   );
+  // });
+
   return (
     <div className={s.root}>
-      <h2 className={s.rootHeader}>Content</h2>
-      <div className={s.content}>
-        {questionList}
+      <div className={s.createdQuestionsContainer}>
+        <h2 className={s.header}>Test Questions</h2>
+        <div className={s.content}>
+          {questionList(questions)}
+        </div>
+      </div>
+      <div className={cx(s.createdQuestionsContainer, { [s.newQuestionsContainer]: newQuestions })}>
+        <h2 className={s.header}>New Questions</h2>
+        <div className={s.content}>
+          {questionList(newQuestions)}
+        </div>
+        <div className={s.savingButtonsContainer}>
+          <Button className={s.saveBtn}>Save</Button>
+          <Button className={s.clearBtn}>Clear</Button>
+        </div>
       </div>
     </div>
   );

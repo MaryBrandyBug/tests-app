@@ -4,23 +4,42 @@
 .root {
   position: absolute;
   left: 0;
-  top: 250px;
+  top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
   width: 500px;
-  max-height: 600px;
-  padding: 20px 0 0 0;
-  background-color: $warmWhite;
   border-radius: 0 20px 20px 0;
   border-width: 3px 3px 3px 0;
   border-style: solid;
   border-color: $pastelLavender;
+}
+
+.createdQuestionsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  max-height: 500px;
+  border-radius: 0 20px 0 0;
+  background-color: $warmWhite;
   overflow: hidden;
 }
 
-.rootHeader {
+.newQuestionsContainer {
+  // gap: 0;
+  color: $warmWhite;
+  background-color: $semiTransparentBlack;
+  border-radius: inherit;
+
+  .header {
+    // padding-bottom: 30px;
+  }
+}
+
+.header {
+  padding-top: 30px;
   font-size: 23px;
 }
 
@@ -30,7 +49,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  border-top: 2px solid $pastelLavender;
+  border-top: 1px solid $pastelLavender;
 }
 
 .questionContainer {
@@ -71,11 +90,39 @@
   border: 1.5px solid $standartBlack;
 }
 
-.buttonsContainer {
+.editButtonsContainer {
   position: absolute;
   right: 10px;
   display: flex;
   gap: 20px;
+}
+
+.savingButtonsContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding-bottom: 30px;
+
+  button {
+    width: 150px;
+    height: 50px;
+    font-size: 23px;
+    border-radius: 20px;
+    box-shadow: 0px 3px 5px 0px $lightShadow;
+  }
+
+  button:hover {
+    background-color: $semiTransparentBlack;
+    border: none;
+  }
+}
+
+.saveBtn {
+  border: 3px solid $pastelLavender;
+}
+
+.clearBtn {
+  border: 3px solid $yogurtPink;
 }
 
 .questionBtn {
