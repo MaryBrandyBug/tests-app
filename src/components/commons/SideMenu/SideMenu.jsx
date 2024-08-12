@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { func, string } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import cx from 'classnames';
 
@@ -15,9 +16,21 @@ import s from './SideMenu.module.scss';
 
 export default function SideMenu({ id, openConfirmation }) {
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const [unsavedQuestions, setUnsavedQuestions] = useState(null);
 
   const test = useSelector((store) => store.test);
   const newQuestions = useSelector((store) => store.newQuestions);
+  const allUnsavedQuestions = useSelector((store) => store.newQuestions); // получаем список ВСЕХ несохраненных вопросов ко ВСЕМ тестам
+  const currentTestNewData = allUnsavedQuestions.find((i) => id in i); // получаем объект со свойством (id) и значением - массивом несохраненных вопросов к ТЕКУЩЕМУ тесту, если этот список существует
+
+  useEffect(() => {
+    if (router.isReady && currentTestNewData) {
+      const newDataList = currentTestNewData[id]; // получаем список несохраненных вопросов к ТЕКУЩЕМУ тесту
+      setUnsavedQuestions(newDataList); // и записываем в стейт
+    }
+  }, [currentTestNewData]);
 
   const { questions } = test;
 
@@ -36,64 +49,40 @@ export default function SideMenu({ id, openConfirmation }) {
     }
   }, [id]);
 
-  const questionList = (arr) => arr?.map((item, i) => {
+  const questionList = (arr, numeration = false) => arr?.map((item, i) => { // в аргументах помимо массива лежит булиевое значение numeration, принимающее значение true в том случае, если к списку нам нужна нумерация элементов
     const handleDelete = () => {
       openConfirmation(item.id);
     };
 
-    if (item.id) {
-      return (
-        <div key={item.id} className={s.questionContainer}>
-          <div className={s.counterContainer}>
-            <p>{i + 1}</p>
-          </div>
-          <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
-          <div className={s.editButtonsContainer}>
-            <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
-            <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div key={i} className={s.questionContainer}>
+      <div key={item.id} className={s.questionContainer}>
+        {numeration
+        && (
+        <div className={s.counterContainer}>
+          <p>{i + 1}</p>
+        </div>
+        )}
         <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
+        <div className={s.editButtonsContainer}>
+          <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
+          <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
+        </div>
       </div>
     );
   });
-
-  // const questionList = questions?.map((item, i) => {
-  //   const handleDelete = () => {
-  //     openConfirmation(item.id);
-  //   };
-
-  //   return (
-  //     <div key={item.id} className={s.questionContainer}>
-  //       <div className={s.counterContainer}>
-  //         <p>{i + 1}</p>
-  //       </div>
-  //       <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
-  //       <div className={s.buttonsContainer}>
-  //         <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
-  //         <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
-  //       </div>
-  //     </div>
-  //   );
-  // });
 
   return (
     <div className={s.root}>
       <div className={s.createdQuestionsContainer}>
         <h2 className={s.header}>Test Questions</h2>
         <div className={s.content}>
-          {questionList(questions)}
+          {questionList(questions, true)}
         </div>
       </div>
       <div className={cx(s.createdQuestionsContainer, { [s.newQuestionsContainer]: newQuestions })}>
         <h2 className={s.header}>New Questions</h2>
         <div className={s.content}>
-          {questionList(newQuestions)}
+          {questionList(unsavedQuestions)}
         </div>
         <div className={s.savingButtonsContainer}>
           <Button className={s.saveBtn}>Save</Button>

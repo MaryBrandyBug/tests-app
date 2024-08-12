@@ -15,12 +15,12 @@ export default function Pagination({ currentPage, totalPages, onClick }) {
     );
   }
 
-  const isActive = (number, page) => { 
+  const isActive = (number, page) => {
     if (number === page) {
       return [s.activeBtn];
     }
     return '';
-  }
+  };
 
   return (
     <div className={s.root}>

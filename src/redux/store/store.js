@@ -13,7 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from './slicer/userSlicer';
 import testSlicer from './slicer/testSlicer';
 import librarySlicer from './slicer/librarySlicer';
-import questionsCreationSlicer from './slicer/questionsCreationSlicer';
+import questionsCreationSlicer from './slicer/unsavedQuestionsSlicer';
 
 const persistConfig = {
   key: 'root',

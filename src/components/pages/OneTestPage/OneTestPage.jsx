@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { deleteQuestion } from '@/redux/store/slicer/testSlicer';
+import { clearStorage } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
@@ -28,11 +29,12 @@ export default function OneTestPage() {
   const [itemToDeleteId, setItemToDeleteId] = useState(null);
   const [currentQuestionCreation, setCurrentQuestionCreation] = useState('');
 
-  const dispatch = useDispatch();
-  const testTitle = useSelector((store) => store.test.title);
-
   const router = useRouter();
   const { id } = router.query;
+
+  const dispatch = useDispatch();
+
+  const testTitle = useSelector((store) => store.test.title);
 
   const openConfirmation = (itemId) => {
     setItemToDeleteId(itemId);

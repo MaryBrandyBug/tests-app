@@ -7,8 +7,7 @@ import { func, string } from 'prop-types';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import data from './data';
-// import { addQuestion } from '@/redux/store/slicer/testSlicer';
-import { addQuestion } from '@/redux/store/slicer/questionsCreationSlicer';
+import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
@@ -33,9 +32,9 @@ export default function NumberAnswerQuestion({ id, closeForm }) {
   };
 
   const onSubmit = async (values, actions) => {
-    const isValid = validationSchema.isValid(values);
-    if (isValid) {
-      dispatch(addQuestion(values));
+    // const isValid = validationSchema.isValid(values);
+    // if (isValid) {
+      dispatch(addQuestion({ values, id }));
       // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
       //   method: 'POST',
       //   credentials: 'include',
@@ -47,7 +46,7 @@ export default function NumberAnswerQuestion({ id, closeForm }) {
       // })
       //   .then((res) => res.json())
       //   .then((res) => dispatch(addQuestion(res)));
-    }
+    // }
 
     closeModal();
     closeForm();
