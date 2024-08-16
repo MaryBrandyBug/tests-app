@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react';
 import { func, string } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import cx from 'classnames';
 
-import stringLengthCheck from '@/utils/stringLengthCheck';
 import { getTest } from '@/redux/store/slicer/testSlicer';
 
+import QuestionMenuItem from '../QuestionMenuItem';
 import Button from '../Button';
 
 import s from './SideMenu.module.scss';
@@ -54,21 +53,7 @@ export default function SideMenu({ id, openConfirmation }) {
       openConfirmation(item.id);
     };
 
-    return (
-      <div key={item.id} className={s.questionContainer}>
-        {numeration
-        && (
-        <div className={s.counterContainer}>
-          <p>{i + 1}</p>
-        </div>
-        )}
-        <p className={s.title}>{stringLengthCheck(item.title, 45)}</p>
-        <div className={s.editButtonsContainer}>
-          <Button className={s.questionBtn} onClick={handleDelete}><Image src="/rubbishBin.svg" alt="remove question" width={30} height={30} /></Button>
-          <Button className={s.questionBtn}><Image src="/pencil.svg" alt="update question" width={30} height={30} /></Button>
-        </div>
-      </div>
-    );
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} numeration={numeration} />;
   });
 
   return (
