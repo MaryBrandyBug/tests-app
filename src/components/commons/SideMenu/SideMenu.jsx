@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import cx from 'classnames';
 
 import { getTest } from '@/redux/store/slicer/testSlicer';
+import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import QuestionMenuItem from '../QuestionMenuItem';
 import Button from '../Button';
@@ -20,9 +21,13 @@ export default function SideMenu({ id, openConfirmation }) {
   const [unsavedQuestions, setUnsavedQuestions] = useState(null);
 
   const test = useSelector((store) => store.test);
-  const newQuestions = useSelector((store) => store.newQuestions);
   const allUnsavedQuestions = useSelector((store) => store.newQuestions); // получаем список ВСЕХ несохраненных вопросов ко ВСЕМ тестам
+
   const currentTestNewData = allUnsavedQuestions.find((i) => id in i); // получаем объект со свойством (id) и значением - массивом несохраненных вопросов к ТЕКУЩЕМУ тесту, если этот список существует
+
+  const clearConfirmation = () => {
+    dispatch(clearStorage(id));
+  };
 
   useEffect(() => {
     if (router.isReady && currentTestNewData) {
@@ -50,7 +55,11 @@ export default function SideMenu({ id, openConfirmation }) {
 
   const questionList = (arr, numeration = false) => arr?.map((item, i) => { // в аргументах помимо массива лежит булиевое значение numeration, принимающее значение true в том случае, если к списку нам нужна нумерация элементов
     const handleDelete = () => {
-      openConfirmation(item.id);
+      if (numeration) {
+        openConfirmation(item.id, true);
+      }
+
+      dispatch(removeQuestion({ questionId: item.id, testId: id }));
     };
 
     return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} numeration={numeration} />;
@@ -58,20 +67,20 @@ export default function SideMenu({ id, openConfirmation }) {
 
   return (
     <div className={s.root}>
-      <div className={s.createdQuestionsContainer}>
+      <div className={cx(s.createdQuestionsContainer, { [s.onlySavedQuestions]: currentTestNewData })}>
         <h2 className={s.header}>Test Questions</h2>
         <div className={s.content}>
           {questionList(questions, true)}
         </div>
       </div>
-      <div className={cx(s.createdQuestionsContainer, { [s.newQuestionsContainer]: newQuestions })}>
+      <div className={cx(s.unsavedQuestionsContainer, { [s.noNewQuestions]: !currentTestNewData })}>
         <h2 className={s.header}>New Questions</h2>
         <div className={s.content}>
           {questionList(unsavedQuestions)}
         </div>
         <div className={s.savingButtonsContainer}>
           <Button className={s.saveBtn}>Save</Button>
-          <Button className={s.clearBtn}>Clear</Button>
+          <Button className={s.clearBtn} type="button" onClick={clearConfirmation}>Clear</Button>
         </div>
       </div>
     </div>

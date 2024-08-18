@@ -7,8 +7,8 @@ const unsavedQuestionsSlicer = createSlice({
   name: 'newQuestions',
   initialState,
   reducers: {
-    addQuestion(state, action) {
-      const { id, values } = action.payload;
+    addQuestion(state, { payload }) {
+      const { id, values } = payload;
       values.id = uniqid();
 
       const unsavedQuestionsExisting = state.find((item) => id in item);
@@ -18,13 +18,39 @@ const unsavedQuestionsSlicer = createSlice({
         state.push({ [id]: [values] });
       }
     },
-    clearStorage() {
-      return initialState;
+    removeQuestion(state, { payload }) {
+      const { questionId, testId } = payload;
+
+      return state.map((item) => {
+        if (item[testId]) {
+          const updatedQuestions = item[testId].filter((question) => question.id !== questionId);
+
+          if (updatedQuestions.length === 0) {
+            const { [testId]: _, ...rest } = item;
+            return rest;
+          }
+
+          return {
+            ...item,
+            [testId]: updatedQuestions,
+          };
+        }
+
+        return item;
+      });
+    },
+    clearStorage(state, { payload }) {
+      const id = payload;
+
+      return state.map((item) => {
+        const { [id]: _, ...rest } = item;
+        return rest;
+      });
     },
   },
 });
 
 export const {
-  addQuestion, clearStorage,
+  addQuestion, clearStorage, removeQuestion,
 } = unsavedQuestionsSlicer.actions;
 export default unsavedQuestionsSlicer.reducer;

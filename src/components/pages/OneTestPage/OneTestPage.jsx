@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { deleteQuestion } from '@/redux/store/slicer/testSlicer';
-import { clearStorage } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
@@ -21,13 +21,13 @@ import s from './OnePageTest.module.scss';
 import { manjari } from '@/styles/fonts';
 
 export default function OneTestPage() {
-  const [openDeleteTestConfirm, setOpenDeleteTestConfirm] = useState(false);
-  const [openNumberAnswerForm, setOpenNumberAnswerForm] = useState(false);
-  const [openOneAnswerForm, setOpenOneAnswerForm] = useState(false);
-  const [openMultiAnswerForm, setOpenMultiAnswerForm] = useState(false);
-  const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false);
-  const [itemToDeleteId, setItemToDeleteId] = useState(null);
-  const [currentQuestionCreation, setCurrentQuestionCreation] = useState('');
+  const [openDeleteTestConfirm, setOpenDeleteTestConfirm] = useState(false); // модалка согласие юзера удалить тест
+  const [openNumberAnswerForm, setOpenNumberAnswerForm] = useState(false); // форма вопроса с численным ответом
+  const [openOneAnswerForm, setOpenOneAnswerForm] = useState(false); //
+  const [openMultiAnswerForm, setOpenMultiAnswerForm] = useState(false); // форма вопроса с несколькими вариантами ответа
+  const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false); // модалка согласие юзера удалить уже созданный вопрос к тесту
+  const [itemToDelete, setItemToDelete] = useState(null); // данные удаляемого вопроса к тесту
+  const [currentQuestionCreation, setCurrentQuestionCreation] = useState(''); // какой тип вопроса мы создакем в данный момент
 
   const router = useRouter();
   const { id } = router.query;
@@ -36,8 +36,8 @@ export default function OneTestPage() {
 
   const testTitle = useSelector((store) => store.test.title);
 
-  const openConfirmation = (itemId) => {
-    setItemToDeleteId(itemId);
+  const openConfirmation = (itemId, saved = false) => {
+    setItemToDelete({ id: itemId, saved });
     setOpenDeleteQuestionConfirm(true);
   };
 
@@ -131,18 +131,23 @@ export default function OneTestPage() {
     }
   }, [testTitle]);
 
-  const removeQuestion = async () => {
-    fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${itemToDeleteId}`, {
-      method: 'DELETE',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-      },
-    })
-      .then((res) => res.json())
-      .then(() => dispatch(deleteQuestion(itemToDeleteId)));
+  const onRemoveQuestion = async () => {
+    if (itemToDelete.saved) {
+      fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${itemToDelete.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+        },
+      })
+        .then((res) => res.json())
+        .then(() => dispatch(deleteQuestion(itemToDelete.id)));
 
+      setOpenDeleteQuestionConfirm(false);
+    }
+
+    dispatch(removeQuestion(itemToDelete.id));
     setOpenDeleteQuestionConfirm(false);
   };
 
@@ -151,7 +156,7 @@ export default function OneTestPage() {
       { openDeleteTestConfirm && (
         <Confirmation header="Are you sure you want to delete this test?" onSubmit={removeTest} onClick={closeConfirmation} closeConfirmation={closeConfirmation} />
       )}
-      {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" onClick={closeConfirmation} onSubmit={removeQuestion} closeConfirmation={closeConfirmation} />}
+      {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" onClick={closeConfirmation} onSubmit={onRemoveQuestion} closeConfirmation={closeConfirmation} />}
       <div className={`${s.content} ${manjari.className}`}>
         <SideMenu id={id || null} openConfirmation={openConfirmation} />
         <div className={s.titleFormContainer}>
