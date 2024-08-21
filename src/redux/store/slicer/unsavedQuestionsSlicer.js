@@ -42,10 +42,12 @@ const unsavedQuestionsSlicer = createSlice({
     clearStorage(state, { payload }) {
       const id = payload;
 
-      return state.map((item) => {
-        const { [id]: _, ...rest } = item;
-        return rest;
-      });
+      return state
+        .map((item) => {
+          const { [id]: _, ...rest } = item;
+          return rest;
+        })
+        .filter((item) => Object.keys(item).length > 0);
     },
   },
 });
