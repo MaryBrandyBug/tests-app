@@ -27,10 +27,10 @@ export default function OneTestPage() {
   const [openMultiAnswerForm, setOpenMultiAnswerForm] = useState(false); // форма вопроса с несколькими вариантами ответа
   const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false); // модалка согласие юзера удалить уже созданный вопрос к тесту
   const [itemToDelete, setItemToDelete] = useState(null); // данные удаляемого вопроса к тесту
-  const [currentQuestionCreation, setCurrentQuestionCreation] = useState(''); // какой тип вопроса мы создакем в данный момент
+  const [currentQuestionCreation, setCurrentQuestionCreation] = useState(''); // какой тип вопроса мы создаем в данный момент
 
   const router = useRouter();
-  const { id } = router.query;
+  const { id, question_id } = router.query;
 
   const dispatch = useDispatch();
 
@@ -169,7 +169,7 @@ export default function OneTestPage() {
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
         <div className={s.questionsCreationArea}>
-          {currentQuestionCreation === 'number' && openNumberAnswerForm && (<NumberAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
+          {currentQuestionCreation === 'number' && openNumberAnswerForm && (<NumberAnswerQuestion id={id} closeForm={closeQuestionForm} question_id={question_id} />)}
           {currentQuestionCreation === 'single' && openOneAnswerForm && (<OneAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
           {currentQuestionCreation === 'multiple' && openMultiAnswerForm && (<MultiAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
         </div>

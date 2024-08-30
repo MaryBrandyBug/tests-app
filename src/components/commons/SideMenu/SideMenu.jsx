@@ -62,7 +62,14 @@ export default function SideMenu({ id, openConfirmation }) {
       dispatch(removeQuestion({ questionId: item.id, testId: id }));
     };
 
-    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} numeration={numeration} />;
+    const handleUpdate = () => {
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, type: item.question_type, question_id: item.id },
+      }, undefined, { shallow: true });
+    };
+
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={handleUpdate} numeration={numeration} />;
   });
 
   return (
@@ -79,7 +86,7 @@ export default function SideMenu({ id, openConfirmation }) {
           {questionList(unsavedQuestions)}
         </div>
         <div className={s.savingButtonsContainer}>
-          <Button className={s.saveBtn}>Save</Button>
+          <Button className={s.saveBtn} type="button">Save</Button>
           <Button className={s.clearBtn} type="button" onClick={clearConfirmation}>Clear</Button>
         </div>
       </div>

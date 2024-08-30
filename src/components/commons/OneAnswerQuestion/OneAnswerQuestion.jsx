@@ -19,6 +19,15 @@ export default function OneAnswerQuestion({ id, closeForm }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
+  const initialValues = {
+    title: '',
+    question_type: 'single',
+    answers: [
+      { text: '', is_right: false },
+      { text: '', is_right: false },
+    ],
+  };
+
   const dispatch = useDispatch();
 
   const deleteConfirmation = () => {
@@ -34,17 +43,36 @@ export default function OneAnswerQuestion({ id, closeForm }) {
     setOpenSaveConfirmation(true);
     const isValid = validationSchema.isValid(values);
     if (isValid) {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
+      const dataToSend = { // сначала создаем новый item в таблице с вопросами, для этого используем title и question_type, answers отправляем позже, после создания вопроса
+        title: values.title,
+        question_type: values.question_type,
+      };
+
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, { // сначала создается запись в таблице questions
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(dataToSend),
       })
         .then((res) => res.json())
-        .then((res) => dispatch(addQuestion(res)));
+        .then((question) => {
+          dispatch(addQuestion(question));
+          values.answers.forEach((answer) => { // проходимся по списку вопросов и отправляем в бд каждый по отдельности в отдельную таблицу с ответами
+            fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${question.id}/answers`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+              },
+              body: JSON.stringify(answer),
+            })
+              .then((res) => res.json());
+          });
+        });
     }
 
     closeModal();
@@ -53,14 +81,7 @@ export default function OneAnswerQuestion({ id, closeForm }) {
   };
 
   const formik = useFormik({
-    initialValues: {
-      title: '',
-      question_type: 'single',
-      answers: [
-        { text: '', is_right: false },
-        { text: '', is_right: false },
-      ],
-    },
+    initialValues,
     onSubmit,
     validationSchema,
   });

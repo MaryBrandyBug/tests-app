@@ -24,9 +24,11 @@ const unsavedQuestionsSlicer = createSlice({
       return state.map((item) => {
         if (item[testId]) {
           const updatedQuestions = item[testId].filter((question) => question.id !== questionId);
-
+          
           if (updatedQuestions.length === 0) {
             const { [testId]: _, ...rest } = item;
+            console.log(rest, 'rest');
+            
             return rest;
           }
 
@@ -37,7 +39,7 @@ const unsavedQuestionsSlicer = createSlice({
         }
 
         return item;
-      });
+      }).filter((item) => Object.keys(item).length !== 0);;
     },
     clearStorage(state, { payload }) {
       const id = payload;

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { func, string } from 'prop-types';
+import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import data from './data';
@@ -16,11 +17,40 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
-export default function NumberAnswerQuestion({ id, closeForm }) {
+export default function NumberAnswerQuestion({ id, closeForm, question_id }) {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
+  const [questionForUpdate, setQuestionForUpdate] = useState(null);
+
+  const store = useSelector((state) => state);
+
+  useEffect(() => {
+    // const savedQuestionsItem = store.test.questions?.filter((item) => /* Number(item.id) === Number(question_id) */ console.log(item));
+    // const unsavedQuestions = store.newQuestions.find((test) => test[id]);
+    // const unsavedQuestionsItem = unsavedQuestions[id].find((item) => item.id === question_id);
+    // console.log(store.test.questions, savedQuestionsItem, 1);
+    // if (test[id]) {
+    //   // console.log(test[id].filter((c) => console.log(c.id === question_id)));
+
+    //   return test[id].find((i) => i.id === question_id);
+    // }
+
+    // return '';
+    // });
+    // const question = store.test.questions?.find((item) => item.id === question_id)
+    // || store.newQuestions.find((test) => {
+    //   if (test[id]) {
+    //     return test[id].filter((i) => i.id === question_id);
+    //   }
+
+    //   return '';
+    // });
+
+    // console.log(b, 'newquest');
+  }, [router.isReady]);
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -32,8 +62,8 @@ export default function NumberAnswerQuestion({ id, closeForm }) {
   };
 
   const onSubmit = async (values, actions) => {
-    // const isValid = validationSchema.isValid(values);
-    // if (isValid) {
+    const isValid = validationSchema.isValid(values);
+    if (isValid) {
       dispatch(addQuestion({ values, id }));
       // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
       //   method: 'POST',
@@ -46,7 +76,7 @@ export default function NumberAnswerQuestion({ id, closeForm }) {
       // })
       //   .then((res) => res.json())
       //   .then((res) => dispatch(addQuestion(res)));
-    // }
+    }
 
     closeModal();
     closeForm();
