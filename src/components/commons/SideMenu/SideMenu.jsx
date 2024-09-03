@@ -14,7 +14,7 @@ import Button from '../Button';
 
 import s from './SideMenu.module.scss';
 
-export default function SideMenu({ id, openConfirmation }) {
+export default function SideMenu({ id, openConfirmation, handleUpdate }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -62,14 +62,11 @@ export default function SideMenu({ id, openConfirmation }) {
       dispatch(removeQuestion({ questionId: item.id, testId: id }));
     };
 
-    const handleUpdate = () => {
-      router.push({
-        pathname: router.pathname,
-        query: { ...router.query, type: item.question_type, question_id: item.id },
-      }, undefined, { shallow: true });
+    const updating = () => {
+      handleUpdate(item.question_type, item.id);
     };
 
-    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={handleUpdate} numeration={numeration} />;
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} numeration={numeration} />;
   });
 
   return (
@@ -97,4 +94,5 @@ export default function SideMenu({ id, openConfirmation }) {
 SideMenu.propTypes = {
   id: string,
   openConfirmation: func,
+  handleUpdate: func,
 };

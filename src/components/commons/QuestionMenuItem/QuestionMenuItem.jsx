@@ -10,7 +10,7 @@ import Button from '../Button';
 import s from './QuestionMenuItem.module.scss';
 
 export default function QuestionMenuItem({
-  id, title, sequenceNumber, numeration, handleDelete, handleUpdate
+  id, title, sequenceNumber, numeration, handleDelete, handleUpdate,
 }) {
   return (
     <div className={s.root}>

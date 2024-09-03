@@ -78,11 +78,6 @@
 
 // QUESTION MENU
 
-.questionsCreationArea {
-  padding-top: 200px;
-  display: flex;
-}
-
 @include minWidth361 {
   .testTitleInput:focus {
     border: 3px solid $warmPink;

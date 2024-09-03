@@ -10,14 +10,13 @@ import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
-import NumberAnswerQuestion from '@/components/commons/NumberAnswerQuestion';
-import OneAnswerQuestion from '@/components/commons/OneAnswerQuestion';
-import MultiAnswerQuestion from '@/components/commons/MultiAnswerQuestion';
 import SideMenu from '@/components/commons/SideMenu';
 import Confirmation from '@/components/commons/Confirmation';
 import Button from '@/components/commons/Button';
+import QuestionCreation from '@/components/commons/QuestionCreation';
+import QuestionUpdate from '@/components/commons/QuestionUpdate';
 
-import s from './OnePageTest.module.scss';
+import s from './OneTestPage.module.scss';
 import { manjari } from '@/styles/fonts';
 
 export default function OneTestPage() {
@@ -27,10 +26,12 @@ export default function OneTestPage() {
   const [openMultiAnswerForm, setOpenMultiAnswerForm] = useState(false); // форма вопроса с несколькими вариантами ответа
   const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false); // модалка согласие юзера удалить уже созданный вопрос к тесту
   const [itemToDelete, setItemToDelete] = useState(null); // данные удаляемого вопроса к тесту
-  const [currentQuestionCreation, setCurrentQuestionCreation] = useState(''); // какой тип вопроса мы создаем в данный момент
+  const [questionTypeCreation, setQuestionTypeCreation] = useState(''); // какой тип вопроса мы создаем в данный момент
+  const [questionForUpdateId, setQuestionForUpdateId] = useState(null); // id вопроса для редактирования
+  const [questionTypeUpdate, setQuestionTypeUpdate] = useState('');
 
   const router = useRouter();
-  const { id, question_id } = router.query;
+  const { id } = router.query;
 
   const dispatch = useDispatch();
 
@@ -103,9 +104,18 @@ export default function OneTestPage() {
     setOpenOneAnswerForm(false);
   };
 
+  const handleUpdate = (questionType, questionId) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, type: questionType },
+    }, undefined, { shallow: true });
+    setQuestionForUpdateId(questionId);
+    setQuestionTypeCreation('');
+  };
+
   useEffect(() => {
     if (router.isReady && router.query.type !== '') {
-      setCurrentQuestionCreation(router.query?.type);
+      setQuestionTypeCreation(router.query?.type);
 
       switch (router.query.type) {
         case 'number':
@@ -158,7 +168,7 @@ export default function OneTestPage() {
       )}
       {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" onClick={closeConfirmation} onSubmit={onRemoveQuestion} closeConfirmation={closeConfirmation} />}
       <div className={`${s.content} ${manjari.className}`}>
-        <SideMenu id={id || null} openConfirmation={openConfirmation} />
+        <SideMenu id={id || null} openConfirmation={openConfirmation} handleUpdate={handleUpdate} />
         <div className={s.titleFormContainer}>
           <form className={s.titleForm} onSubmit={formik.handleSubmit}>
             <InputField type="text" name="title" value={formik.values.title} onChange={formik.handleChange} placeholder="Name your test" maxLength="50" additionalClass={s.testTitleInput} />
@@ -168,11 +178,8 @@ export default function OneTestPage() {
         <div className={s.dropdownMenu}>
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
-        <div className={s.questionsCreationArea}>
-          {currentQuestionCreation === 'number' && openNumberAnswerForm && (<NumberAnswerQuestion id={id} closeForm={closeQuestionForm} question_id={question_id} />)}
-          {currentQuestionCreation === 'single' && openOneAnswerForm && (<OneAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
-          {currentQuestionCreation === 'multiple' && openMultiAnswerForm && (<MultiAnswerQuestion id={id} closeForm={closeQuestionForm} />)}
-        </div>
+        <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} closeForm={closeQuestionForm} />
+        <QuestionUpdate currentQuestionUpdate={questionTypeUpdate} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={questionForUpdateId} closeForm={closeQuestionForm} />
       </div>
     </div>
   );
