@@ -1,6 +1,7 @@
 'use client';
 
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import MultiAnswerQuestion from '../MultiAnswerQuestion';
 import NumberAnswerQuestion from '../NumberAnswerQuestion';
@@ -8,17 +9,18 @@ import OneAnswerQuestion from '../OneAnswerQuestion';
 
 import s from './QuestionUpdate.module.scss';
 
-export default function QuestionUpdate({
-  currentQuestionUpdate, questionFormType, id, handleClose,
-}) {
+export default function QuestionUpdate({ handleClose }) {
+  const router = useRouter();
+  const { questionId, type } = router.query;
+
   const store = useSelector((state) => state.test.questions);
-  const currentQuestionData = store?.find((question) => question.id === Number(id));
+  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
 
   return (
     <div className={s.root}>
-      {currentQuestionUpdate === 'number' && questionFormType && (<NumberAnswerQuestion id={id} closeForm={handleClose} />)}
-      {currentQuestionUpdate === 'single' && questionFormType && (<OneAnswerQuestion id={id} closeForm={handleClose} />)}
-      {currentQuestionUpdate === 'multiple' && questionFormType && (<MultiAnswerQuestion id={id} closeForm={handleClose} />)}
+      {currentQuestionData && type === 'number' && (<NumberAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
+      {currentQuestionData && type === 'single' && (<OneAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
+      {currentQuestionData && type === 'multiple' && (<MultiAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
     </div>
   );
 }

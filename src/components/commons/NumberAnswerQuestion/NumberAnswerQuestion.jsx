@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { func, string } from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { func, object, string } from 'prop-types';
 import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
-import data from './data';
+import inputAttributes from './data';
 import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import Confirmation from '../Confirmation';
@@ -17,15 +17,12 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
-export default function NumberAnswerQuestion({ id, closeForm, question_id }) {
+export default function NumberAnswerQuestion({ id, closeForm, data }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-  const [questionForUpdate, setQuestionForUpdate] = useState(null);
-
-  const store = useSelector((state) => state);
 
   useEffect(() => {
     // const savedQuestionsItem = store.test.questions?.filter((item) => /* Number(item.id) === Number(question_id) */ console.log(item));
@@ -83,7 +80,7 @@ export default function NumberAnswerQuestion({ id, closeForm, question_id }) {
     actions.setSubmitting(false);
   };
 
-  const formik = useFormik({ initialValues: { title: '', answer: '', question_type: 'number' }, onSubmit, validationSchema });
+  const formik = useFormik({ initialValues: { title: data?.title || '', answer: data?.answer || '', question_type: 'number' }, onSubmit, validationSchema });
 
   const saveConfirmation = async () => {
     const isValid = await validationSchema.isValid(formik.values);
@@ -92,7 +89,7 @@ export default function NumberAnswerQuestion({ id, closeForm, question_id }) {
     }
   };
 
-  const inputFields = data.map((item) => (
+  const inputFields = inputAttributes.map((item) => (
     <div key={item.id}>
       <InputField
         type={item.type}
@@ -125,4 +122,5 @@ export default function NumberAnswerQuestion({ id, closeForm, question_id }) {
 NumberAnswerQuestion.propTypes = {
   id: string,
   closeForm: func,
+  data: object,
 };

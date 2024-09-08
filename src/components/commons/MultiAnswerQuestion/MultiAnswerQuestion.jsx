@@ -15,7 +15,7 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
 
-export default function MultiAnswerQuestion({ id, closeForm }) {
+export default function MultiAnswerQuestion({ id, closeForm, data }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
@@ -54,9 +54,9 @@ export default function MultiAnswerQuestion({ id, closeForm }) {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
+      title: data?.title || '',
       question_type: 'multiple',
-      answers: [
+      answers: data?.answers ||  [
         { text: '', is_right: false },
         { text: '', is_right: false },
       ],

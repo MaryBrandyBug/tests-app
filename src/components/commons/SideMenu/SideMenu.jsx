@@ -66,7 +66,7 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
       handleUpdate(item.question_type, item.id);
     };
 
-    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} numeration={numeration} />;
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} href={`/test/${id}/edit/${item.id}?type=${item.question_type}`} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} numeration={numeration} />;
   });
 
   return (

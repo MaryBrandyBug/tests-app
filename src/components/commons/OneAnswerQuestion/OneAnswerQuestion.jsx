@@ -15,14 +15,14 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './OneAnswerQuestion.module.scss';
 
-export default function OneAnswerQuestion({ id, closeForm }) {
+export default function OneAnswerQuestion({ id, closeForm, data }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
   const initialValues = {
-    title: '',
+    title: data?.title || '',
     question_type: 'single',
-    answers: [
+    answers: data?.answers || [
       { text: '', is_right: false },
       { text: '', is_right: false },
     ],

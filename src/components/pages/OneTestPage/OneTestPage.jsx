@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { bool } from 'prop-types';
 
 import { deleteQuestion } from '@/redux/store/slicer/testSlicer';
 import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
@@ -19,7 +20,7 @@ import QuestionUpdate from '@/components/commons/QuestionUpdate';
 import s from './OneTestPage.module.scss';
 import { manjari } from '@/styles/fonts';
 
-export default function OneTestPage() {
+export default function OneTestPage({ isCreating, isEditing }) {
   const [openDeleteTestConfirm, setOpenDeleteTestConfirm] = useState(false); // модалка согласие юзера удалить тест
   const [openNumberAnswerForm, setOpenNumberAnswerForm] = useState(false); // форма вопроса с численным ответом
   const [openOneAnswerForm, setOpenOneAnswerForm] = useState(false); //
@@ -27,8 +28,6 @@ export default function OneTestPage() {
   const [openDeleteQuestionConfirm, setOpenDeleteQuestionConfirm] = useState(false); // модалка согласие юзера удалить уже созданный вопрос к тесту
   const [itemToDelete, setItemToDelete] = useState(null); // данные удаляемого вопроса к тесту
   const [questionTypeCreation, setQuestionTypeCreation] = useState(''); // какой тип вопроса мы создаем в данный момент
-  const [questionForUpdateId, setQuestionForUpdateId] = useState(null); // id вопроса для редактирования
-  const [questionTypeUpdate, setQuestionTypeUpdate] = useState('');
 
   const router = useRouter();
   const { id } = router.query;
@@ -73,8 +72,8 @@ export default function OneTestPage() {
     setOpenOneAnswerForm(false);
     setOpenMultiAnswerForm(false);
     router.push({
-      pathname: router.pathname,
-      query: { ...router.query, type: 'number' },
+      pathname: `/test/${id}/create`,
+      query: { type: 'number' },
     }, undefined, { shallow: true });
   };
 
@@ -83,8 +82,8 @@ export default function OneTestPage() {
     setOpenNumberAnswerForm(false);
     setOpenMultiAnswerForm(false);
     router.push({
-      pathname: router.pathname,
-      query: { ...router.query, type: 'single' },
+      pathname: `/test/${id}/create`,
+      query: { type: 'single' },
     }, undefined, { shallow: true });
   };
 
@@ -93,8 +92,8 @@ export default function OneTestPage() {
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
     router.push({
-      pathname: router.pathname,
-      query: { ...router.query, type: 'multiple' },
+      pathname: `/test/${id}/create`,
+      query: { type: 'multiple' },
     }, undefined, { shallow: true });
   };
 
@@ -102,15 +101,6 @@ export default function OneTestPage() {
     setOpenMultiAnswerForm(false);
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
-  };
-
-  const handleUpdate = (questionType, questionId) => {
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, type: questionType },
-    }, undefined, { shallow: true });
-    setQuestionForUpdateId(questionId);
-    setQuestionTypeCreation('');
   };
 
   useEffect(() => {
@@ -168,7 +158,7 @@ export default function OneTestPage() {
       )}
       {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" onClick={closeConfirmation} onSubmit={onRemoveQuestion} closeConfirmation={closeConfirmation} />}
       <div className={`${s.content} ${manjari.className}`}>
-        <SideMenu id={id || null} openConfirmation={openConfirmation} handleUpdate={handleUpdate} />
+        <SideMenu id={id || null} openConfirmation={openConfirmation} />
         <div className={s.titleFormContainer}>
           <form className={s.titleForm} onSubmit={formik.handleSubmit}>
             <InputField type="text" name="title" value={formik.values.title} onChange={formik.handleChange} placeholder="Name your test" maxLength="50" additionalClass={s.testTitleInput} />
@@ -178,13 +168,16 @@ export default function OneTestPage() {
         <div className={s.dropdownMenu}>
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
-        <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} closeForm={closeQuestionForm} />
-        <QuestionUpdate currentQuestionUpdate={questionTypeUpdate} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={questionForUpdateId} closeForm={closeQuestionForm} />
+        {isCreating
+          && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} closeForm={closeQuestionForm} />}
+        {isEditing
+          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} id={id} closeForm={closeQuestionForm} />}
       </div>
     </div>
   );
 }
 
 OneTestPage.propTypes = {
-  // additionalClass: string,
+  isCreating: bool,
+  isEditing: bool,
 };
