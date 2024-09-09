@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { func, object, string } from 'prop-types';
@@ -23,31 +23,6 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-
-  useEffect(() => {
-    // const savedQuestionsItem = store.test.questions?.filter((item) => /* Number(item.id) === Number(question_id) */ console.log(item));
-    // const unsavedQuestions = store.newQuestions.find((test) => test[id]);
-    // const unsavedQuestionsItem = unsavedQuestions[id].find((item) => item.id === question_id);
-    // console.log(store.test.questions, savedQuestionsItem, 1);
-    // if (test[id]) {
-    //   // console.log(test[id].filter((c) => console.log(c.id === question_id)));
-
-    //   return test[id].find((i) => i.id === question_id);
-    // }
-
-    // return '';
-    // });
-    // const question = store.test.questions?.find((item) => item.id === question_id)
-    // || store.newQuestions.find((test) => {
-    //   if (test[id]) {
-    //     return test[id].filter((i) => i.id === question_id);
-    //   }
-
-    //   return '';
-    // });
-
-    // console.log(b, 'newquest');
-  }, [router.isReady]);
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);

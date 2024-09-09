@@ -6,7 +6,7 @@ import Button from '../Button';
 
 import s from './ActionButtons.module.scss';
 
-export default function ActionButtons({ deleteConfirmation, typeSave, saveConfirmation }) {
+export default function ActionButtons({ deleteConfirmation, typeSave = 'button', saveConfirmation }) {
   return (
     <div className={s.root}>
       <Button className={s.saveBtn} type={typeSave} onClick={saveConfirmation}>Save</Button>

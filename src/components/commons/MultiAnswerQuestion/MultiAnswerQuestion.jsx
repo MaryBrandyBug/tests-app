@@ -6,7 +6,7 @@ import { func, string } from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
-import { addQuestion } from '@/redux/store/slicer/testSlicer';
+import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -14,12 +14,14 @@ import TextAnswerCreationForm from '../TextAnswerCreationForm';
 import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
+import { useRouter } from 'next/router';
 
 export default function MultiAnswerQuestion({ id, closeForm, data }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-
-  const dispatch = useDispatch();
 
   const deleteConfirmation = () => {
     setOpenDeleteConfirmation(true);
@@ -31,32 +33,38 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
   };
 
   const onSubmit = async (values, actions) => {
-    setOpenSaveConfirmation(true);
-    const isValid = validationSchema.isValid(values);
-    if (isValid) {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-        },
-        body: JSON.stringify(values),
-      })
-        .then((res) => res.json())
-        .then((res) => dispatch(addQuestion(res)));
-    }
+    // setOpenSaveConfirmation(true);
+    // const isValid = validationSchema.isValid(values);
+    // if (isValid) {
+    //   fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
+    //     method: 'POST',
+    //     credentials: 'include',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+    //     },
+    //     body: JSON.stringify(values),
+    //   })
+    //     .then((res) => res.json())
+    //     .then((res) => dispatch(addQuestion(res)));
+    // }
 
-    closeModal();
-    closeForm();
-    actions.setSubmitting(false);
+    // closeModal();
+    // closeForm();
+    // actions.setSubmitting(false);
+    if (data?.id) {
+      console.log(1);
+    }
+    dispatch(addQuestion({ values, id }));
+
+    router.push(`/test/${id}`);
   };
 
   const formik = useFormik({
     initialValues: {
       title: data?.title || '',
       question_type: 'multiple',
-      answers: data?.answers ||  [
+      answers: data?.answers || [
         { text: '', is_right: false },
         { text: '', is_right: false },
       ],
@@ -68,6 +76,13 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
   const addField = () => {
     const { answers } = formik.values;
     formik.setFieldValue('answers', [...answers, { text: '', is_right: false }]);
+  };
+
+  const saveConfirmation = async () => {
+    const isValid = await validationSchema.isValid(formik.values);
+    if (isValid) {
+      setOpenSaveConfirmation(true);
+    }
   };
 
   const inputs = formik.values.answers.map((item, i) => (
@@ -100,6 +115,7 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
         closeModal={closeModal}
         addField={addField}
         deleteConfirmation={deleteConfirmation}
+        saveConfirmation={saveConfirmation}
         name="title"
         value={formik.values.title}
         onChange={formik.handleChange}
