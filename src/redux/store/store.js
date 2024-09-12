@@ -14,6 +14,7 @@ import userReducer from './slicer/userSlicer';
 import testSlicer from './slicer/testSlicer';
 import librarySlicer from './slicer/librarySlicer';
 import questionsCreationSlicer from './slicer/unsavedQuestionsSlicer';
+import testSaga from '../sagas/testSaga';
 
 const persistConfig = {
   key: 'root',
@@ -34,8 +35,11 @@ const store = configureStore({
     serializableCheck: {
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
-  }),
+  })
+    .concat(sagaMiddleware),
 });
+
+sagaMiddleware.run(testSaga);
 
 export const persistor = persistStore(store);
 export default store;

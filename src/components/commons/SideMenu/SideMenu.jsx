@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import cx from 'classnames';
 
-import { getTest } from '@/redux/store/slicer/testSlicer';
 import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import QuestionMenuItem from '../QuestionMenuItem';
@@ -40,22 +39,13 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
 
   useEffect(() => {
     if (id) {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => dispatch(getTest(data)));
+      dispatch({ type: 'test/fetchTest', id });
     }
-  }, [id]);
+  }, [dispatch, id]);
 
-  const questionList = (arr, numeration = false) => arr?.map((item, i) => { // в аргументах помимо массива лежит булиевое значение numeration, принимающее значение true в том случае, если к списку нам нужна нумерация элементов
+  const questionList = (arr, saved = false) => arr?.map((item, i) => { // в аргументах помимо массива лежит булиевое значение saved, в случае true вопросы можно редактировать
     const handleDelete = () => {
-      if (numeration) {
+      if (saved) {
         openConfirmation(item.id, true);
       }
 
@@ -66,7 +56,7 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
       handleUpdate(item.question_type, item.id);
     };
 
-    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} href={`/test/${id}/edit/${item.id}?type=${item.question_type}`} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} numeration={numeration} />;
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} href={`/test/${id}/edit/${item.id}?type=${item.question_type}`} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} saved={saved} />;
   });
 
   return (
