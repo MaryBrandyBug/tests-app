@@ -42,43 +42,15 @@ export default function OneAnswerQuestion({ id, closeForm, data }) {
   };
 
   const onSubmit = async (values, actions) => {
-    // const isValid = validationSchema.isValid(values);
-    // if (isValid) {
-    // const dataToSend = { // сначала создаем новый item в таблице с вопросами, для этого используем title и question_type, answers отправляем позже, после создания вопроса
-    //   title: values.title,
-    //   question_type: values.question_type,
-    // };
+    const isValid = validationSchema.isValid(values);
 
-    // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, { // сначала создается запись в таблице questions
-    //   method: 'POST',
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-    //   },
-    //   body: JSON.stringify(dataToSend),
-    // })
-    //   .then((res) => res.json())
-    //   .then((question) => {
-    //     dispatch(addQuestion(question));
-    //     values.answers.forEach((answer) => { // проходимся по списку вопросов и отправляем в бд каждый по отдельности в отдельную таблицу с ответами
-    //       fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${question.id}/answers`, {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //           'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-    //         },
-    //         body: JSON.stringify(answer),
-    //       })
-    //         .then((res) => res.json());
-    //     });
-    //   });
-    if (data?.id) {
-      console.log(1);
+    if (isValid) {
+      if (data?.id) {
+        console.log(1);
+      }
+      dispatch(addQuestion({ values, id }));
     }
-    dispatch(addQuestion({ values, id }));
-    // }
+
     router.push(`/test/${id}`);
   };
 

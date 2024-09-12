@@ -7,9 +7,11 @@ import { useRouter } from 'next/router';
 import cx from 'classnames';
 
 import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import { addQuestion } from '@/redux/store/slicer/testSlicer';
 
 import QuestionMenuItem from '../QuestionMenuItem';
 import Button from '../Button';
+import Confirmation from '../Confirmation';
 
 import s from './SideMenu.module.scss';
 
@@ -17,6 +19,7 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
+  const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [unsavedQuestions, setUnsavedQuestions] = useState(null);
 
   const test = useSelector((store) => store.test);
@@ -24,8 +27,55 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
 
   const currentTestNewData = allUnsavedQuestions.find((i) => id in i); // получаем объект со свойством (id) и значением - массивом несохраненных вопросов к ТЕКУЩЕМУ тесту, если этот список существует
 
-  const clearConfirmation = () => {
+  const clearUnsaved = () => {
     dispatch(clearStorage(id));
+  };
+  const saveConfirmation = () => {
+    setOpenSaveConfirmation(true);
+  };
+  const closeModal = () => {
+    setOpenSaveConfirmation(false);
+  };
+
+  const onSubmit = () => {
+    const values = unsavedQuestions.map(({ id: _, ...rest }) => rest);
+
+    values.forEach((item) => {
+      const dataToSend = { // отделяем данные которые пойдут в таблицу questions, ответы на вопросы с несколькими вариантами ответа
+        title: item.title, // добавятся после записи самого вопроса в questions
+        question_type: item.question_type,
+        answer: item.answer || null,
+      };
+
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+        },
+        body: JSON.stringify(dataToSend),
+      })
+        .then((res) => res.json())
+        .then((question) => {
+          dispatch(addQuestion(question));
+          item.answers.forEach((answer) => { // проходимся по списку вопросов и отправляем в бд каждый по отдельности в отдельную таблицу с ответами
+            fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${question.id}/answers`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+              },
+              body: JSON.stringify(answer),
+            })
+              .then((res) => res.json());
+          });
+        });
+    });
+
+    dispatch(clearStorage(id));
+    closeModal();
   };
 
   useEffect(() => {
@@ -61,6 +111,9 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
 
   return (
     <div className={s.root}>
+      { openSaveConfirmation && (
+        <Confirmation header="Do you want to save your question?" onClick={closeModal} onSubmit={onSubmit} />
+      )}
       <div className={cx(s.createdQuestionsContainer, { [s.onlySavedQuestions]: currentTestNewData })}>
         <h2 className={s.header}>Test Questions</h2>
         <div className={s.content}>
@@ -73,8 +126,8 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
           {questionList(unsavedQuestions)}
         </div>
         <div className={s.savingButtonsContainer}>
-          <Button className={s.saveBtn} type="button">Save</Button>
-          <Button className={s.clearBtn} type="button" onClick={clearConfirmation}>Clear</Button>
+          <Button className={s.saveBtn} type="button" onClick={saveConfirmation}>Save</Button>
+          <Button className={s.clearBtn} type="button" onClick={clearUnsaved}>Clear</Button>
         </div>
       </div>
     </div>

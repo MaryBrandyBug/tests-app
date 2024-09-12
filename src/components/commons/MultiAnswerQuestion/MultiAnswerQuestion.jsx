@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { func, string } from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
 import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
@@ -14,7 +15,6 @@ import TextAnswerCreationForm from '../TextAnswerCreationForm';
 import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
-import { useRouter } from 'next/router';
 
 export default function MultiAnswerQuestion({ id, closeForm, data }) {
   const dispatch = useDispatch();
