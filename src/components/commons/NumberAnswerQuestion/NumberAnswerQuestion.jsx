@@ -59,6 +59,10 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
   const formik = useFormik({ initialValues: { title: data?.title || '', answer: data?.answer || '', question_type: 'number' }, onSubmit, validationSchema });
 
   const saveConfirmation = async () => {
+    formik.setTouched({
+      title: true,
+      answer: true,
+    });
     const isValid = await validationSchema.isValid(formik.values);
 
     if (isValid) {

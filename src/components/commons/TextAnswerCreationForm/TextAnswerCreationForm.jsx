@@ -28,6 +28,7 @@ export default function TextAnswerCreationForm({
         maxLength="100"
         additionalClass={s.questionInput}
         textarea
+        onBlur={formik.handleBlur}
       >
         {formik.errors[name] && <ErrorMessage valueKey={name} formik={formik} />}
       </InputField>

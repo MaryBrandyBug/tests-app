@@ -79,6 +79,11 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
   };
 
   const saveConfirmation = async () => {
+    formik.setTouched({
+      title: true,
+      answers: formik.values.answers.map(() => ({ text: true })),
+    });
+
     const isValid = await validationSchema.isValid(formik.values);
     if (isValid) {
       setOpenSaveConfirmation(true);
@@ -101,6 +106,7 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
         onChange={formik.handleChange}
         additionalClass={s.answerInput}
         textarea
+        onBlur={formik.handleBlur}
       >
         {formik.errors.answers && formik.errors.answers[i]
         && <ErrorMessage name="text" valueKey="answers" index={i} formik={formik} />}
