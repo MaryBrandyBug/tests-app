@@ -34,20 +34,21 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
   };
 
   const onSubmit = async (values, actions) => {
-    const isValid = validationSchema.isValid(values);
+    const isValid = await validationSchema.isValid(values);
+
     if (isValid) {
       dispatch(addQuestion({ values, id }));
-      // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
-      //   method: 'POST',
-      //   credentials: 'include',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-      //   },
-      //   body: JSON.stringify(values),
-      // })
-      //   .then((res) => res.json())
-      //   .then((res) => dispatch(addQuestion(res)));
+    // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
+    //   method: 'POST',
+    //   credentials: 'include',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+    //   },
+    //   body: JSON.stringify(values),
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => dispatch(addQuestion(res)));
     }
 
     closeModal();
@@ -59,6 +60,7 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
 
   const saveConfirmation = async () => {
     const isValid = await validationSchema.isValid(formik.values);
+
     if (isValid) {
       setOpenSaveConfirmation(true);
     }
@@ -75,6 +77,7 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
         placeholder={item.placeholder}
         maxLength={item.maxLength}
         additionalClass={s.formInput}
+        onBlur={formik.handleBlur}
       >
         {formik.errors[item.name] && <ErrorMessage valueKey={item.name} formik={formik} />}
       </InputField>

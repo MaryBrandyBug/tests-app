@@ -11,7 +11,7 @@ import autosize from 'autosize';
 import s from './InputField.module.scss';
 
 export default function InputField({
-  type, name, onChange, placeholder, inputFieldName, maxLength, value, additionalClass, textarea = false, children,
+  type, name, onChange, placeholder, inputFieldName, maxLength, value, additionalClass, textarea = false, children, onBlur,
 }) {
   useEffect(() => {
     autosize(document.querySelectorAll('textarea'));
@@ -21,7 +21,7 @@ export default function InputField({
     <div className={s.root}>
       <div className={s.content}>
         <p className={s.inputName}>{inputFieldName}</p>
-        { textarea ? <textarea type={type} name={name} value={value} className={cx(additionalClass, [s.textareaField])} maxLength={maxLength} onChange={onChange} /> : <input type={type} name={name} value={value} className={cx(additionalClass, [s.inputField])} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />}
+        { textarea ? <textarea onBlur={onBlur} type={type} name={name} value={value} className={cx(additionalClass, [s.textareaField])} maxLength={maxLength} onChange={onChange} /> : <input onBlur={onBlur} type={type} name={name} value={value} className={cx(additionalClass, [s.inputField])} placeholder={placeholder} maxLength={maxLength} onChange={onChange} />}
         {children}
       </div>
     </div>
