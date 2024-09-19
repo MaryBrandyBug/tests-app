@@ -170,9 +170,9 @@ export default function OneTestPage({ isCreating, isEditing }) {
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
         {isCreating
-          && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} closeForm={closeQuestionForm} />}
+          && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} handleClose={closeQuestionForm} />}
         {isEditing
-          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} id={id} closeForm={closeQuestionForm} />}
+          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} id={id} handleClose={closeQuestionForm} />}
       </div>
     </div>
   );
