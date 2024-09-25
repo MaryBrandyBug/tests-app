@@ -84,7 +84,8 @@ export default function OneAnswerQuestion({ id, closeForm, data }) {
         id={`answers[${i}]`}
         onChange={formik.handleChange}
         checked={formik.values.answers[i].is_right}
-        additionalClass={s.checkboxStyles}
+        additionalClassContainer={s.checkboxContainer}
+        additionalClassInput={s.checkboxInput}
       />
       <InputField
         type="text"

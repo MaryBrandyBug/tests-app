@@ -2,6 +2,7 @@
 @import '@/styles/colors.scss';
 
 .button {
+  position: relative;
   display: none;
   height: initial;
   width: initial;
@@ -16,7 +17,6 @@
 }
 
 .label:before {
-  position: relative;
   display: inline-block;
   padding: 10px;
   margin-right: 5px;
@@ -31,8 +31,6 @@
 .button:checked + label:after {
   content: '';
   position: absolute;
-  left: 9px;
-  top: 1px;
   display: block;
   width: 6px;
   height: 14px;

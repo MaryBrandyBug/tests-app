@@ -1,0 +1,45 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100px;
+}
+
+.title {
+  font-size: 35px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.inputNumber {
+  padding: 20px;
+  min-width: 200px;
+  min-height: 50px;
+  font-size: 30px;
+  background-color: $lightShadow;
+  border: 2px solid;
+  border-radius: 10px;
+}
+
+.answersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.answerContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 30px;
+}
+
+.checkboxInput:checked + label:after {
+  left: 9px;
+  top: 6px;
+}
+

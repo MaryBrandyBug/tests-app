@@ -30,7 +30,7 @@
   word-wrap: break-word;
 }
 
-.checkboxStyles {
+.checkboxContainer {
   position: absolute;
   left: 20px;
   top: 20px;
@@ -43,4 +43,9 @@
   label:after {
     border-color: $ashLavender;
   }
+}
+
+.checkboxInput:checked + label:after {
+  left: 9px;
+  top: 1px;
 }

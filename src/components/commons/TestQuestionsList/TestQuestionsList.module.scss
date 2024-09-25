@@ -1,0 +1,49 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 50px;
+  min-width: 900px;
+  max-width: 900px;
+  background-color: $semiTransparentBlack;
+  border-radius: 20px;
+  border: 2px solid $yogurtPink;
+}
+
+.testHeader {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 45px;
+}
+
+.listItem {
+  display: flex;
+  gap: 20px;
+}
+
+.itemCount {
+  font-size: 30px;
+}
+
+.btnContainer {
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.finishBtn {
+  width: 200px;
+  height: 60px;
+  font-size: 35px;
+  border-radius: 20px;
+  background-color: $khaki;
+}

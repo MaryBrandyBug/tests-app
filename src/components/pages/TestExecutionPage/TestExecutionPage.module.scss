@@ -1,0 +1,10 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  position: relative;
+  padding: 200px 0 200px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

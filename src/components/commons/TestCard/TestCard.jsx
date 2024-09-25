@@ -23,7 +23,7 @@ export default function TestCard({
         </div>
       </div>
       <div className={s.btnContainer}>
-        <Button href="/" className={s.startBtn}>Start</Button>
+        <Button href={`/test/${id}/run`} className={s.startBtn}>Start</Button>
         {is_admin
         && (
           <Button href={`/test/${id}`} className={s.editBtn}>Edit</Button>

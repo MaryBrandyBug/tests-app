@@ -59,7 +59,7 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
         .then((res) => res.json())
         .then((question) => {
           dispatch(addQuestion(question));
-          item.answers.forEach((answer) => { // проходимся по списку вопросов и отправляем в бд каждый по отдельности в отдельную таблицу с ответами
+          item.answers?.forEach((answer) => { // проходимся по списку вопросов и отправляем в бд каждый по отдельности в отдельную таблицу с ответами
             fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${question.id}/answers`, {
               method: 'POST',
               credentials: 'include',
