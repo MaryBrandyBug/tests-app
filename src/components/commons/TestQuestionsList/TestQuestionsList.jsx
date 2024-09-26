@@ -17,9 +17,9 @@ export default function TestQuestionsList() {
   const { title, questions } = useSelector((store) => store.test);
 
   const questionList = questions?.map((item, i) => (
-    <div className={s.listItem}>
+    <div className={s.listItem} key={item.id}>
       <p className={s.itemCount}>{`${i + 1}.`}</p>
-      <QuestionCard title={item.title} type={item.question_type} answer={item.answer} answers={item.answers} />
+      <QuestionCard questionId={item.id} title={item.title} type={item.question_type} answer={item.answer} answers={item.answers} />
     </div>
   ));
 

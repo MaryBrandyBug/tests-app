@@ -1,0 +1,55 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.root {
+  position: relative;
+  display: flex;
+  gap: 50px;
+}
+
+.radioButton[type=radio] {
+	display: none;
+}
+
+.label {
+  cursor: pointer;
+}
+
+.label::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: 3px solid $steelBlue;
+  border-radius: 50%;
+  content: "";
+  transform: translateY(-50%);
+  transition: border-color 400ms ease;
+}
+
+.label::after {
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  background-color: $steelBlue;
+  border-radius: 50%;
+  content: "";
+  transform: translateY(-50%) scale(0);
+  transition: transform 400ms ease;
+}
+
+.radioButton[type="radio"]:checked + label::before {
+  background-color: $khaki;
+  border-color: $khaki;
+}
+
+.radioButton[type="radio"]:checked + label::after {
+  transform: translateY(-50%) scale(0.55);
+}
+
+.answerText {
+  font-size: 30px;
+}
