@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import QuestionCard from '../QuestionCard';
+import Button from '../Button';
+import Confirmation from '../Confirmation';
 
 import s from './TestQuestionsList.module.scss';
-import Button from '../Button';
 
 export default function TestQuestionsList() {
+  const [openModal, setModalOpen] = useState(false);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -29,12 +32,25 @@ export default function TestQuestionsList() {
     }
   }, [dispatch, id]);
 
+  const handleClick = () => {
+    setModalOpen(true);
+  };
+
+  const closeConfirmation = () => {
+    setModalOpen(false);
+  };
+
+  const getTestResult = () => {
+
+  };
+
   return (
     <div className={s.root}>
+      {openModal && <Confirmation closeConfirmation={closeConfirmation} header="Do you want to finish the test?" onClick={closeConfirmation} />}
       <h2 className={s.testHeader}>{title}</h2>
       {questionList}
       <div className={s.btnContainer}>
-        <Button className={s.finishBtn}>Finish</Button>
+        <Button className={s.finishBtn} onClick={handleClick}>Finish</Button>
       </div>
     </div>
   );
