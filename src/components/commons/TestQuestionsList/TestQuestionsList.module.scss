@@ -2,15 +2,18 @@
 @import '@/styles/colors.scss';
 
 .root {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
   padding: 50px;
   min-width: 900px;
   max-width: 900px;
   background-color: $semiTransparentBlack;
   border-radius: 20px;
   border: 2px solid $yogurtPink;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
 .testHeader {

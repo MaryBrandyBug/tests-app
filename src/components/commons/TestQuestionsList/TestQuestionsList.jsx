@@ -12,6 +12,8 @@ import s from './TestQuestionsList.module.scss';
 
 export default function TestQuestionsList() {
   const [openModal, setModalOpen] = useState(false);
+  const [formValues, setFormValues] = useState({});
+  console.log(formValues);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -19,10 +21,24 @@ export default function TestQuestionsList() {
   const { id } = router.query;
   const { title, questions } = useSelector((store) => store.test);
 
+  const questionChange = (questionId) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [questionId]: '',
+    }));
+  };
+
+  const handleAnswerChange = (questionId, value) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [questionId]: value,
+    }));
+  };
+
   const questionList = questions?.map((item, i) => (
     <div className={s.listItem} key={item.id}>
       <p className={s.itemCount}>{`${i + 1}.`}</p>
-      <QuestionCard questionId={item.id} title={item.title} type={item.question_type} answer={item.answer} answers={item.answers} />
+      <QuestionCard questionId={item.id} title={item.title} handleAnswerChange={handleAnswerChange} questionChange={questionChange} value={formValues[item?.id]} type={item.question_type} answer={item.answer} answers={item.answers} />
     </div>
   ));
 
@@ -48,10 +64,12 @@ export default function TestQuestionsList() {
     <div className={s.root}>
       {openModal && <Confirmation closeConfirmation={closeConfirmation} header="Do you want to finish the test?" onClick={closeConfirmation} />}
       <h2 className={s.testHeader}>{title}</h2>
-      {questionList}
-      <div className={s.btnContainer}>
-        <Button className={s.finishBtn} onClick={handleClick}>Finish</Button>
-      </div>
+      <form className={s.form}>
+        {questionList}
+        <div className={s.btnContainer}>
+          <Button className={s.finishBtn} onClick={handleClick}>Finish</Button>
+        </div>
+      </form>
     </div>
   );
 }
