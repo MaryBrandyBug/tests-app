@@ -1,0 +1,27 @@
+@import '@/styles/mixins.scss';
+@import '@/styles/colors.scss';
+
+.scoreModalContent {
+  padding: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  min-width: 500px;
+}
+
+.scoreModalHeader {
+  text-align: center;
+  font-size: 45px;
+}
+
+.scoreContainer {
+  display: flex;
+  justify-content: center;
+
+  p {
+    font-size: 130px;
+    font-weight: 600;
+    color: $warmPink;
+  }
+}

@@ -14,8 +14,8 @@ export default function Modal({
   header, children, cancelation = false, onClick,
 }) {
   return (
-    <div className={cx([s.root])}>
-      <div className={s.content}>
+    <div className={s.root}>
+      <div className={cx([s.content])}>
         <div className={s.closeBtnContainer}>
           <Button className={s.closeBtn} onClick={onClick}><Image src="/close.svg" alt="close button" width={50} height={50} /></Button>
         </div>

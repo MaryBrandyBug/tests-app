@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import { func } from 'prop-types';
 
 import QuestionCard from '../QuestionCard';
 import Button from '../Button';
@@ -10,10 +11,9 @@ import Confirmation from '../Confirmation';
 
 import s from './TestQuestionsList.module.scss';
 
-export default function TestQuestionsList() {
+export default function TestQuestionsList({ manageTotalScoreModal }) {
   const [openModal, setModalOpen] = useState(false);
   const [formValues, setFormValues] = useState({});
-  console.log(formValues);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -56,20 +56,46 @@ export default function TestQuestionsList() {
     setModalOpen(false);
   };
 
-  const getTestResult = () => {
+  const onFinish = () => {
+    let userScore = 0;
+    const totalScore = questions.length;
 
+    questions.forEach((question) => {
+      const questionId = question.id;
+      const value = formValues[questionId];
+
+      if (value.length >= 0 && question.answer === Number(value)) {
+        userScore += 1;
+      } else if (Object.keys(value).length > 0) {
+        const trueAnswersId = question.answers
+          .filter((item) => item.is_right)
+          .map((item) => item.id);
+        const userAnswerIsCorrect = trueAnswersId.every((key) => key in value);
+
+        if (userAnswerIsCorrect) {
+          userScore += 1;
+        }
+      }
+    });
+
+    setModalOpen(false);
+    manageTotalScoreModal(totalScore, userScore);
   };
 
   return (
     <div className={s.root}>
-      {openModal && <Confirmation closeConfirmation={closeConfirmation} header="Do you want to finish the test?" onClick={closeConfirmation} />}
+      {openModal && <Confirmation closeConfirmation={closeConfirmation} onSubmit={onFinish} header="Do you want to finish the test?" onClick={closeConfirmation} />}
       <h2 className={s.testHeader}>{title}</h2>
       <form className={s.form}>
         {questionList}
         <div className={s.btnContainer}>
-          <Button className={s.finishBtn} onClick={handleClick}>Finish</Button>
+          <Button type="button" className={s.finishBtn} onClick={handleClick}>Finish</Button>
         </div>
       </form>
     </div>
   );
 }
+
+TestQuestionsList.propTypes = {
+  manageTotalScoreModal: func,
+};
