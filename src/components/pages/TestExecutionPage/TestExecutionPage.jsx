@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import TestQuestionsList from '@/components/commons/TestQuestionsList';
@@ -14,6 +14,21 @@ export default function TestExecutionPage() {
   const [userScore, setUserScore] = useState(0);
 
   const router = useRouter();
+
+  const confirmUnload = (e) => {
+    const acceptance = 'Are you sure you want to reload page?';
+    e.preventDefault();
+    e.returnValue = acceptance;
+    return acceptance;
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', confirmUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', confirmUnload);
+    };
+  }, [router]);
 
   const manageTotalScoreModal = (totalPoints, userResult) => {
     setTotalScoreModal(!totalScoreModal);
