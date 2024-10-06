@@ -9,40 +9,8 @@
   width: 100%;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  height: 70px;
-}
-
-.logo {
-  left: 40px;
-  font-size: 60px;
-  color: $standartBlack;
-}
-
 .signInLink {
   font-size: 40px;
 }
 
-@include _780 {
-  .header {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .signInLink {
-    font-size: 30px;
-  }
-}
-
-@include _360 {
-  .header {
-    p {
-    font-size: 40px;
-    }
-  }
-}
 

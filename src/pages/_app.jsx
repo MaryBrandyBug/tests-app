@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { func } from 'prop-types';
 
+import Header from '@/components/commons/Header';
 import RootLayout from './layout';
 
 import '../styles/reset.scss';
@@ -14,6 +15,7 @@ export default function MyApp({ Component }) {
         <meta name="description" content="Create your own tests" />
       </Head>
       <main>
+        <Header />
         <Component />
       </main>
     </RootLayout>
