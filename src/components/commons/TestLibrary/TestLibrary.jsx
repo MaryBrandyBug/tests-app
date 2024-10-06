@@ -16,12 +16,32 @@ export default function TestLibrary({ is_admin }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sortTumblerSwitched, setSortTumblerSwitched] = useState(false);
+  const [dateSorting, setDateSorting] = useState('created_at_desc');
+
   const router = useRouter();
   const { query } = router;
 
+  const switchSorting = () => {
+    if (dateSorting === 'created_at_desc') {
+      setDateSorting('created_at_asc');
+      router.push({
+        pathname: router.pathname,
+        query: { ...query, sort: 'old' },
+      }, undefined, { shallow: true });
+    }
+    if (dateSorting === 'created_at_asc') {
+      setDateSorting('created_at_desc');
+      const { sort: removedParam, ...newQuery } = query;
+      router.replace({
+        pathname: router.pathname,
+        query: newQuery,
+      }, undefined, { shallow: true });
+    }
+  };
+
   const fetchTests = async (page) => {
     try {
-      fetch(`https://interns-test-fe.snp.agency/api/v1/tests?page=${page}`, {
+      fetch(`https://interns-test-fe.snp.agency/api/v1/tests?page=${page}&sort=${dateSorting}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -53,8 +73,12 @@ export default function TestLibrary({ is_admin }) {
 
   useEffect(() => {
     if (router.isReady) {
-      const initialPage = parseInt(query?.page) || 1;
+      const initialPage = parseInt(query?.page, 10) || 1;
       setCurrentPage(initialPage);
+      if (query.sort === 'old') {
+        setDateSorting('created_at_asc');
+        setSortTumblerSwitched(true);
+      }
     }
   }, [router.isReady]);
 
@@ -62,20 +86,23 @@ export default function TestLibrary({ is_admin }) {
     if (router.isReady) {
       fetchTests(currentPage);
     }
-  }, [currentPage, router.isReady, totalPages]);
+  }, [currentPage, router.isReady, totalPages, dateSorting]);
 
   const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} />);
 
-  const onSwitch = () => { setSortTumblerSwitched(!sortTumblerSwitched); };
+  const onSwitch = () => {
+    setSortTumblerSwitched(!sortTumblerSwitched);
+    switchSorting();
+  };
 
   return (
     <div className={s.root}>
       <div className={s.dateSortContainer}>
-        <p>OLDEST</p>
+        <p>NEWEST</p>
         <Button className={cx(s.tumblerContainer, { [s.tumblerRightPosition]: sortTumblerSwitched })} onClick={onSwitch}>
           <div className={s.tumbler} />
         </Button>
-        <p>NEWEST</p>
+        <p>OLDEST</p>
       </div>
       <div className={s.content}>
         {testLibrary}
