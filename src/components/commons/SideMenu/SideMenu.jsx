@@ -112,7 +112,7 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
   return (
     <div className={s.root}>
       { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onClick={closeModal} onSubmit={onSubmit} />
+        <Confirmation header="Do you want to save your question?" closeConfirmation={closeModal} onClick={onSubmit} type="submit" />
       )}
       <div className={cx(s.createdQuestionsContainer, { [s.onlySavedQuestions]: currentTestNewData })}>
         <h2 className={s.header}>Test Questions</h2>

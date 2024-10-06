@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { func, object, string } from 'prop-types';
-import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import inputAttributes from './data';
@@ -19,7 +18,6 @@ import s from './NumberAnswerQuestion.module.scss';
 
 export default function NumberAnswerQuestion({ id, closeForm, data }) {
   const dispatch = useDispatch();
-  const router = useRouter();
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
@@ -92,7 +90,7 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
     <div className={s.root}>
       <form className={s.form}>
         { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onSubmit={formik.handleSubmit} onClick={closeModal} />
+        <Confirmation header="Do you want to save your question?" onClick={formik.handleSubmit} closeConfirmation={closeModal} type="submit" />
         )}
         {inputFields}
         <ActionButtons deleteConfirmation={deleteConfirmation} saveConfirmation={saveConfirmation} typeSave="button" />

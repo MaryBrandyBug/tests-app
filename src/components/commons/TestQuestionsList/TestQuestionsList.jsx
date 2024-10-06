@@ -84,7 +84,7 @@ export default function TestQuestionsList({ manageTotalScoreModal }) {
 
   return (
     <div className={s.root}>
-      {openModal && <Confirmation closeConfirmation={closeConfirmation} onSubmit={onFinish} header="Do you want to finish the test?" onClick={closeConfirmation} />}
+      {openModal && <Confirmation closeConfirmation={closeConfirmation} onClick={onFinish} header="Do you want to finish the test?" />}
       <h2 className={s.testHeader}>{title}</h2>
       <form className={s.form}>
         {questionList}

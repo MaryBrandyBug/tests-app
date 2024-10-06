@@ -18,7 +18,7 @@ export default function TextAnswerCreationForm({
   return (
     <form className={s.root} onSubmit={onSubmit}>
       { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onClick={closeModal} onSubmit={onSubmit} />
+        <Confirmation header="Do you want to save your question?" closeConfirmation={closeModal} onClickt={onSubmit} type="submit" />
       )}
       <InputField
         name={name}

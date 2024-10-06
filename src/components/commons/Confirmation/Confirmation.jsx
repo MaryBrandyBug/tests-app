@@ -8,13 +8,13 @@ import Modal from '../Modal';
 import s from './Confirmation.module.scss';
 
 export default function Confirmation({
-  header, onClick, onSubmit, closeConfirmation,
+  header, onClick, closeConfirmation, type = 'button',
 }) {
   return (
     <Modal header={header} onClick={closeConfirmation}>
       <div className={s.confirmBtnContainer}>
-        <Button type="button" onClick={onSubmit} className={s.confirmBtn}>Yes</Button>
-        <Button onClick={onClick} className={s.notConfirmBtn}>No</Button>
+        <Button type={type} onClick={onClick} className={s.confirmBtn}>Yes</Button>
+        <Button onClick={closeConfirmation} className={s.notConfirmBtn}>No</Button>
       </div>
     </Modal>
   );
@@ -23,6 +23,6 @@ export default function Confirmation({
 Confirmation.propTypes = {
   header: string,
   onClick: func,
-  onSubmit: func,
   closeConfirmation: func,
+  type: string,
 };

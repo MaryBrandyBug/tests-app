@@ -155,9 +155,9 @@ export default function OneTestPage({ isCreating, isEditing }) {
   return (
     <div className={s.root}>
       { openDeleteTestConfirm && (
-        <Confirmation header="Are you sure you want to delete this test?" onSubmit={removeTest} onClick={closeConfirmation} closeConfirmation={closeConfirmation} />
+        <Confirmation header="Are you sure you want to delete this test?" onClick={removeTest} closeConfirmation={closeConfirmation} type="submit" />
       )}
-      {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" onClick={closeConfirmation} onSubmit={onRemoveQuestion} closeConfirmation={closeConfirmation} />}
+      {openDeleteQuestionConfirm && <Confirmation header="Are you sure you want to delete the question?" closeConfirmation={closeConfirmation} onClick={onRemoveQuestion} type="submit" />}
       <div className={`${s.content} ${manjari.className}`}>
         <SideMenu id={id || null} openConfirmation={openConfirmation} />
         <div className={s.titleFormContainer}>

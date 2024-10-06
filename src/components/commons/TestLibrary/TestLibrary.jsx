@@ -11,7 +11,7 @@ import Button from '../Button';
 
 import s from './TestLibrary.module.scss';
 
-export default function TestLibrary({ is_admin }) {
+export default function TestLibrary({ is_admin, onTestStarting }) {
   const [tests, setTests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -36,6 +36,12 @@ export default function TestLibrary({ is_admin }) {
         pathname: router.pathname,
         query: newQuery,
       }, undefined, { shallow: true });
+    }
+  };
+
+  const handleStartTest = (e, id) => {
+    if (e.target.tagName !== 'button') {
+      onTestStarting(id);
     }
   };
 
@@ -88,7 +94,7 @@ export default function TestLibrary({ is_admin }) {
     }
   }, [currentPage, router.isReady, totalPages, dateSorting]);
 
-  const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} />);
+  const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} onClick={handleStartTest} />);
 
   const onSwitch = () => {
     setSortTumblerSwitched(!sortTumblerSwitched);

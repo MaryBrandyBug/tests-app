@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import { getUser, deleteUser } from '@/redux/store/slicer/userSlicer';
 import { getAllTests } from '@/redux/store/slicer/librarySlicer';
@@ -11,14 +12,19 @@ import Logo from '@/components/commons/Logo';
 import Modal from '@/components/commons/Modal';
 import AddTestForm from '@/components/commons/AddTestForm';
 import TestLibrary from '@/components/commons/TestLibrary';
+import Confirmation from '@/components/commons/Confirmation';
 
 import s from './MainPage.module.scss';
 import { yeseva } from '@/styles/fonts';
 
 export default function MainPage() {
   const [openTestAdding, setTestAdding] = useState(false);
+  const [testStartConfirmModal, setTestStartConfirmModal] = useState(false);
+  const [testRunId, setTestRunId] = useState('');
 
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const user = useSelector((state) => state.user);
   const tests = useSelector((state) => state.library);
 
@@ -26,8 +32,18 @@ export default function MainPage() {
     setTestAdding(true);
   };
 
+  const testStarting = (testId) => {
+    setTestStartConfirmModal(true);
+    setTestRunId(testId);
+  };
+
   const closeModal = () => {
     if (openTestAdding) setTestAdding(false);
+    if (testStartConfirmModal) setTestStartConfirmModal(false);
+  };
+
+  const goToTest = () => {
+    router.push(`/test/${testRunId}/run`);
   };
 
   useEffect(() => {
@@ -87,12 +103,15 @@ export default function MainPage() {
           <AddTestForm />
         </Modal>
       )}
+      {testStartConfirmModal && (
+        <Confirmation header="Do you want to start the test?" closeConfirmation={closeModal} onClick={goToTest} />
+      )}
       {user.is_admin && (
         <div className={s.addTestLinkContainer}>
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      <TestLibrary tests={tests} is_admin={user.is_admin} />
+      <TestLibrary tests={tests} is_admin={user.is_admin} onTestStarting={testStarting} />
     </div>
   );
 }

@@ -1,16 +1,22 @@
 'use client';
 
-import { bool, number, string } from 'prop-types';
+import {
+  bool, func, number, string,
+} from 'prop-types';
 
 import Button from '../Button';
 
 import s from './TestCard.module.scss';
 
 export default function TestCard({
-  title, questionNumber, is_admin, id,
+  title, questionNumber, is_admin, id, onClick,
 }) {
+  const runTest = (e) => {
+    onClick(e, id);
+  };
+
   return (
-    <div className={`${s.root}`}>
+    <div className={`${s.root}`} onClick={runTest}>
       <div className={s.content}>
         <div className={s.title}>
           <p>{title}</p>
@@ -23,7 +29,6 @@ export default function TestCard({
         </div>
       </div>
       <div className={s.btnContainer}>
-        <Button href={`/test/${id}/run`} className={s.startBtn}>Start</Button>
         {is_admin
         && (
           <Button href={`/test/${id}`} className={s.editBtn}>Edit</Button>
@@ -38,4 +43,5 @@ TestCard.propTypes = {
   questionNumber: number,
   is_admin: bool,
   id: number,
+  onClick: func,
 };
