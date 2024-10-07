@@ -46,28 +46,33 @@ export default function MainPage() {
   };
 
   useEffect(() => {
-    fetch('https://interns-test-fe.snp.agency/api/v1/users/current', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => data.id && dispatch(getUser(data)));
+    if (user.username) {
+      fetch('https://interns-test-fe.snp.agency/api/v1/users/current', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => data.id && dispatch(getUser(data)));
 
-    fetch('https://interns-test-fe.snp.agency/api/v1/tests', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => dispatch(getAllTests(data)));
-  }, []);
+      fetch('https://interns-test-fe.snp.agency/api/v1/tests', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => dispatch(getAllTests(data)));
+    }
+    if (!user.username) {
+      router.push('/signin');
+    }
+  }, [user.username]);
 
   return (
     <div className={s.root}>
@@ -84,7 +89,7 @@ export default function MainPage() {
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      <TestLibrary tests={tests} is_admin={user.is_admin} onTestStarting={testStarting} />
+      {user.username && <TestLibrary tests={tests} is_admin={user.is_admin} onTestStarting={testStarting} />}
     </div>
   );
 }

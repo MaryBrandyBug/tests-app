@@ -15,6 +15,7 @@ import testSlicer from './slicer/testSlicer';
 import librarySlicer from './slicer/librarySlicer';
 import questionsCreationSlicer from './slicer/unsavedQuestionsSlicer';
 import testSaga from '../sagas/testSaga';
+import userSaga from '../sagas/userSaga';
 
 const persistConfig = {
   key: 'root',
@@ -39,7 +40,7 @@ const store = configureStore({
     .concat(sagaMiddleware),
 });
 
-sagaMiddleware.run(testSaga);
+sagaMiddleware.run(testSaga, userSaga);
 
 export const persistor = persistStore(store);
 export default store;

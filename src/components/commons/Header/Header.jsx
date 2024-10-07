@@ -31,15 +31,11 @@ export default function Header() {
   return (
     <div className={s.root}>
       <Logo />
-      { user.id ? (
+      { user.id
+        && (
         <div className={s.logoutLinkContainer}>
           <Button onClick={handleLogout} className={`${s.signInLink} ${yeseva.className}`}>Log out</Button>
         </div>
-      )
-        : (
-          <div className={s.authLinkContainer}>
-            <Button href="/signin" className={`${s.signInLink} ${yeseva.className}`}>Sign In</Button>
-          </div>
         )}
     </div>
   );

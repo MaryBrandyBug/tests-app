@@ -47,7 +47,7 @@ export default function SignInForm() {
       </div>
       <form className={s.form} onSubmit={formik.handleSubmit}>
         <InputField type="text" name="username" value={formik.values.username} onChange={formik.handleChange} placeholder="Enter your username" maxLength="15" additionalClass={s.formInput} />
-        <InputField type="text" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Enter your password" maxLength="15" additionalClass={s.formInput} />
+        <InputField type="password" name="password" value={formik.values.password} onChange={formik.handleChange} placeholder="Enter your password" maxLength="15" additionalClass={s.formInput} />
         <div className={s.btnContainer}>
           <Button type="submit" className={s.enterBtn}>Enter</Button>
         </div>

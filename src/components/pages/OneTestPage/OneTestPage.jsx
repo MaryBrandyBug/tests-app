@@ -133,16 +133,6 @@ export default function OneTestPage({ isCreating, isEditing }) {
 
   const onRemoveQuestion = async () => {
     if (itemToDelete.saved) {
-      // fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${itemToDelete.id}`, {
-      //   method: 'DELETE',
-      //   credentials: 'include',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-      //   },
-      // })
-      //   .then((res) => res.json())
-      //   .then(() => dispatch(deleteQuestion(itemToDelete.id)));
       dispatch({ type: 'test/deleteQuestion', id, questionId: itemToDelete.id });
 
       setOpenDeleteQuestionConfirm(false);
