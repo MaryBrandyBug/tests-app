@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { bool } from 'prop-types';
 
-import { deleteQuestion } from '@/redux/store/slicer/testSlicer';
 import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 
 import InputField from '@/components/commons/InputField';

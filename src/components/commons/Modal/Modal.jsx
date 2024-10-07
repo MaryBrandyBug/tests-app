@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import {
   any, bool, func, string,
 } from 'prop-types';
@@ -13,9 +14,34 @@ import s from './Modal.module.scss';
 export default function Modal({
   header, children, cancelation = false, onClick,
 }) {
+  const handleClickOutside = () => {
+    onClick();
+  };
+
+  const useOutsideClick = (callback) => {
+    const ref = useRef();
+
+    useEffect(() => {
+      const handleClick = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          callback();
+        }
+      };
+      document.addEventListener('click', handleClick, true);
+
+      return () => {
+        document.removeEventListener('click', handleClick, true);
+      };
+    }, [ref]);
+
+    return ref;
+  };
+
+  const ref = useOutsideClick(handleClickOutside);
+
   return (
     <div className={s.root}>
-      <div className={cx([s.content])}>
+      <div className={cx([s.content])} ref={ref}>
         <div className={s.closeBtnContainer}>
           <Button className={s.closeBtn} onClick={onClick}><Image src="/close.svg" alt="close button" width={50} height={50} /></Button>
         </div>
