@@ -10,6 +10,7 @@ import Pagination from '../Pagination';
 import Button from '../Button';
 
 import s from './TestLibrary.module.scss';
+import SearchField from '../SearchField';
 
 export default function TestLibrary({ is_admin, onTestStarting }) {
   const [tests, setTests] = useState([]);
@@ -103,6 +104,7 @@ export default function TestLibrary({ is_admin, onTestStarting }) {
 
   return (
     <div className={s.root}>
+      <SearchField />
       <div className={s.dateSortContainer}>
         <p>NEWEST</p>
         <Button className={cx(s.tumblerContainer, { [s.tumblerRightPosition]: sortTumblerSwitched })} onClick={onSwitch}>
