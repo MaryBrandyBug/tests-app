@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { func } from 'prop-types';
 
+import useModal from '@/hooks/useModal';
+
 import QuestionCard from '../QuestionCard';
 import Button from '../Button';
 import Confirmation from '../Confirmation';
@@ -81,6 +83,8 @@ export default function TestQuestionsList({ manageTotalScoreModal }) {
     setModalOpen(false);
     manageTotalScoreModal(totalScore, userScore);
   };
+
+  useModal(openModal);
 
   return (
     <div className={s.root}>

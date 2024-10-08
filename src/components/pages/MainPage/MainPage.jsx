@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import { getUser } from '@/redux/store/slicer/userSlicer';
 import { getAllTests } from '@/redux/store/slicer/librarySlicer';
+import useModal from '@/hooks/useModal';
 
 import Button from '@/components/commons/Button';
 import Modal from '@/components/commons/Modal';
@@ -73,6 +74,8 @@ export default function MainPage() {
       router.push('/signin');
     }
   }, [user.username]);
+
+  useModal(openTestAdding || testStartConfirmModal);
 
   return (
     <div className={s.root}>

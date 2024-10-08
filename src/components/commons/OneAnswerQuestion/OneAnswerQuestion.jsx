@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import useModal from '@/hooks/useModal';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -101,6 +102,8 @@ export default function OneAnswerQuestion({ id, closeForm, data }) {
       </InputField>
     </div>
   ));
+
+  useModal(openDeleteConfirmation || openSaveConfirmation);
 
   return (
     <div className={s.root}>

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
 import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import useModal from '@/hooks/useModal';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -114,6 +115,8 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
       </InputField>
     </div>
   ));
+
+  useModal(openSaveConfirmation || openDeleteConfirmation);
 
   return (
     <div className={s.root}>

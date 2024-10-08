@@ -8,6 +8,7 @@ import { func, object, string } from 'prop-types';
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import inputAttributes from './data';
 import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import useModal from '@/hooks/useModal';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
@@ -85,6 +86,8 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
       </InputField>
     </div>
   ));
+
+  useModal(openDeleteConfirmation || openSaveConfirmation);
 
   return (
     <div className={s.root}>

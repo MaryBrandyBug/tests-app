@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
+import useModal from '@/hooks/useModal';
+
 import TestQuestionsList from '@/components/commons/TestQuestionsList';
 import TestScoreModal from '@/components/commons/TestScoreModal';
 
@@ -39,6 +41,8 @@ export default function TestExecutionPage() {
   const onClose = () => {
     router.push('/');
   };
+
+  useModal(totalScoreModal);
 
   return (
     <div className={s.root}>

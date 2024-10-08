@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { bool } from 'prop-types';
 
 import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import useModal from '@/hooks/useModal';
 
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
@@ -140,6 +141,8 @@ export default function OneTestPage({ isCreating, isEditing }) {
     dispatch(removeQuestion(itemToDelete.id));
     setOpenDeleteQuestionConfirm(false);
   };
+
+  useModal(openDeleteTestConfirm || openDeleteQuestionConfirm);
 
   return (
     <div className={s.root}>
