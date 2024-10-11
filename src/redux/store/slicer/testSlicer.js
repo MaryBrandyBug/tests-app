@@ -19,10 +19,20 @@ const testSlice = createSlice({
     addQuestion(state, action) {
       state.questions.push(action.payload);
     },
+    editQuestion(state, action) {
+      const updatedQuestion = action.payload;
+      return {
+        ...state,
+        questions: state.questions.map((item) => {
+          if (item.id === updatedQuestion.id) return updatedQuestion;
+          return item;
+        }),
+      };
+    },
   },
 });
 
 export const {
-  getTest, deleteQuestion, addQuestion,
+  getTest, deleteQuestion, addQuestion, editQuestion,
 } = testSlice.actions;
 export default testSlice.reducer;

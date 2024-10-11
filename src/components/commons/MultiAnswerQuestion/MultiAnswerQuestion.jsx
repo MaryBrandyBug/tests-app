@@ -2,13 +2,13 @@
 
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { func, string } from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
-import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import { addUnsavedQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
+import isAnswerUpdated from '@/utils/isAnswerUpdated';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -17,9 +17,13 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './MultiAnswerQuestion.module.scss';
 
-export default function MultiAnswerQuestion({ id, closeForm, data }) {
+export default function MultiAnswerQuestion() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const store = useSelector((state) => state?.test.questions);
+
+  const { questionId, id } = router.query;
+  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
@@ -33,39 +37,74 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
-  const onSubmit = async (values, actions) => {
-    // setOpenSaveConfirmation(true);
-    // const isValid = validationSchema.isValid(values);
-    // if (isValid) {
-    //   fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
-    //     method: 'POST',
-    //     credentials: 'include',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-    //     },
-    //     body: JSON.stringify(values),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((res) => dispatch(addQuestion(res)));
-    // }
+  const onSubmit = async (values) => {
+    if (questionId) {
+      const { title, answers } = currentQuestionData;
 
-    // closeModal();
-    // closeForm();
-    // actions.setSubmitting(false);
-    if (data?.id) {
-      console.log(1);
+      if (values.title !== title) {
+        const dataToSend = {
+          title: values.title,
+          question_type: values.question_type,
+        };
+
+        fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${questionId}`, {
+          method: 'PATCH',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+          },
+          body: JSON.stringify(dataToSend),
+        });
+      }
+
+      values.answers.forEach((item) => {
+        const answerId = item.id;
+        const oldAnswer = answers.find((answer) => answer.id === answerId) || '';
+
+        if (oldAnswer) { // проверяем существует ли данный вариант ответа в БД
+          const updatesCheck = isAnswerUpdated(oldAnswer, item); // проверяем есть ли изменения в текущем варианте ответа
+
+          if (updatesCheck) { // если изменения есть, отправляем их в БД
+            fetch(`https://interns-test-fe.snp.agency/api/v1/answers/${answerId}`, {
+              method: 'PATCH',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+              },
+              body: JSON.stringify(item),
+            });
+          }
+        }
+
+        if (!oldAnswer) { // если такой вариант ответа в БД отсутствует, создаем
+          fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${questionId}/answers`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+            },
+            body: JSON.stringify(item),
+          });
+        }
+      });
     }
-    dispatch(addQuestion({ values, id }));
 
-    router.push(`/test/${id}`);
+    if (!questionId) {
+      dispatch(addUnsavedQuestion({ values, id }));
+    }
+
+    router.push(`/editing/${id}`);
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: data?.title || '',
+      title: currentQuestionData.title || '',
       question_type: 'multiple',
-      answers: data?.answers || [
+      answers: currentQuestionData?.answers || [
         { text: '', is_right: false },
         { text: '', is_right: false },
       ],
@@ -138,8 +177,3 @@ export default function MultiAnswerQuestion({ id, closeForm, data }) {
     </div>
   );
 }
-
-MultiAnswerQuestion.propTypes = {
-  id: string,
-  closeForm: func,
-};

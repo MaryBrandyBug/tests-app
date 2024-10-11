@@ -1,7 +1,7 @@
 'use client';
 
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { bool } from 'prop-types';
 
 import MultiAnswerQuestion from '../MultiAnswerQuestion';
 import NumberAnswerQuestion from '../NumberAnswerQuestion';
@@ -9,18 +9,19 @@ import OneAnswerQuestion from '../OneAnswerQuestion';
 
 import s from './QuestionUpdate.module.scss';
 
-export default function QuestionUpdate({ handleClose }) {
+export default function QuestionUpdate({ questionFormType }) {
   const router = useRouter();
-  const { questionId, type } = router.query;
-
-  const store = useSelector((state) => state.test.questions);
-  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
+  const { type } = router.query;
 
   return (
     <div className={s.root}>
-      {currentQuestionData && type === 'number' && (<NumberAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
-      {currentQuestionData && type === 'single' && (<OneAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
-      {currentQuestionData && type === 'multiple' && (<MultiAnswerQuestion id={questionId} data={currentQuestionData} closeForm={handleClose} />)}
+      {type === 'number' && questionFormType && (<NumberAnswerQuestion />)}
+      {type === 'single' && questionFormType && (<OneAnswerQuestion />)}
+      {type === 'multiple' && questionFormType && (<MultiAnswerQuestion />)}
     </div>
   );
 }
+
+QuestionUpdate.propTypes = {
+  questionFormType: bool,
+};

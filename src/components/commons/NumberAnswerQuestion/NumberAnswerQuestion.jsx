@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { func, object, string } from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import inputAttributes from './data';
-import { addQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import { addUnsavedQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
 
 import Confirmation from '../Confirmation';
@@ -17,8 +17,13 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
-export default function NumberAnswerQuestion({ id, closeForm, data }) {
+export default function NumberAnswerQuestion() {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const store = useSelector((state) => state?.test.questions);
+
+  const { questionId, id } = router.query;
+  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
@@ -32,30 +37,29 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
     if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
-  const onSubmit = async (values, actions) => {
-    const isValid = await validationSchema.isValid(values);
-
-    if (isValid) {
-      dispatch(addQuestion({ values, id }));
-    // fetch(`https://interns-test-fe.snp.agency/api/v1/tests/${Number(id)}/questions`, {
-    //   method: 'POST',
-    //   credentials: 'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
-    //   },
-    //   body: JSON.stringify(values),
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => dispatch(addQuestion(res)));
+  const onSubmit = async (values) => {
+    if (questionId) {
+      await fetch(`https://interns-test-fe.snp.agency/api/v1/questions/${questionId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+        },
+        body: JSON.stringify(values),
+      });
     }
 
-    closeModal();
-    closeForm();
-    actions.setSubmitting(false);
+    if (!questionId) {
+      dispatch(addUnsavedQuestion({ values }));
+    }
+
+    router.push(`/editing/${id}`);
   };
 
-  const formik = useFormik({ initialValues: { title: data?.title || '', answer: data?.answer || '', question_type: 'number' }, onSubmit, validationSchema });
+  const formik = useFormik({
+    enableReinitialize: true, initialValues: { title: currentQuestionData?.title || '', answer: currentQuestionData?.answer || '', question_type: 'number' }, onSubmit, validationSchema,
+  });
 
   const saveConfirmation = async () => {
     formik.setTouched({
@@ -91,9 +95,9 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
 
   return (
     <div className={s.root}>
-      <form className={s.form}>
+      <form className={s.form} onSubmit={formik.handleSubmit}>
         { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" onClick={formik.handleSubmit} closeConfirmation={closeModal} type="submit" />
+        <Confirmation header="Do you want to save your question?" onClick={formik.handleSubmit} closeConfirmation={closeModal} type="button" />
         )}
         {inputFields}
         <ActionButtons deleteConfirmation={deleteConfirmation} saveConfirmation={saveConfirmation} typeSave="button" />
@@ -101,9 +105,3 @@ export default function NumberAnswerQuestion({ id, closeForm, data }) {
     </div>
   );
 }
-
-NumberAnswerQuestion.propTypes = {
-  id: string,
-  closeForm: func,
-  data: object,
-};

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { bool } from 'prop-types';
 
-import { removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
+import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
 
 import InputField from '@/components/commons/InputField';
@@ -72,7 +72,7 @@ export default function OneTestPage({ isCreating, isEditing }) {
     setOpenOneAnswerForm(false);
     setOpenMultiAnswerForm(false);
     router.push({
-      pathname: `/test/${id}/create`,
+      pathname: `/editing/${id}/create`,
       query: { type: 'number' },
     }, undefined, { shallow: true });
   };
@@ -82,7 +82,7 @@ export default function OneTestPage({ isCreating, isEditing }) {
     setOpenNumberAnswerForm(false);
     setOpenMultiAnswerForm(false);
     router.push({
-      pathname: `/test/${id}/create`,
+      pathname: `/editing/${id}/create`,
       query: { type: 'single' },
     }, undefined, { shallow: true });
   };
@@ -92,7 +92,7 @@ export default function OneTestPage({ isCreating, isEditing }) {
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
     router.push({
-      pathname: `/test/${id}/create`,
+      pathname: `/editing/${id}/create`,
       query: { type: 'multiple' },
     }, undefined, { shallow: true });
   };
@@ -142,6 +142,20 @@ export default function OneTestPage({ isCreating, isEditing }) {
     setOpenDeleteQuestionConfirm(false);
   };
 
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      if (!url.startsWith(`/editing/${id}`)) {
+        dispatch(clearStorage(id));
+      }
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router, id]);
+
   useModal(openDeleteTestConfirm || openDeleteQuestionConfirm);
 
   return (
@@ -164,7 +178,7 @@ export default function OneTestPage({ isCreating, isEditing }) {
         {isCreating
           && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} handleClose={closeQuestionForm} />}
         {isEditing
-          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} id={id} handleClose={closeQuestionForm} />}
+          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} handleClose={closeQuestionForm} />}
       </div>
     </div>
   );

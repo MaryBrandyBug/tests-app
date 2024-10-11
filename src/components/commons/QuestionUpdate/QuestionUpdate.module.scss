@@ -1,3 +1,7 @@
 @import '@/styles/mixins.scss';
 @import '@/styles/colors.scss';
 
+.root {
+  padding-top: 200px;
+  display: flex;
+}

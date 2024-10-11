@@ -25,10 +25,8 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
   const test = useSelector((store) => store.test);
   const allUnsavedQuestions = useSelector((store) => store.newQuestions); // получаем список ВСЕХ несохраненных вопросов ко ВСЕМ тестам
 
-  const currentTestNewData = allUnsavedQuestions.find((i) => id in i); // получаем объект со свойством (id) и значением - массивом несохраненных вопросов к ТЕКУЩЕМУ тесту, если этот список существует
-
   const clearUnsaved = () => {
-    dispatch(clearStorage(id));
+    dispatch(clearStorage());
   };
   const saveConfirmation = () => {
     setOpenSaveConfirmation(true);
@@ -74,16 +72,15 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
         });
     });
 
-    dispatch(clearStorage(id));
+    dispatch(clearStorage());
     closeModal();
   };
 
   useEffect(() => {
-    if (router.isReady && currentTestNewData) {
-      const newDataList = currentTestNewData[id]; // получаем список несохраненных вопросов к ТЕКУЩЕМУ тесту
-      setUnsavedQuestions(newDataList); // и записываем в стейт
+    if (router.isReady && allUnsavedQuestions) { // получаем список несохраненных вопросов к ТЕКУЩЕМУ тесту
+      setUnsavedQuestions(allUnsavedQuestions); // и записываем в стейт
     }
-  }, [currentTestNewData]);
+  }, [router, allUnsavedQuestions]);
 
   const { questions } = test;
 
@@ -99,14 +96,14 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
         openConfirmation(item.id, true);
       }
 
-      dispatch(removeQuestion({ questionId: item.id, testId: id }));
+      dispatch(removeQuestion({ questionId: item.id }));
     };
 
     const updating = () => {
       handleUpdate(item.question_type, item.id);
     };
 
-    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} href={`/test/${id}/edit/${item.id}?type=${item.question_type}`} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} saved={saved} />;
+    return <QuestionMenuItem key={item.id} id={item.id} title={item.title} href={`/editing/${id}/edit/${item.id}?type=${item.question_type}`} openConfirmation={openConfirmation} sequenceNumber={i + 1} handleDelete={handleDelete} handleUpdate={updating} saved={saved} />;
   });
 
   return (
@@ -114,13 +111,13 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
       { openSaveConfirmation && (
         <Confirmation header="Do you want to save your question?" closeConfirmation={closeModal} onClick={onSubmit} type="submit" />
       )}
-      <div className={cx(s.createdQuestionsContainer, { [s.onlySavedQuestions]: currentTestNewData })}>
+      <div className={cx(s.createdQuestionsContainer, { [s.onlySavedQuestions]: unsavedQuestions })}>
         <h2 className={s.header}>Test Questions</h2>
         <div className={s.content}>
           {questionList(questions, true)}
         </div>
       </div>
-      <div className={cx(s.unsavedQuestionsContainer, { [s.noNewQuestions]: !currentTestNewData })}>
+      <div className={cx(s.unsavedQuestionsContainer, { [s.noNewQuestions]: !allUnsavedQuestions.length })}>
         <h2 className={s.header}>New Questions</h2>
         <div className={s.content}>
           {questionList(unsavedQuestions)}

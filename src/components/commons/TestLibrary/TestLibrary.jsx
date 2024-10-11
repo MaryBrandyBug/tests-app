@@ -51,7 +51,7 @@ export default function TestLibrary({ is_admin, onTestStarting }) {
   };
 
   const handleStartTest = (e, id) => {
-    if (e.target.tagName !== 'button') {
+    if (e.target.tagName !== 'A' && e.target.className !== 'btnContainer') {
       onTestStarting(id);
     }
   };
