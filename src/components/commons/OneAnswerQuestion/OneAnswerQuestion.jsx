@@ -182,6 +182,9 @@ export default function OneAnswerQuestion() {
 
   return (
     <div className={s.root}>
+      <div className={s.headerContainer}>
+        <p className={s.header}>Single choice</p>
+      </div>
       <TextAnswerCreationForm
         openSaveConfirmation={openSaveConfirmation}
         closeModal={closeModal}

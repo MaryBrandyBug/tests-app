@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
   width: 700px;
   background-color: $standartWhite;
   border-radius: 10px;
@@ -54,4 +54,8 @@
   img {
     width: 100%;
   }
+}
+
+.header {
+  font-size: 30px;
 }

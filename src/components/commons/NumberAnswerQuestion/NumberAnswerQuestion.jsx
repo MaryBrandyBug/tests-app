@@ -95,6 +95,9 @@ export default function NumberAnswerQuestion() {
 
   return (
     <div className={s.root}>
+      <div className={s.headerContainer}>
+        <p className={s.header}>Number</p>
+      </div>
       <form className={s.form} onSubmit={formik.handleSubmit}>
         { openSaveConfirmation && (
         <Confirmation header="Do you want to save your question?" onClick={formik.handleSubmit} closeConfirmation={closeModal} type="button" />

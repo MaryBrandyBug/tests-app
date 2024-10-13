@@ -181,6 +181,9 @@ export default function MultiAnswerQuestion() {
 
   return (
     <div className={s.root}>
+      <div className={s.headerContainer}>
+        <p className={s.header}>Multiple choice</p>
+      </div>
       <TextAnswerCreationForm
         openSaveConfirmation={openSaveConfirmation}
         closeModal={closeModal}
