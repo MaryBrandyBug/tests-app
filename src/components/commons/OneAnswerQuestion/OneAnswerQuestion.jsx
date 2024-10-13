@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 import validationSchema from '@/utils/validation/OneAnswerValidation';
 import { addUnsavedQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
@@ -14,6 +15,7 @@ import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
 import TextAnswerCreationForm from '../TextAnswerCreationForm';
 import ErrorMessage from '../ErrorMessage';
+import Button from '../Button';
 
 import s from './OneAnswerQuestion.module.scss';
 
@@ -132,30 +134,49 @@ export default function OneAnswerQuestion() {
     }
   };
 
-  const inputs = formik.values.answers.map((item, i) => (
-    <div className={s.answerBlock} key={i}>
-      <CheckboxInput
-        name={`answers[${i}].is_right`}
-        id={`answers[${i}]`}
-        onChange={formik.handleChange}
-        checked={formik.values.answers[i].is_right}
-        additionalClassContainer={s.checkboxContainer}
-        additionalClassInput={s.checkboxInput}
-      />
-      <InputField
-        type="text"
-        name={`answers[${i}].text`}
-        value={formik.values.answers[i].text}
-        onChange={formik.handleChange}
-        additionalClass={s.answerInput}
-        onBlur={formik.handleBlur}
-        textarea
-      >
-        {formik.errors.answers && formik.errors.answers[i]
+  const inputs = formik.values.answers.map((item, i) => {
+    const removeField = async () => {
+      const newAnswers = formik.values.answers.filter((_, ind) => ind !== i); // создаем новый массив без элемента с указанным индексом
+      formik.setFieldValue('answers', newAnswers);
+
+      if (item.id) {
+        fetch(`https://interns-test-fe.snp.agency/api/v1/answers/${item.id}`, {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'scope-key': 'hJSv{7A8jcm4<U^}f)#E`e',
+          },
+        });
+      }
+    };
+
+    return (
+      <div className={s.answerBlock} key={i}>
+        <CheckboxInput
+          name={`answers[${i}].is_right`}
+          id={`answers[${i}]`}
+          onChange={formik.handleChange}
+          checked={formik.values.answers[i].is_right}
+          additionalClassContainer={s.checkboxContainer}
+          additionalClassInput={s.checkboxInput}
+        />
+        <InputField
+          type="text"
+          name={`answers[${i}].text`}
+          value={formik.values.answers[i].text}
+          onChange={formik.handleChange}
+          additionalClass={s.answerInput}
+          onBlur={formik.handleBlur}
+          textarea
+        >
+          {formik.errors.answers && formik.errors.answers[i]
         && <ErrorMessage name="text" valueKey="answers" index={i} formik={formik} />}
-      </InputField>
-    </div>
-  ));
+        </InputField>
+        <Button type="button" className={s.closeBtn} onClick={removeField}><Image src="/close.svg" alt="close button" width={50} height={50} /></Button>
+      </div>
+    );
+  });
 
   useModal(openDeleteConfirmation || openSaveConfirmation);
 

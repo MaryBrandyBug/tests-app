@@ -18,7 +18,8 @@
 .answerBlock {
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .answerInput {
@@ -32,9 +33,6 @@
 }
 
 .checkboxContainer {
-  position: absolute;
-  left: 20px;
-  top: 20px;
   
   label:before {
     border-color: $ashLavender;
@@ -51,3 +49,10 @@
   top: 1px;
 }
 
+.closeBtn {
+  max-width: 40px;
+
+  img {
+    width: 100%;
+  }
+}
