@@ -116,9 +116,9 @@ export default function TestLibrary({ is_admin, onTestStarting }) {
   const testLibrary = tests?.map((test) => <TestCard key={test.id} title={test.title} is_admin={is_admin} questionNumber={test.questions.length} id={test.id} onClick={handleStartTest} />);
 
   const showCurrentLibrary = () => {
-    if (testLibrary.length > 0 && !searchQuery) return testLibrary; // есть созданные тесты && поисковое поле пустое
-    if (testLibrary.length > 0 && searchQuery) return testLibrary; // есть тесты удовлетворяющие поисковому запросу && поисковое поле не пустое
-    if (!testLibrary.length && searchQuery) return <p className={s.searchHasNoResult}>No tests matching your search were found.</p>; // нет тестов удовлетворяющих поисковому запросу && поисковое поле не пустует
+    if (testLibrary?.length > 0 && !searchQuery) return testLibrary; // есть созданные тесты && поисковое поле пустое
+    if (testLibrary?.length > 0 && searchQuery) return testLibrary; // есть тесты удовлетворяющие поисковому запросу && поисковое поле не пустое
+    if (!testLibrary?.length && searchQuery) return <p className={s.searchHasNoResult}>No tests matching your search were found.</p>; // нет тестов удовлетворяющих поисковому запросу && поисковое поле не пустует
     return '';
   };
 

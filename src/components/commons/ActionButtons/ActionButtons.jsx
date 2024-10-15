@@ -6,17 +6,17 @@ import Button from '../Button';
 
 import s from './ActionButtons.module.scss';
 
-export default function ActionButtons({ deleteConfirmation, typeSave = 'button', saveConfirmation }) {
+export default function ActionButtons({ closeForm, typeSave = 'button', saveConfirmation }) {
   return (
     <div className={s.root}>
       <Button className={s.saveBtn} type={typeSave} onClick={saveConfirmation}>Save</Button>
-      <Button className={s.deleteBtn} onClick={deleteConfirmation}>Delete</Button>
+      <Button className={s.deleteBtn} onClick={closeForm}>Cancel</Button>
     </div>
   );
 }
 
 ActionButtons.propTypes = {
-  deleteConfirmation: func,
+  closeForm: func,
   typeSave: string,
   saveConfirmation: func,
 };

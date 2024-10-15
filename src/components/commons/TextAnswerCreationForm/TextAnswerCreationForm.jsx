@@ -13,12 +13,12 @@ import ErrorMessage from '../ErrorMessage';
 import s from './TextAnswerCreationForm.module.scss';
 
 export default function TextAnswerCreationForm({
-  openSaveConfirmation, closeModal, addField, deleteConfirmation, saveConfirmation, children, name, value, onChange, onSubmit, formik,
+  openSaveConfirmation, closeModal, addField, closeForm, saveConfirmation, children, name, value, onChange, onSubmit, formik,
 }) {
   return (
     <form className={s.root} onSubmit={onSubmit}>
       { openSaveConfirmation && (
-        <Confirmation header="Do you want to save your question?" closeConfirmation={closeModal} onClickt={onSubmit} type="submit" />
+        <Confirmation header="Do you want to save your question?" closeConfirmation={closeModal} onClick={onSubmit} type="submit" />
       )}
       <InputField
         name={name}
@@ -38,7 +38,7 @@ export default function TextAnswerCreationForm({
       <div className={s.addFieldBtnContainer}>
         <Button type="button" className={s.addFieldBtn} onClick={addField}>Add answer</Button>
       </div>
-      <ActionButtons deleteConfirmation={deleteConfirmation} saveConfirmation={saveConfirmation} />
+      <ActionButtons closeForm={closeForm} saveConfirmation={saveConfirmation} />
     </form>
   );
 }
@@ -47,7 +47,7 @@ TextAnswerCreationForm.propTypes = {
   openSaveConfirmation: bool,
   closeModal: func,
   addField: func,
-  deleteConfirmation: func,
+  closeForm: func,
   children: any,
   name: string,
   value: string,

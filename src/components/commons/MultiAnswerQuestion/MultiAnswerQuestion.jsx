@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { func } from 'prop-types';
 import Image from 'next/image';
 
 import validationSchema from '@/utils/validation/MultiAnswerQuestionValidation';
@@ -19,24 +20,18 @@ import Button from '../Button';
 
 import s from './MultiAnswerQuestion.module.scss';
 
-export default function MultiAnswerQuestion() {
+export default function MultiAnswerQuestion({ closeForm }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const store = useSelector((state) => state?.test.questions);
 
+  const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
+
   const { questionId, id } = router.query;
   const currentQuestionData = store?.find((question) => question.id === Number(questionId));
 
-  const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-
-  const deleteConfirmation = () => {
-    setOpenDeleteConfirmation(true);
-  };
-
   const closeModal = () => {
     if (openSaveConfirmation) setOpenSaveConfirmation(false);
-    if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
   const onSubmit = async (values) => {
@@ -98,7 +93,7 @@ export default function MultiAnswerQuestion() {
       dispatch(addUnsavedQuestion({ values, id }));
     }
 
-    router.push(`/editing/${id}`);
+    closeForm();
   };
 
   const formik = useFormik({
@@ -177,7 +172,7 @@ export default function MultiAnswerQuestion() {
     );
   });
 
-  useModal(openSaveConfirmation || openDeleteConfirmation);
+  useModal(openSaveConfirmation);
 
   return (
     <div className={s.root}>
@@ -188,7 +183,7 @@ export default function MultiAnswerQuestion() {
         openSaveConfirmation={openSaveConfirmation}
         closeModal={closeModal}
         addField={addField}
-        deleteConfirmation={deleteConfirmation}
+        closeForm={closeForm}
         saveConfirmation={saveConfirmation}
         name="title"
         value={formik.values.title}
@@ -202,3 +197,7 @@ export default function MultiAnswerQuestion() {
     </div>
   );
 }
+
+MultiAnswerQuestion.propTypes = {
+  closeForm: func,
+};

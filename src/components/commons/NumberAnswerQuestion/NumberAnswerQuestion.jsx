@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { func } from 'prop-types';
 
 import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation';
 import inputAttributes from './data';
@@ -17,24 +18,18 @@ import ErrorMessage from '../ErrorMessage';
 
 import s from './NumberAnswerQuestion.module.scss';
 
-export default function NumberAnswerQuestion() {
+export default function NumberAnswerQuestion({ closeForm }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const store = useSelector((state) => state?.test.questions);
 
-  const { questionId, id } = router.query;
+  const { questionId } = router.query;
   const currentQuestionData = store?.find((question) => question.id === Number(questionId));
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
-
-  const deleteConfirmation = () => {
-    setOpenDeleteConfirmation(true);
-  };
 
   const closeModal = () => {
     if (openSaveConfirmation) setOpenSaveConfirmation(false);
-    if (openDeleteConfirmation) setOpenDeleteConfirmation(false);
   };
 
   const onSubmit = async (values) => {
@@ -54,7 +49,7 @@ export default function NumberAnswerQuestion() {
       dispatch(addUnsavedQuestion({ values }));
     }
 
-    router.push(`/editing/${id}`);
+    closeForm();
   };
 
   const formik = useFormik({
@@ -91,7 +86,7 @@ export default function NumberAnswerQuestion() {
     </div>
   ));
 
-  useModal(openDeleteConfirmation || openSaveConfirmation);
+  useModal(openSaveConfirmation);
 
   return (
     <div className={s.root}>
@@ -103,8 +98,12 @@ export default function NumberAnswerQuestion() {
         <Confirmation header="Do you want to save your question?" onClick={formik.handleSubmit} closeConfirmation={closeModal} type="button" />
         )}
         {inputFields}
-        <ActionButtons deleteConfirmation={deleteConfirmation} saveConfirmation={saveConfirmation} typeSave="button" />
+        <ActionButtons closeForm={closeForm} saveConfirmation={saveConfirmation} typeSave="button" />
       </form>
     </div>
   );
 }
+
+NumberAnswerQuestion.propTypes = {
+  closeForm: func,
+};

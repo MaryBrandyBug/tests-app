@@ -1,16 +1,12 @@
 @import '@/styles/mixins.scss';
 @import '@/styles/colors.scss';
 
-.root {
-
-}
-
 .content {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .testTitleInput {

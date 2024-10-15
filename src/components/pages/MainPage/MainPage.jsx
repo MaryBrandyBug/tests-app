@@ -92,7 +92,9 @@ export default function MainPage() {
           <Button onClick={testAdding} className={`${s.addTestLink} ${yeseva.className}`}>Add test</Button>
         </div>
       )}
-      {user.username && <TestLibrary tests={tests} is_admin={user.is_admin} onTestStarting={testStarting} />}
+      <div className={s.libraryContainer}>
+        {user.username && <TestLibrary tests={tests} is_admin={user.is_admin} onTestStarting={testStarting} />}
+      </div>
     </div>
   );
 }

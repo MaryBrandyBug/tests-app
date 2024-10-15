@@ -16,11 +16,12 @@ import Confirmation from '@/components/commons/Confirmation';
 import Button from '@/components/commons/Button';
 import QuestionCreation from '@/components/commons/QuestionCreation';
 import QuestionUpdate from '@/components/commons/QuestionUpdate';
+import withAdmin from '@/components/hoc/withAdmin';
 
 import s from './OneTestPage.module.scss';
 import { manjari } from '@/styles/fonts';
 
-export default function OneTestPage({ isCreating, isEditing }) {
+function OneTestPage({ isCreating, isEditing }) {
   const [openDeleteTestConfirm, setOpenDeleteTestConfirm] = useState(false); // модалка согласие юзера удалить тест
   const [openNumberAnswerForm, setOpenNumberAnswerForm] = useState(false); // форма вопроса с численным ответом
   const [openOneAnswerForm, setOpenOneAnswerForm] = useState(false); //
@@ -101,6 +102,7 @@ export default function OneTestPage({ isCreating, isEditing }) {
     setOpenMultiAnswerForm(false);
     setOpenNumberAnswerForm(false);
     setOpenOneAnswerForm(false);
+    router.push(`/editing/${id}`);
   };
 
   useEffect(() => {
@@ -176,9 +178,9 @@ export default function OneTestPage({ isCreating, isEditing }) {
           <Dropdown text="New question" contentList={[{ questionType: 'One Answer', key: '1', onClick: showOneAnswerForm }, { questionType: 'Multiple Answer', key: '2', onClick: showMultiAnswerForm }, { questionType: 'Number', key: '3', onClick: showNumberAnswerForm }]} additionalClassContent={s.dropdownContent} additionalClassText={s.dropdownText} additionalClassRoot={s.dropdownContainer} />
         </div>
         {isCreating
-          && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} handleClose={closeQuestionForm} />}
+          && <QuestionCreation currentQuestionCreation={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} handleClose={closeQuestionForm} />}
         {isEditing
-          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} id={id} handleClose={closeQuestionForm} />}
+          && <QuestionUpdate currentQuestionUpdate={questionTypeCreation} questionFormType={openNumberAnswerForm || openOneAnswerForm || openMultiAnswerForm} handleClose={closeQuestionForm} />}
       </div>
     </div>
   );
@@ -188,3 +190,5 @@ OneTestPage.propTypes = {
   isCreating: bool,
   isEditing: bool,
 };
+
+export default withAdmin(OneTestPage);

@@ -11,13 +11,13 @@ import OneAnswerQuestion from '../OneAnswerQuestion';
 import s from './QuestionCreation.module.scss';
 
 export default function QuestionCreation({
-  currentQuestionCreation, questionFormType, id, handleClose,
+  currentQuestionCreation, questionFormType, handleClose,
 }) {
   return (
     <div className={s.root}>
-      {currentQuestionCreation === 'number' && questionFormType && (<NumberAnswerQuestion id={id} closeForm={handleClose} />)}
-      {currentQuestionCreation === 'single' && questionFormType && (<OneAnswerQuestion id={id} closeForm={handleClose} />)}
-      {currentQuestionCreation === 'multiple' && questionFormType && (<MultiAnswerQuestion id={id} closeForm={handleClose} />)}
+      {currentQuestionCreation === 'number' && questionFormType && (<NumberAnswerQuestion closeForm={handleClose} />)}
+      {currentQuestionCreation === 'single' && questionFormType && (<OneAnswerQuestion closeForm={handleClose} />)}
+      {currentQuestionCreation === 'multiple' && questionFormType && (<MultiAnswerQuestion closeForm={handleClose} />)}
     </div>
   );
 }
@@ -25,6 +25,5 @@ export default function QuestionCreation({
 QuestionCreation.propTypes = {
   currentQuestionCreation: string,
   questionFormType: bool,
-  id: string,
   handleClose: func,
 };

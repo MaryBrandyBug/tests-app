@@ -3,7 +3,7 @@
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // import validationSchema from '@/utils/validation/signUpValidation';
 import { getUser } from '@/redux/store/slicer/userSlicer';
