@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { getUser } from '@/redux/store/slicer/userSlicer';
 import { getAllTests } from '@/redux/store/slicer/librarySlicer';
 import useModal from '@/hooks/useModal';
+import { selectLibrary, selectUser } from '@/constants/selectors';
 
 import Button from '@/components/commons/Button';
 import Modal from '@/components/commons/Modal';
@@ -25,8 +26,8 @@ export default function MainPage() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const user = useSelector((state) => state.user);
-  const tests = useSelector((state) => state.library);
+  const user = useSelector(selectUser);
+  const tests = useSelector(selectLibrary);
 
   const testAdding = () => {
     setTestAdding(true);

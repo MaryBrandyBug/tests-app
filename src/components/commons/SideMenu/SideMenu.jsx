@@ -8,6 +8,7 @@ import cx from 'classnames';
 
 import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import { addQuestion } from '@/redux/store/slicer/testSlicer';
+import { selectNewQuestions, selectTest } from '@/constants/selectors';
 
 import QuestionMenuItem from '../QuestionMenuItem';
 import Button from '../Button';
@@ -22,8 +23,8 @@ export default function SideMenu({ id, openConfirmation, handleUpdate }) {
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
   const [unsavedQuestions, setUnsavedQuestions] = useState(null);
 
-  const test = useSelector((store) => store.test);
-  const allUnsavedQuestions = useSelector((store) => store.newQuestions); // получаем список ВСЕХ несохраненных вопросов ко ВСЕМ тестам
+  const test = useSelector(selectTest);
+  const allUnsavedQuestions = useSelector(selectNewQuestions); // получаем список ВСЕХ несохраненных вопросов ко ВСЕМ тестам
 
   const clearUnsaved = () => {
     dispatch(clearStorage());

@@ -3,6 +3,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { deleteUser } from '@/redux/store/slicer/userSlicer';
+import { selectUser } from '@/constants/selectors';
 
 import Logo from '../Logo';
 import Button from '../Button';
@@ -13,7 +14,7 @@ import { yeseva } from '@/styles/fonts';
 export default function Header() {
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector(selectUser);
 
   const handleLogout = async () => {
     fetch('https://interns-test-fe.snp.agency/api/v1/logout', {

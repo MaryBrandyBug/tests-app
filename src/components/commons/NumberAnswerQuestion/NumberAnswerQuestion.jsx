@@ -10,6 +10,7 @@ import validationSchema from '@/utils/validation/NumberAnswerQuestionValidation'
 import inputAttributes from './data';
 import { addUnsavedQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
+import { selectTest } from '@/constants/selectors';
 
 import Confirmation from '../Confirmation';
 import InputField from '../InputField';
@@ -21,10 +22,10 @@ import s from './NumberAnswerQuestion.module.scss';
 export default function NumberAnswerQuestion({ closeForm }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const store = useSelector((state) => state?.test.questions);
+  const { questions } = useSelector(selectTest);
 
   const { questionId } = router.query;
-  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
+  const currentQuestionData = questions?.find((question) => question.id === Number(questionId));
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
 

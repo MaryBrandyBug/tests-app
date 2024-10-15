@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { func } from 'prop-types';
 
 import useModal from '@/hooks/useModal';
+import { selectTest } from '@/constants/selectors';
 
 import QuestionCard from '../QuestionCard';
 import Button from '../Button';
@@ -21,7 +22,7 @@ export default function TestQuestionsList({ manageTotalScoreModal }) {
   const dispatch = useDispatch();
 
   const { id } = router.query;
-  const { title, questions } = useSelector((store) => store.test);
+  const { title, questions } = useSelector(selectTest);
 
   const questionChange = (questionId) => {
     setFormValues((prevValues) => ({

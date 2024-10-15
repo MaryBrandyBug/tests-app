@@ -8,6 +8,7 @@ import { bool } from 'prop-types';
 
 import { clearStorage, removeQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
+import { selectTest } from '@/constants/selectors';
 
 import InputField from '@/components/commons/InputField';
 import Dropdown from '@/components/commons/Dropdown';
@@ -35,7 +36,8 @@ function OneTestPage({ isCreating, isEditing }) {
 
   const dispatch = useDispatch();
 
-  const testTitle = useSelector((store) => store.test.title);
+  const test = useSelector(selectTest);
+  const testTitle = test?.title;
 
   const openConfirmation = (itemId, saved = false) => {
     setItemToDelete({ id: itemId, saved });

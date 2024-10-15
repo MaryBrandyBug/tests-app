@@ -4,13 +4,15 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+import { selectUser } from '@/constants/selectors';
+
 const withAdmin = (WrappedComponent) => {
   function ProtectedAdminComponent(props) {
     const router = useRouter();
-    const isAdmin = useSelector((state) => state.user.is_admin);
+    const { is_admin } = useSelector(selectUser);
 
     useEffect(() => {
-      if (!isAdmin) {
+      if (!is_admin) {
         router.push('/');
       }
     }, [router]);

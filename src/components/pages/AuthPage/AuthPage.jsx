@@ -3,11 +3,14 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
+import { selectUser } from '@/constants/selectors';
+
 import s from './AuthPage.module.scss';
 
 export default function HomePage({ Form }) {
   const router = useRouter();
-  const { user } = useSelector((state) => state);
+
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (user.username) {

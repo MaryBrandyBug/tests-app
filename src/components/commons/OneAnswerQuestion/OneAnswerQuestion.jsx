@@ -11,6 +11,7 @@ import validationSchema from '@/utils/validation/OneAnswerValidation';
 import { addUnsavedQuestion } from '@/redux/store/slicer/unsavedQuestionsSlicer';
 import useModal from '@/hooks/useModal';
 import isAnswerUpdated from '@/utils/isAnswerUpdated';
+import { selectTest } from '@/constants/selectors';
 
 import InputField from '../InputField';
 import CheckboxInput from '../CheckboxInput';
@@ -23,12 +24,12 @@ import s from './OneAnswerQuestion.module.scss';
 export default function OneAnswerQuestion({ closeForm }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const store = useSelector((state) => state?.test.questions);
+  const { questions } = useSelector(selectTest);
 
   const [openSaveConfirmation, setOpenSaveConfirmation] = useState(false);
 
   const { questionId, id } = router.query;
-  const currentQuestionData = store?.find((question) => question.id === Number(questionId));
+  const currentQuestionData = questions?.find((question) => question.id === Number(questionId));
 
   const initialValues = {
     title: currentQuestionData?.title || '',
